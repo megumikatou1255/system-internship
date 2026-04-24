@@ -20,10 +20,13 @@
 - Nếu đặt tất cả các bit ở phần host là 1 thì số cuối cùng của địa chỉ IP là 255. Khi đó địa chỉ này sẽ là một địa chỉ broadcast của mạng đó. Ví dụ: 192.168.10.255 là một địa chỉ broadcast.
 
 ## 4. Các thành phần của IPv4
+
 Gồm 2 phần chính: 
 ![Network ID](./images/network_id.png)
+
 - **Network ID** : xác định mạng mà thiết bị đó thuộc về
 ![Host ID](./images/host_id.png)
+
 - **Host ID** : xác định cụ thể thiết bị trong mạng đó
 - **Lý do chia Network ID và Host ID**
 - Tiết kiệm tài nguyên
@@ -76,12 +79,13 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 -	Ip 192.168.1.0/24, chia thành 6 mạng con và mỗi mạng có 60 máy tính
 -	2^h - 2 > 60 -> n = 6 (mượn 2 bit từ phần host), subnet mask 24 + 2 -> /26 (32 – 6 = 26 bit cho mạng và 6 bit cho host) subnet mask -> 255.255.255.192
 -	Bước nhảy 256 – 192 = 64
-| Stt	|   Địa chỉ mạng	    |   Dải ip host 	            |   Địa chỉ broadcast|
-|  1	|   192.168.1.0/26	    |192.168.1.1->192.168.1.62	    |192.168.1.63        |
-|  2    |   192.168.1.64/26	    |192.168.1.65->192.168.1.12	    |192.168.1.127       |
-|  3    |   192.168.1.128/26	|192.168.1.129->192.168.1.190	|192.168.1.191       |
-|  4    |   192.168.1.192/26	|192.168.1.193->192.168.1.254	|192.168.1.255       |
 
+| STT | Địa chỉ mạng     | Dải IP host                  | Địa chỉ Broadcast |
+|-----|------------------|------------------------------|-------------------|
+| 1   | 192.168.1.0/26   | 192.168.1.1->192.168.1.62    | 192.168.1.63      |
+| 2   | 192.168.1.64/26  | 192.168.1.65->192.168.1.12   | 192.168.1.127     |
+| 3   | 192.168.1.128/26 | 192.168.1.129->192.168.1.190 | 192.168.1.191     |
+| 4   | 192.168.1.192/26 | 192.168.1.193->192.168.1.254 | 192.168.1.255     |
 ## 8. Phân biệt multicast và broadcast
 > Khái niệm
 - Broadcast (Quảng bá): Gói tin được gửi đến tất cả các thiết bị trong cùng một phân đoạn mạng (Local Network). Ngay cả khi thiết bị không cần thông tin đó, nó vẫn phải nhận và xử lý gói tin (ở mức độ nhất định) trước khi quyết định hủy bỏ.
@@ -92,11 +96,10 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 - Multicast: Sử dụng dải địa chỉ Lớp D.
 `Ví dụ: Từ 224.0.0.0 đến 239.255.255.255.`
 > Hiệu năng và tác động đến mạng
-|   Đặc điểm   |   Broadcast  |   Multicast  |
-----------------------------------------------------------
-|Băng thông    |Gây lãng phí dữ liệu nếu có nhiều  |Tiết kiệm băng thông vì chỉ gửi cho người cần
-|              | thiết bị không cần dữ liệu        |
-|Xử lý tại Host| Mọi thiết bị đều bị làm phiền     |Chỉ các máy trong nhóm mới tốn tài nguyên xử lý
+| Đặc điểm | Broadcast | Multicast |
+|---|---|---|
+| Băng thông | Gây lãng phí dữ liệu nếu có nhiều thiết bị không cần dữ liệu | Tiết kiệm băng thông vì chỉ gửi cho người cần |
+| Xử lý tại host | Mọi thiết bị đều phải xử lý | Chỉ các máy trong nhóm mới tốn tài nguyên xử lý |
 ## 9. tìm hiểu các khái niệm: subnet, subnet mask, prefx
 
 ### Subnet
