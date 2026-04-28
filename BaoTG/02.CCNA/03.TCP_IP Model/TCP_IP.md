@@ -85,3 +85,176 @@ Tầng giao vận hoạt động chủ yếu dựa trên hai giao thức với t
 Một chức năng cực kỳ quan trọng khác là xác định ứng dụng đích thông qua Số cổng (Port).
 + Địa chỉ IP giúp tìm thấy máy tính, nhưng số cổng giúp tìm thấy ứng dụng cụ thể trên máy tính đó (ví dụ: Port 80 cho Web, Port 25 cho Email). Tầng giao vận sẽ thêm thông tin cổng nguồn và cổng đích vào tiêu đề dữ liệu.
 ### 4. Application Layer (Tầng ứng dụng)
+- **Vai trò và chức năng**
+Tầng Ứng dụng không phải là bản thân các ứng dụng (như Chrome hay Outlook) mà là các giao thức chạy bên trong các ứng dụng đó để thực hiện việc trao đổi dữ liệu qua mạng.
++ _Giao diện dịch vụ mạng_: Cung cấp các phương thức tiêu chuẩn để ứng dụng truy cập vào các tài nguyên trên mạng Internet.
++ _Định dạng dữ liệu_: Đảm bảo dữ liệu từ ứng dụng được chuyển đổi sang định dạng mà các tầng bên dưới có thể hiểu và ngược lại (ví dụ: mã hóa văn bản, nén dữ liệu).
++ _Xác thực và cấp phép_: Xử lý việc đăng nhập, kiểm tra quyền truy cập của người dùng đối với các dịch vụ mạng.
+- **Các giao thức tiêu biểu**
+| Giao thức  | Tên đầy đủ                                              | Công dụng                                                                                                |
+|------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| HTTP/HTTPS | Hypertext Transfer Protocol                             | Dùng để truyền tải các trang web (văn bản, hình ảnh, video) giữa Web Server và trình duyệt.              |
+| DNS        | Domain Name System                                      | "Cuốn danh bạ" của Internet, giúp dịch tên miền (như google.com) thành địa chỉ IP mà máy tính hiểu được. |
+| SMTP       | Simple Mail Transfer Protocol                           | Giao thức tiêu chuẩn dùng để gửi email từ máy khách đến máy chủ hoặc giữa các máy chủ email.             |
+| POP3/IMAP  | Post Office Protocol / Internet Message Access Protocol | Dùng để nhận và quản lý email từ máy chủ về thiết bị cá nhân.                                            |
+| FTP        | File Transfer Protocol                                  | Chuyên dùng để gửi và nhận các tệp tin có dung lượng lớn trên mạng.                                      |
+| DHCP       | Dynamic Host Configuration Protocol                     | Tự động cấp phát địa chỉ IP cho các thiết bị khi chúng kết nối vào mạng.                                 |
+- **Đơn vị dữ liệu (PDU)**
+Tại tầng này, dữ liệu được gọi đơn giản là Application Message (Thông điệp ứng dụng). Khi người dùng thực hiện một hành động (ví dụ: nhấn Enter để truy cập web), tầng này sẽ tạo ra một thông điệp chứa các yêu cầu cụ thể (Request) và chuyển nó xuống tầng Giao vận (Transport Layer).
+- **Cách thức hoạt động trong quá trình đóng gói**
++ Khi gửi dữ liệu, Tầng Ứng dụng là điểm khởi đầu của quá trình Encapsulation (Đóng gói).
++ Nó lấy dữ liệu thô từ người dùng.
++ Thêm các thông tin điều khiển cần thiết (Header của giao thức ứng dụng, ví dụ: HTTP Header).
++ Chuyển "món quà" này xuống tầng Giao vận để bọc thêm các lớp bảo vệ tiếp theo.
+## III. So sánh mô hình OSi và TCP/IP
+![Compare OSI to TCP/IP](./images/compare_osi_to_tcpip.png)
+> Giống nhau
+- Chia sẻ kiến trúc chung
+    Cả 2 mô hình đều là mô hình logic và có kiến trúc tương tự vì cả 2 mô hình đều được xây dựng dựa trên các lớp
+- Xác định tiêu chuẩn 
+    Cả 2 lớp đều có các tiêu chuẩn xác định và chúng cũng cung cấp khuôn khổ được sử dụng để thực hiện các tiêu chuẩn và thiết bị
+- Quy trình khắc phục sự cố được đơn giản hóa
+    Cả 2 mô hình đã đơn giản hóa quá trình khắc phục sự cố bằng cách chia nhỏ chức năng phức tạp thành các thành phần đơn giản hơn
+- Các tiêu chuẩn được xác định trước
+    Các tiêu chuẩn và giao thức đã được xác định trước, những mô hình này không xác định lại chúng, chỉ tham khảo hoặc sử dụng lại chúng. Ví dụ, các tiêu chuẩn Ethernet đã được IEEE xác định trước khi phát triển các mô hình 
+- Cả 2 đều có chức năng tương tự của các lớp Transport và Network
+    Chức năng được thực hiện giữa lớp Presentation và lớp Network tương tự như chức năng được thực hiện ở lớp Transport
+> Khác nhau
+|         Nội dung         |                                              Mô hình OSI                                             |                               Mô hình TCP/IP                               |
+|:------------------------:|:----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------:|
+|  Độ tin cậy và phổ biến  | Nhiều người cho rằng đây là mô hình cũ, chỉ để tham khảo, số người sử dụng hạn chế hơn so với TCP/IP | Được chuẩn hóa, nhiều người tin cậy và sử dụng phổ biến trên toàn cầu      |
+|   Phương pháp tiếp cận   | Tiếp cận theo chiều dọc                                                                              | Tiếp cận theo chiều ngang                                                  |
+| Sự kết hợp giữa các tầng | Mỗi tầng khác nhau sẽ thực hiện một nhiệm vụ khác nhau, không có sự kết hợp giữa bất cứ tầng nào     | Trong tầng ứng dụng có tầng trình diễn và tầng phiên được kết hợp với nhau |
+|         Thiết kế         | Phát triển mô hình trước sau đó sẽ phát triển giao thức                                              | Các giao thức được thiết kế trước sau đó phát triển mô hình                |
+|       Số lớp (tầng)      | 7                                                                                                    | 4                                                                          |
+|       Truyền thông       | Hỗ trợ cả kết nối định tuyến và không dây                                                            | Hỗ trợ truyền thông không kết nối từ tầng mạng                             |
+|      Tính phụ thuộc      | Giao thức độc lập                                                                                    | Phụ thuộc vào giao thức                                                    |
+## IV. Quy trình hoạt động của mô hình TCP/IP
+1. Quá trình Đóng gói (Tại máy gửi)
+Dữ liệu đi từ tầng cao nhất xuống tầng thấp nhất, mỗi tầng sẽ "bọc" thêm một lớp thông tin quản lý (Header).
+- Tầng Ứng dụng (Application): Người dùng nhập dữ liệu (ví dụ: gõ một tin nhắn). Dữ liệu này được định dạng theo các giao thức như HTTP hay SMTP.
+- Tầng Giao vận (Transport): Dữ liệu được chia nhỏ thành các Segment. Tại đây, TCP sẽ thêm Header chứa Số cổng (Port) để xác định ứng dụng nào đang gửi và nhận.
+- Tầng Internet/Mạng (Network): Các Segment được đóng gói thành Packet. Tầng này thêm Header chứa Địa chỉ IP nguồn và đích để định hướng đường đi trên mạng Internet.
+- Tầng Truy cập mạng (Network Access): Packet được đóng gói thành các Frame. Tầng này thêm địa chỉ vật lý (MAC Address) và mã kiểm tra lỗi. Cuối cùng, dữ liệu được chuyển thành các xung điện hoặc sóng vô tuyến để truyền đi qua dây cáp hoặc Wi-Fi.
+2. Quá trình Truyền dẫn (Trên mạng lưới)
+Khi gói tin rời khỏi máy tính của bạn:
+- Nó đi qua các thiết bị trung gian như Switch và Router.
+- Router sẽ chỉ mở lớp vỏ ở Tầng Mạng để đọc địa chỉ IP đích.
+- Dựa vào bảng định tuyến, Router sẽ quyết định gửi gói tin đi theo con đường nào nhanh nhất để tới đích.
+3. Quá trình Mở gói (Tại máy nhận)
+Khi dữ liệu đến máy nhận, quy trình diễn ra ngược lại hoàn toàn. Máy tính sẽ "bóc" từng lớp Header từ dưới lên trên.
+- Tầng Truy cập mạng: Kiểm tra địa chỉ MAC xem có đúng là gửi cho mình không và kiểm tra lỗi vật lý. Nếu ổn, nó bóc lớp vỏ Frame và chuyển lên trên.
+- Tầng Internet: Kiểm tra địa chỉ IP. Sau đó bóc lớp vỏ Packet và chuyển lên trên.
+- Tầng Giao vận: Kiểm tra số cổng để biết dữ liệu này thuộc về ứng dụng nào (Web, Email hay Chat). Nếu dùng TCP, nó sẽ kiểm tra xem các mảnh dữ liệu có đầy đủ và đúng thứ tự không. Sau đó ghép lại và chuyển lên.
+- Tầng Ứng dụng: Nhận dữ liệu hoàn chỉnh và hiển thị cho người dùng trên giao diện phần mềm.
+## V. Tìm hiểu về giao thức TCP/UDP và so sánh.
+### 1. TCP (Transmission Control Protocol)
+- **Khái niệm**: Transmission Control Protocol (TCP) là giao thức tiêu chuẩn trên Internet đảm bảo trao đổi thành công các gói dữ liệu giữa các thiết bị qua mạng. TCP là giao thức truyền tải cơ bản cho nhiều loại ứng dụng, bao gồm máy chủ web và trang web, ứng dụng email, FTP và các ứng dụng ngang hàng.
+
+- **Nhiệm vụ**
+**Thiết lập kết nối**
+Giao thức TCP sử dụng một quá trình gọi là "three-way handshake" để thiết lập kết nối giữa hai máy tính. Quá trình này đảm bảo rằng cả hai máy tính đều đã sẵn sàng để truyền dữ liệu và đã thiết lập các thông số cần thiết để quản lý kết nối.
+
+**Phân mảnh và gói tin hóa**
+TCP phân mảnh dữ liệu thành các gói tin nhỏ hơn để truyền đi trên mạng. Mỗi gói tin chứa một phần của dữ liệu gốc và được đánh số thứ tự để đảm bảo thứ tự chính xác khi đến được máy tính đích.
+
+**Kiểm soát luồng dữ liệu**
+Chương trình TCP sử dụng cơ chế cửa sổ trượt để kiểm soát việc truyền dữ liệu giữa hai máy tính. Tiện ích cho phép người gửi và người nhận điều chỉnh số lượng gói tin được truyền và nhận trong mỗi khoảng thời gian nhất định. Điều này giúp đảm bảo rằng mạng không bị quá tải và dữ liệu không bị mất.
+
+**Bảo đảm độ tin cậy**
+TCP sử dụng các cơ chế kiểm tra lỗi, xác nhận và tạo lại gói tin để đảm bảo việc truyền dữ liệu một cách tin cậy. Nếu một gói tin bị mất hoặc hỏng trong quá trình truyền, TCP sẽ yêu cầu người gửi gửi lại gói tin đó để đảm bảo tính toàn vẹn của dữ liệu.
+
+**Đóng kết nối nhanh**
+Khi quá trình truyền dữ liệu hoàn tất, TCP sẽ sử dụng một quy trình gọi là "four-way handshake" để đóng kết nối giữa hai máy tính. Quá trình này đảm bảo rằng cả hai máy tính đều được thông báo về việc kết nối đã được đóng và giải phóng tài nguyên liên quan.
+
+- **Ứng dụng**
+**Truyền tệp và tải tệp tin**
++ TCP được sử dụng để truyền dữ liệu tệp và tải tệp tin từ xa. Ví dụ, khi bạn tải xuống một tệp từ một máy chủ web, phiên tải tệp sử dụng giao thức TCP để đảm bảo rằng tất cả các phần của tệp được truyền đúng và có thể thiết lập lại nếu cần.
++ Truyền thông qua mạng TCP được sử dụng trong việc truyền thông và giao tiếp giữa các thiết bị trong mạng. Ví dụ, khi bạn duyệt web, gửi email, truyền tệp qua mạng hoặc sử dụng các ứng dụng truyền thông khác. TCP đảm bảo rằng các gói tin dữ liệu được truyền đi và nhận về một cách tin cậy và có thứ tự.
++ TCP cung cấp cơ chế để thiết lập kết nối an toàn và tin cậy giữa các máy tính từ xa và điều khiển từ xa các thiết bị và máy tính từ xa. Ví dụ, giao diện điều khiển từ xa và máy chủ thông qua giao thức TCP để điều khiển và quản lý các thiết bị từ xa.
+
+**Giao thức truyền thông phạm vi rộng (WAN)**
+TCP được sử dụng để truyền thông qua các mạng phạm vi rộng, như Internet. Với việc đảm bảo tính tin cậy và kiểm soát luồng dữ liệu, TCP cho phép truyền dữ liệu khắp thế giới qua các mạng WAN.
+
+**Truyền thông tin trong ứng dụng client-server**
+Trong mô hình client-server, giao thức TCP được sử dụng để thiết lập và duy trì kết nối giữa client và server. Ví dụ, ứng dụng email, trò chuyện trực tuyến, truyền tệp qua FTP (File Transfer Protocol) và nhiều ứng dụng khác sử dụng TCP để truyền thông tin giữa client và server.
+- **Cấu trúc gói tin TCP**
+![Structure TCP](./images/structure_tcp.png)
+|           Tên trường           |                                                    Chức năng                                                    |
+|:------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
+| Source Port (16 bit)           | Số cổng của thiết bị/ứng dụng gửi dữ liệu.                                                                      |
+| Destination Port (16 bit)      | Số cổng của thiết bị/ứng dụng nhận dữ liệu.                                                                     |
+| Sequence Number (32 bit)       | Đánh số thứ tự gói tin; dùng để tính toán số byte đã truyền và giúp máy nhận sắp xếp lại dữ liệu đúng trình tự. |
+| Acknowledgment Number (32 bit) | Xác nhận đã nhận được gói tin nào và thông báo số thứ tự (byte) tiếp theo mà máy nhận đang mong đợi.            |
+| DO - Data Offset (4 bit)       | Độ dài của toàn bộ TCP Header tính theo đơn vị Word (1 Word = 4 byte).                                          |
+| RSV - Reserved (4 bit)         | Các bit dự phòng, hiện tại luôn được thiết lập bằng 0.                                                          |
+| Flags (9 bit)                  | Các bit điều khiển luồng và kết nối (bao gồm: URG, ACK, PSH, RST, SYN, FIN).                                    |
+| Windows (16 bit)               | Cơ chế kiểm soát lưu lượng; cho biết số lượng byte mà thiết bị sẵn sàng tiếp nhận thêm.                         |
+| Checksum (16 bit)              | Dùng để kiểm tra lỗi cho toàn bộ TCP Segment nhằm đảm bảo dữ liệu không bị hỏng khi truyền.                     |
+| Urgent Pointer (16 bit)        | Con trỏ vùng dữ liệu khẩn; chỉ có hiệu lực khi cờ URG được thiết lập để ưu tiên xử lý dữ liệu.                  |
+| Options (Tối đa 32 bit)        | Các tùy chọn mở rộng giúp thêm vào TCP các tính năng bổ sung khác.                                              |
+- **Three-Way Handsake (Bắt tay ba bước)**
+![Three-Way Handsake](./images/3_way_handsake.png)
+Bắt tay 3 bước (TCP 3-way handshake) là quy trình thiết lập kết nối tin cậy giữa máy khách (Client) và máy chủ (Server) trước khi truyền dữ liệu, bao gồm: SYN (khởi tạo), SYN-ACK (xác nhận-đồng bộ), và ACK (xác nhận cuối cùng). Quá trình này đảm bảo cả hai bên đã sẵn sàng truyền tin.
+
+_Bước 1_: SYN (Synchronize - Đồng bộ hóa)
+Ở bước khởi đầu, Host P (Client) muốn kết nối với Host Q (Server).
+- Hành động: Host P gửi một gói tin có cờ SYN được bật lên.
+- Ý nghĩa: Nó thông báo cho Host Q rằng: "Tôi muốn thiết lập kết nối và tôi sẽ bắt đầu đánh số thứ tự dữ liệu từ số x" (trong hình là seq=x).
+- Trạng thái: Host P chuyển sang trạng thái chờ phản hồi.
+
+_Bước 2_: SYN + ACK (Acknowledge - Xác nhận)
+Sau khi nhận được yêu cầu, Host Q trả lời để xác nhận.
+- Hành động: Host Q gửi lại một gói tin kết hợp cả hai cờ SYN và ACK.
+- Thông số kỹ thuật:
+    + ACK = x+1: Host Q xác nhận đã nhận được gói x và mong đợi gói tiếp theo từ Host P sẽ là x+1.
+    + seq = y: Host Q cũng gửi số thứ tự của riêng mình, bắt đầu từ một số y nào đó.
+- Ý nghĩa: "Tôi đã nhận được yêu cầu của bạn (ACK). Tôi đồng ý kết nối và tôi sẽ bắt đầu đánh số thứ tự của mình từ y (SYN)".
+
+_Bước 3_: ACK (Xác nhận cuối cùng)
+Cuối cùng, Host P gửi một gói tin xác nhận lại một lần nữa để hoàn tất quá trình.
+- Hành động: Host P gửi gói tin có cờ ACK.
+- Thông số kỹ thuật:
+    + ack = y+1: Host P xác nhận đã nhận được gói y từ Host Q và mong đợi gói tiếp theo là y+1.
+- Ý nghĩa: "Tôi đã nhận được xác nhận từ bạn. Bây giờ cả hai chúng ta đã sẵn sàng truyền dữ liệu!"
+![3-Way Handsake Progress](./images/3_way_handsake_progress.png)
+
+### 2. UDP (User Datagram Protocol)
+- Ngược lại với giao thức TCP thì UDP là giao thức truyền tải hướng không kết nối (connectionless). Nó sẽ không thực hiện thao tác xây dựng kết nối trước khi truyền dữ liệu mà thực hiện truyền ngay lập tức khi có dữ liệu cần truyền (kiểu truyền best effort) => truyền tải rất nhanh cho dữ liệu của lớp ứng dụng.
+
+- **Đặc điểm**
+- Không đảm bảo tính tin cậy khi truyền dữ liệu và không có cơ chế phục hồi dữ liệu ( nó không quan tâm gói tin có đến đích hay không, không biết gói tin có bị mất mát trên đường đi hay không) => dễ bị lỗi.
+- Không thực hiện các biện pháp đánh số thứ tự cho các đơn vị dữ liệu được truyền…
+- Nhanh và hiệu quả hơn đối với các dữ liệu có kích thước nhỏ và yêu cầu khắt khe về thời gian.
+- Bản chất không trạng thái nên UDP hữu dụng đối với việc trả lời các truy vấn nhỏ với số lượng lớn người yêu cầu.
+
+- **Ứng dụng**
++ Phương pháp UDP phần lớn được sử dụng bởi các ứng dụng nhạy cảm với thời gian cũng như những máy chủ trả lời các truy vấn nhỏ từ cơ sở khách hàng lớn hơn.
++ UDP tương thích với các chương trình phát gói để gửi trên toàn mạng và gửi đa hướng.
++ UDP cũng được sử dụng trong Domain Name System, Voice over IP và các game trực tuyến.
+
+- **Cấu trúc gói tin UDP**
+![UDP Structure](./images/udp_structure.png)
+| Trường thông tin (Field) |  Độ dài  |                                            Mô tả chi tiết chức năng                                           |
+|:------------------------:|:--------:|:-------------------------------------------------------------------------------------------------------------:|
+| Source Port              | 16 bit   | Định danh cổng của thiết bị gửi; giúp xác định session của ứng dụng đang chạy.                                |
+| Destination Port         | 16 bit   | Định danh cổng của thiết bị nhận; được coi là địa chỉ của tầng Transport để chuyển dữ liệu đến đúng ứng dụng. |
+| UDP Length               | 16 bit   | Cho biết tổng chiều dài của toàn bộ UDP datagram (bao gồm Header + Data), giá trị từ 0 đến 65.535 byte.       |
+| UDP Checksum             | 16 bit   | Sử dụng thuật toán mã vòng CRC để kiểm tra lỗi cho toàn bộ datagram (kiểm tra ở mức độ hạn chế).              |
+| Data                     | Biến đổi | Chứa dữ liệu thực tế từ tầng ứng dụng được đóng gói vào trong datagram.                                       |
+
+### 3. So sánh TCP và UDP
+**Giống nhau**: đều là các giao thức mạng TCP/IP, có chức năng kết nối các máy lại với nhau và có thể gửi dữ liệu cho nhau….
+
+**Khác nhau**:
+|       Đặc điểm      |              TCP (Transmission Control Protocol)             |              UDP (User Datagram Protocol)             |
+|:-------------------:|:------------------------------------------------------------:|:-----------------------------------------------------:|
+| Tính chất           | Hướng kết nối (Connection-oriented).                         | Không hướng kết nối (Connectionless).                 |
+| Độ tin cậy          | Rất cao: Đảm bảo dữ liệu đến đích, đúng thứ tự và không lỗi. | Thấp: Không đảm bảo dữ liệu đến đích hay đúng thứ tự. |
+| Tốc độ              | Chậm hơn (do phải bắt tay và kiểm soát lỗi).                 | Rất nhanh (truyền ngay lập tức không chờ đợi).        |
+| Quá trình bắt đầu   | Phải thực hiện Bắt tay 3 bước.                               | Không cần bắt tay, gửi dữ liệu ngay.                  |
+| Kiểm soát lưu lượng | Có cơ chế Windows để điều chỉnh tốc độ truyền.               | Không có cơ chế kiểm soát lưu lượng.                  |
+| Kích thước Header   | Lớn (tối thiểu 20 byte).                                     | Nhỏ (cố định 8 byte).                                 |
+| Đơn vị dữ liệu      | Segment (Phân đoạn).                                         | Datagram.                                             |
+
+![Compare TCP to UDP](./images/compare_tcp_to_udp.png)
