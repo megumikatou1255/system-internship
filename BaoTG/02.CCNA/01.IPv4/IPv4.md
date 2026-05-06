@@ -6,7 +6,7 @@
 
 ## 2. Tại sao không có IPv1, IPv2, IPv3, IPv5 ?
 -	IPv1, IPv2, IPv3 là các phiên bản thử nghiệm trong quá trình phát triển Internet, chủ yếu dùng để nghiên cứu nội bộ của tổ chức ARPANET
--	IPv5 có tên khác là Steam Protocol được sử dùng để truyền dữ liệu theo thời gian thực (video, voice)
+-	IPv5 có tên khác là Stream Protocol được sử dùng để truyền dữ liệu theo thời gian thực (video, voice)
 
 ## 3. Cấu trúc của IPv4
 ![IPv4 Structure](./images/ipv4_structure.png)
