@@ -1,11 +1,11 @@
 # Tìm hiểu về mô hình TCP/IP
 ## I Mô hình TCP/IP là gì
 ### 1. Khái niệm
-- TCP/IP, hay còn được viết tắt là TCP TP, là một thuật ngữ chỉ Transmission Control Protocol/Internet Protocol, tức là một bộ giao thức chịu trách nhiệm về việc điều khiển và truyền nhận dữ liệu trong mạng lưới Internet. Đây là một hệ thống giao thức mạng mạnh mẽ, giúp kết nối và truyền thông tin một cách hiệu quả giữa các thiết bị khác nhau trên Internet.
+- TCP/IP, là một thuật ngữ chỉ Transmission Control Protocol/Internet Protocol, tức là một bộ giao thức chịu trách nhiệm về việc điều khiển và truyền nhận dữ liệu trong mạng lưới Internet. Đây là một hệ thống giao thức mạng mạnh mẽ, giúp kết nối và truyền thông tin một cách hiệu quả giữa các thiết bị khác nhau trên Internet.
 
 ![TCP/IP](./images/tcp_ip_layer.png)
 ### 2. TCP/IP hoạt động như thế nào ?
-- TCP/IP hoạt động dựa trên việc chia nhỏ dữ liệu thành các gói (packets) và đảm bảo được truyền đến đúng đích theo trình tự và chính xác. Bộ giao thức TCP/IP sử dụng hai thành phần chính là TCP và IP để thực hiện quá trình truyền dữ liệu này. Vậy cách thức hoạt động của TCP/IP như thế nào, hãy cùng Viettel IDC theo dõi thông tin sau:
+- TCP/IP hoạt động dựa trên việc chia nhỏ dữ liệu thành các gói (packets) và đảm bảo được truyền đến đúng đích theo trình tự và chính xác. Bộ giao thức TCP/IP sử dụng hai thành phần chính là TCP và IP để thực hiện quá trình truyền dữ liệu này.
     + TCP chịu trách nhiệm chia nhỏ dữ liệu thành các phân đoạn (segments) và đảm bảo rằng các phân đoạn này được truyền tới đúng đích. Khi một dữ liệu lớn cần được gửi qua mạng, TCP sẽ phân chia các dữ liệu thành nhiều phân đoạn nhỏ để truyền tải dễ dàng hơn. Mỗi phân đoạn được đánh số thứ tự, cho phép quá trình sắp xếp lại dữ liệu tại điểm nhận được diễn ra chính xác. Ngoài ra, TCP cũng có cơ chế kiểm tra lỗi thông qua quá trình checksum, đảm bảo dữ liệu không bị hỏng trong quá trình truyền tải. Nếu phát hiện lỗi hoặc mất gói tin, TCP sẽ yêu cầu gửi lại các phân đoạn bị thiếu hoặc lỗi. Nhờ cơ chế này, TCP đảm bảo tính đáng tin cậy cho việc truyền tải dữ liệu, đặc biệt trong các kết nối cần sự ổn định như truyền file, email, hoặc tải trang web.
     + Trong khi TCP chịu trách nhiệm đảm bảo dữ liệu được chia nhỏ và kiểm tra lỗi thì IP có nhiệm vụ định tuyến các gói tin qua mạng. Mỗi thiết bị kết nối với mạng đều có một địa chỉ IP duy nhất, đóng vai trò như một "địa chỉ nhà" của thiết bị đó. Giao thức IP sử dụng địa chỉ IP này để xác định điểm đến của các gói tin và quyết định đường đi tốt nhất qua mạng. IP không đảm bảo rằng dữ liệu sẽ được gửi qua một con đường cố định. Mặc dù vậy, IP vẫn đảm bảo rằng các gói tin sẽ đến đúng đích thông qua cơ chế quản lý và định tuyến hiệu quả, giúp dữ liệu không bị thất lạc trong quá trình truyền qua mạng.
 
@@ -16,6 +16,8 @@
 ![TCP/IP And OSI](./images/tcp_ip_vs_osi.png)
 ## II. Các lớp trong mô hình TCP/IP
 ### 1. Network Access Layer (Tầng truy cập mạng)
+- **Khái niệm**
+Đây là tầng thấp nhất, làm việc trực tiếp với phần cứng mạng. Tầng này quản lý việc đóng gói dữ liệu vào các khung (Frame), định danh thiết bị bằng địa chỉ MAC vật lý và chuyển đổi dữ liệu số thành tín hiệu vật lý để truyền qua dây cáp, cáp quang hoặc sóng vô tuyến.
 - **Chức năng**
 Phân mảnh chức năng (Sub-layers), tầng này thường được chia thành hai lớp con quan trọng:
 * LLC (Logical Link Control): Quản lý việc thiết lập các liên kết logic, kiểm soát lưu lượng (Flow Control) để không làm quá tải thiết bị nhận và thực hiện kiểm tra lỗi cơ bản (Error Control).
@@ -42,6 +44,8 @@ Tại đây, các gói IP từ tầng Mạng được bọc thêm:
 + Mạng không dây (Wi-Fi): Truyền bằng sóng vô tuyến.
 
 ### 2. Network Layer (Tầng mạng)
+- **Khái niệm**
+Tầng này chịu trách nhiệm di chuyển dữ liệu qua các mạng khác nhau. Tầng này thực hiện gán địa chỉ IP logic, định tuyến (Routing) để chọn ra con đường tối ưu nhất cho gói tin đi từ nguồn đến đích.
 - **Chức năng**
 Tầng này thực hiện ba nhiệm vụ cốt lõi để đảm bảo dữ liệu đi từ nguồn đến đích thông qua nhiều mạng khác nhau:
 + Địa chỉ hóa Logic (Logical Addressing): Mỗi thiết bị trong mạng được gán một địa chỉ IP duy nhất. Khác với địa chỉ MAC (địa chỉ vật lý cố định), địa chỉ IP là địa chỉ logic có thể thay đổi tùy vào mạng mà thiết bị kết nối.
@@ -61,6 +65,8 @@ Router là thiết bị hoạt động chính tại Tầng 3.
 + ARP đóng vai trò là "thông dịch viên": nó lấy địa chỉ IP đích và trả về địa chỉ MAC tương ứng của thiết bị đó để tầng Liên kết dữ liệu phía dưới có thể đóng gói Frame và gửi đi.
 
 ### 3. Transport Layer (Tầng giao vận)
+- **Khái niệm**
+Tầng này chịu trách nhiệm quản lý luồng dữ liệu giữa thiết bị đầu - cuối. Nó chia nhỏ dữ liệu thành các đoạn, đánh số thứ tự và đảm bảo dữ liệu đến đúng ứng dụng thông qua các số Cổng (Port).
 - **Đơn vị dữ liệu (PDU)**
 Tại tầng này, thông điệp từ tầng Ứng dụng sẽ được chia nhỏ thành các đơn vị dữ liệu nhỏ hơn:
 + Nếu sử dụng giao thức TCP, đơn vị này gọi là Segment (Phân đoạn).
@@ -85,6 +91,8 @@ Tầng giao vận hoạt động chủ yếu dựa trên hai giao thức với t
 Một chức năng cực kỳ quan trọng khác là xác định ứng dụng đích thông qua Số cổng (Port).
 + Địa chỉ IP giúp tìm thấy máy tính, nhưng số cổng giúp tìm thấy ứng dụng cụ thể trên máy tính đó (ví dụ: Port 80 cho Web, Port 25 cho Email). Tầng giao vận sẽ thêm thông tin cổng nguồn và cổng đích vào tiêu đề dữ liệu.
 ### 4. Application Layer (Tầng ứng dụng)
+- **Khái niệm**
+Là nơi các ứng dụng và người dùng tương tác với hệ thống mạng. Tầng này cung cấp các giao thức cho phép ứng dụng trao đổi dữ liệu, định dạng thông tin và xác thực người dùng.
 - **Vai trò và chức năng**
 Tầng Ứng dụng không phải là bản thân các ứng dụng (như Chrome hay Outlook) mà là các giao thức chạy bên trong các ứng dụng đó để thực hiện việc trao đổi dữ liệu qua mạng.
 + _Giao diện dịch vụ mạng_: Cung cấp các phương thức tiêu chuẩn để ứng dụng truy cập vào các tài nguyên trên mạng Internet.
@@ -147,6 +155,8 @@ Khi dữ liệu đến máy nhận, quy trình diễn ra ngược lại hoàn to
 - Tầng Internet: Kiểm tra địa chỉ IP. Sau đó bóc lớp vỏ Packet và chuyển lên trên.
 - Tầng Giao vận: Kiểm tra số cổng để biết dữ liệu này thuộc về ứng dụng nào (Web, Email hay Chat). Nếu dùng TCP, nó sẽ kiểm tra xem các mảnh dữ liệu có đầy đủ và đúng thứ tự không. Sau đó ghép lại và chuyển lên.
 - Tầng Ứng dụng: Nhận dữ liệu hoàn chỉnh và hiển thị cho người dùng trên giao diện phần mềm.
+
+![Quy trình hoạt động TCP/IP](./images/quy_trinh_tcp_ip.png)
 ## V. Tìm hiểu về giao thức TCP/UDP và so sánh.
 ### 1. TCP (Transmission Control Protocol)
 - **Khái niệm**: Transmission Control Protocol (TCP) là giao thức tiêu chuẩn trên Internet đảm bảo trao đổi thành công các gói dữ liệu giữa các thiết bị qua mạng. TCP là giao thức truyền tải cơ bản cho nhiều loại ứng dụng, bao gồm máy chủ web và trang web, ứng dụng email, FTP và các ứng dụng ngang hàng.

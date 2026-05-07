@@ -53,15 +53,15 @@ Nhìn chung, mạng VLAN giúp tạo ra các mạng con ảo, cải thiện an n
 - **Chi tiết cách VLAN hoạt động**
 VLAN hoạt động bằng cách gắn các khung Ethernet với một mã VLAN (VLAN ID), xác định VLAN mà khung Ethernet thuộc về. Khi thiết bị gửi khung Ethernet, nó thêm mã VLAN vào khung. Khi khung Ethernet đến bộ chuyển mạch, bộ chuyển mạch đọc mã VLAN và chuyển khung đến cổng phù hợp với VLAN tương ứng.
 ## III. Phân loại VLAN.
-- Port – based VLAN
+- **Port – based VLAN**
 + Port-based VLAN, hay VLAN dựa trên cổng hoặc giao diện, là một phương pháp cấu hình VLAN đơn giản và phổ biến. Phương pháp này cho phép quản trị viên mạng thực hiện việc gắn VLAN theo cách thủ công, trong đó mỗi cổng trên Switch được liên kết với một VLAN cụ thể.
 + Port-based VLAN thích hợp cho các hệ thống mạng có quy mô nhỏ và không thường xuyên thay đổi cơ sở hạ tầng.
 
-- MAC address based VLAN
+- **MAC address based VLAN**
 + MAC address-based VLAN là phương pháp gắn VLAN dựa trên địa chỉ MAC của thiết bị – mỗi địa chỉ MAC được liên kết với một VLAN cụ thể. Mặc dù cách cấu hình này không được ưa chuộng nhiều do đặc điểm hạn chế trong việc quản lý, nhưng cũng mang lại những ưu điểm quan trọng.
 + Phương pháp này nâng cao tính linh hoạt và an ninh mạng đáng kể. Ngay cả khi người dùng thay đổi vị trí thường xuyên, người quản trị mạng cũng không cần phải thực hiện lại cấu hình cho các VLAN, giảm bớt công đoạn quản lý khiến cho hệ thống trở nên linh hoạt hơn.
 
-- Protocol – based VLAN
+- **Protocol – based VLAN**
 Protocol-based VLAN, hay VLAN dựa trên giao thức, có cách cấu hình tương tự như MAC address-based VLAN, nhưng thay vì sử dụng địa chỉ MAC, nó sử dụng duy nhất một địa chỉ IP hoặc địa chỉ logic như một phương tiện thay thế. Hiện nay, cách cấu hình này không còn phổ biến nhiều do sự phổ biến của giao thức DHCP.
 ## IV. Ứng dụng của VLAN.
 - Phân chia phòng ban: Nhóm các máy tính theo chức năng (Kế toán, Kỹ thuật, Nhân sự) vào các mạng riêng biệt để dễ quản lý mà không cần quan tâm đến vị trí ngồi thực tế.
