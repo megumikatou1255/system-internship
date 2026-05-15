@@ -16,7 +16,6 @@
 + Native VLAN: Là VLAN duy nhất mà dữ liệu đi qua đường Trunk không bị gắn thẻ. Theo mặc định trên thiết bị Cisco, đây thường là VLAN 1.
 + Allowed VLANs: Danh sách các VLAN cụ thể được phép đi qua đường Trunk. Bạn có thể cấu hình để chỉ cho phép một vài VLAN quan trọng đi qua nhằm tăng tính bảo mật.
 
-
 ## II. CHUẨN IEEE 802.1Q
 
 ### 1. KHÁI NIỆM
