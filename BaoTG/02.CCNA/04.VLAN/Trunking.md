@@ -17,10 +17,10 @@
 + Allowed VLANs: Danh sách các VLAN cụ thể được phép đi qua đường Trunk. Bạn có thể cấu hình để chỉ cho phép một vài VLAN quan trọng đi qua nhằm tăng tính bảo mật.
 
 ## II. CHUẨN IEEE 802.1Q
-
 ### 1. KHÁI NIỆM
 IEEE 802.1Q (thường được gọi tắt là Dot1q) là một tiêu chuẩn quốc tế quy định về việc gắn thẻ VLAN (VLAN Tagging) trên các khung dữ liệu Ethernet. Đây là giao thức quan trọng nhất để triển khai Trunking, cho phép nhiều VLAN cùng chạy trên một đường truyền vật lý duy nhất giữa các thiết bị mạng.
 ![802.1Q](./images/802_1q.png)
+
 ### 2. CÁCH HOẠT ĐỘNG
 Khi một khung dữ liệu (Frame) đi vào cổng Trunk, Switch sẽ chèn một đoạn mã dài 4 byte vào giữa địa chỉ MAC nguồn và trường Type/Length của Frame gốc. Thẻ này bao gồm các thành phần:
 - TPID (Tag Protocol Identifier): Dài 16 bit, thường có giá trị cố định là 0x8100 để báo hiệu đây là một Frame đã được gắn thẻ 802.1Q.
@@ -38,7 +38,6 @@ Khi một khung dữ liệu (Frame) đi vào cổng Trunk, Switch sẽ chèn m�
 | VID (VLAN Identifier)          | 12 bit | 1 - 4094        | ID của VLAN. Quyết định gói tin thuộc về mạng ảo nào.  |
 
 ## III. CHUẨN ISL (INTER SWITCH LINK)
-
 ### 1. KHÁI NIỆM
 - ISL (Inter-Switch Link) là một giao thức độc quyền của Cisco (Cisco-proprietary) được sử dụng để duy trì thông tin VLAN khi lưu lượng di chuyển giữa các Switch hoặc giữa Switch và Router trên một đường truyền Trunk. Mặc dù hiện nay nó đã dần bị thay thế bởi tiêu chuẩn mở IEEE 802.1Q, ISL vẫn là một phần quan trọng trong lịch sử phát triển mạng của Cisco.
 - Khác với 802.1Q sử dụng cơ chế "gắn thẻ" (tagging) vào bên trong khung dữ liệu, ISL sử dụng cơ chế bao bọc (Encapsulation). Nó bao bọc toàn bộ Ethernet Frame gốc bằng một Header và một Trailer mới. ISL hoạt động ở Lớp 2 (Data Link Layer) và hoàn toàn không thay đổi nội dung bên trong của Frame gốc.

@@ -1,15 +1,18 @@
 # TÌM HIỂU VỀ VLAN.
 ## GIỚI THIỆU TỔNG QUAN VỀ VLAN.
 Trong thời đại công nghệ thông tin phát triển mạnh mẽ như hiện nay, việc xây dựng và quản lý mạng nội bộ (Local Area Network - LAN) ngày càng trở nên quan trọng đối với các doanh nghiệp. Một trong những công nghệ mạng được sử dụng rộng rãi để cải thiện hiệu quả và bảo mật của hệ thống mạng chính là VLAN (Virtual Local Area Network). VLAN là gì và liệu nó có thực sự cần thiết cho các doanh nghiệp? Bài viết này sẽ cung cấp cho bạn những thông tin cần thiết về VLAN, cách nó hoạt động và lý do tại sao nên sử dụng nó.
+
 ## MỤC ĐÍCH CỦA VLAN.
 - Tăng cường Bảo mật (Security): Phân chia các thiết bị vào các VLAN khác nhau giúp hạn chế truy cập trái phép. Ví dụ, VLAN cho phòng kế toán sẽ tách biệt với VLAN của khách (Guest).
 - Giảm lưu lượng Broadcast (Broadcast Control): VLAN tạo ra các miền quảng bá (broadcast domain) nhỏ hơn, giúp giảm tình trạng tắc nghẽn mạng do lưu lượng tin nhắn broadcast không cần thiết, từ đó tăng hiệu suất hoạt động của toàn hệ thống.
 - Quản lý và tổ chức dễ dàng (Management & Flexibility): Người quản trị có thể dễ dàng di chuyển, thêm hoặc thay đổi vị trí của người dùng mà không cần thay đổi cấu hình dây vật lý hay switch, chỉ cần cấu hình lại VLAN trên cổng đó.
 - Phân tách dịch vụ: Cho phép phân loại lưu lượng theo chức năng (như Voice VLAN cho VoIP, VLAN cho Camera, VLAN cho Server) để dễ dàng quản lý và ưu tiên băng thông.
 - Mô phỏng mạng riêng biệt: Giúp các công ty khác nhau hoặc các phòng ban khác nhau sử dụng chung một cơ sở hạ tầng vật lý (switch) nhưng vẫn đảm bảo sự độc lập hoàn toàn về mạng
+
 ## I. TÌM HIỂU MẠNG VLAN LÀ GÌ ?
 ### 1. Mạng LAN là gì ?
 Mạng LAN (Local Area Network) là hệ thống kết nối các thiết bị trong một khu vực giới hạn như nhà ở, văn phòng, trường học hoặc tòa nhà. Các thiết bị trong mạng LAN có thể chia sẻ dữ liệu, tài nguyên một cách nhanh chóng và hiệu quả. Ví dụ đơn giản, khi bạn sử dụng máy tính để in tài liệu trên máy in văn phòng hoặc chia sẻ file cho nhau trong cùng một phòng làm việc, tất cả đều đang sử dụng mạng LAN.
+
 ### 2. Mạng VLAN là gì ?
 - **Khái niệm**
 VLAN (Virtual Local Area Network) là một công nghệ ảo hóa cho phép chia một mạng vật lý thành nhiều phân đoạn mạng LAN ảo. Điều này giúp tăng tính linh hoạt và bảo mật của hạ tầng mạng, đồng thời cải thiện hiệu suất của hệ thống mạng. VLAN hoạt động bằng cách đóng gói các gói tin vào trong tiêu đề VLAN (VLAN tag) chứa VLAN ID. ID này xác định gói tin thuộc về VLAN nào và được sử dụng để điều phối dữ liệu trên mạng LAN ảo.
@@ -25,6 +28,7 @@ VLAN (Virtual Local Area Network) là một công nghệ ảo hóa cho phép chi
 | Quản lý        | Quản lý đơn giản hơn vì chỉ là một mạng đơn giản trong một khu vực nhỏ.             | Có thể quản lý hiệu quả hơn với khả năng chia nhỏ mạng thành các VLAN riêng biệt.             |
 | Bảo mật        | Bảo mật thường dựa vào cấu hình thiết bị mạng như firewall, cấu hình switch.        | Cung cấp tính bảo mật cao hơn với khả năng ngăn chặn truy cập giữa các VLAN khác nhau.        |
 | Ứng dụng       | Thường được sử dụng trong các văn phòng, doanh nghiệp nhỏ hoặc gia đình.            | Thích hợp cho các tổ chức lớn, có nhu cầu phân chia mạng theo các đơn vị chức năng khác nhau. |
+
 ## II. Cách thức hoạt động của VLAN.
 Mạng VLAN hoạt động bằng cách chia một mạng vật lý thành các mạng con ảo độc lập, giúp tăng cường quản lý và an ninh, cũng như cải thiện hiệu suất mạng. Dưới đây là cách thức hoạt động cơ bản của mạng VLAN.
 
@@ -52,6 +56,7 @@ Nhìn chung, mạng VLAN giúp tạo ra các mạng con ảo, cải thiện an n
 
 - **Chi tiết cách VLAN hoạt động**
 VLAN hoạt động bằng cách gắn các khung Ethernet với một mã VLAN (VLAN ID), xác định VLAN mà khung Ethernet thuộc về. Khi thiết bị gửi khung Ethernet, nó thêm mã VLAN vào khung. Khi khung Ethernet đến bộ chuyển mạch, bộ chuyển mạch đọc mã VLAN và chuyển khung đến cổng phù hợp với VLAN tương ứng.
+
 ## III. Phân loại VLAN.
 - **Port – based VLAN**
 + Port-based VLAN, hay VLAN dựa trên cổng hoặc giao diện, là một phương pháp cấu hình VLAN đơn giản và phổ biến. Phương pháp này cho phép quản trị viên mạng thực hiện việc gắn VLAN theo cách thủ công, trong đó mỗi cổng trên Switch được liên kết với một VLAN cụ thể.
@@ -63,6 +68,7 @@ VLAN hoạt động bằng cách gắn các khung Ethernet với một mã VLAN 
 
 - **Protocol – based VLAN**
 Protocol-based VLAN, hay VLAN dựa trên giao thức, có cách cấu hình tương tự như MAC address-based VLAN, nhưng thay vì sử dụng địa chỉ MAC, nó sử dụng duy nhất một địa chỉ IP hoặc địa chỉ logic như một phương tiện thay thế. Hiện nay, cách cấu hình này không còn phổ biến nhiều do sự phổ biến của giao thức DHCP.
+
 ## IV. Ứng dụng của VLAN.
 - Phân chia phòng ban: Nhóm các máy tính theo chức năng (Kế toán, Kỹ thuật, Nhân sự) vào các mạng riêng biệt để dễ quản lý mà không cần quan tâm đến vị trí ngồi thực tế.
 - Tăng cường bảo mật: Cách ly các luồng dữ liệu nhạy cảm (như dữ liệu tài chính) khỏi các phần còn lại của mạng, ngăn chặn truy cập trái phép nội bộ.
@@ -70,6 +76,7 @@ Protocol-based VLAN, hay VLAN dựa trên giao thức, có cách cấu hình tư
 - Tối ưu lưu lượng thoại (Voice VLAN): Tách riêng dữ liệu từ điện thoại IP để ưu tiên băng thông, giúp cuộc gọi luôn rõ nét, không bị gián đoạn bởi các hoạt động tải file hay xem video của máy tính khác.
 - Giảm nghẽn mạng: Chia nhỏ các miền quảng bá (Broadcast Domain), giúp giảm thiểu lượng tin nhắn rác không cần thiết gửi đến toàn bộ các máy tính, từ đó tăng tốc độ mạng tổng thể.
 - Cô lập thiết bị IoT: Đưa các thiết bị như Camera, máy chấm công vào một VLAN riêng để nếu một thiết bị bị hack, mã độc cũng khó lây lan sang hệ thống máy chủ quan trị.
+
 ## V. Các câu hỏi thường gặp về VLAN.
 ### 1. Tại sao nên sử dụng VLAN thay vì bộ định tuyến (Router) ?
 - Tốc độ xử lý: VLAN hoạt động ở Tầng 2 (Data Link) trên các Switch, dữ liệu được chuyển mạch bằng phần cứng (ASIC) nên nhanh hơn nhiều so với việc Router phải xử lý ở Tầng 3 (Network) bằng phần mềm.
@@ -91,6 +98,7 @@ Số lượng VLAN tối đa trên một bộ chuyển mạch (Switch) được 
 VLAN hoạt động ở lớp liên kết dữ liệu (Lớp 2), phân đoạn lưu lượng mạng. Ngược lại, mạng con hoạt động ở lớp mạng (Lớp 3) và chia địa chỉ IP thành các nhóm logic cho mục đích định tuyến. VLAN cho phép cô lập thiết bị và kiểm soát lưu lượng, trong khi mạng con hỗ trợ quản lý và định tuyến địa chỉ IP.
 ### 7. Một cổng có thể có 2 VLAN không ?
 Có, một cổng trên bộ chuyển mạch có thể được cấu hình để thuộc về nhiều VLAN. Cổng này được gọi là "cổng trunk" hoặc "cổng gắn thẻ". Cổng trunk mang lưu lượng cho nhiều VLAN, cho phép giao tiếp hiệu quả giữa các phân đoạn mạng
+
 ## VI. Ưu nhược điểm của VLAN.
 - **Ưu điểm:**
 + Tăng tính bảo mật: VLAN cho phép tách biệt các nhóm người dùng khác nhau, ngăn chặn sự truy cập trái phép vào các tài nguyên mạng. Điều này giúp tăng tính bảo mật cho toàn bộ hệ thống mạng.

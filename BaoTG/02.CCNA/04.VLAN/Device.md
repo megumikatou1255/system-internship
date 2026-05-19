@@ -20,19 +20,23 @@ Thiết bị mạng đóng vai trò quan trọng không thể thiếu được k
 ![Router](./images/router.png)
 **Khái niệm**
 Router (bộ định tuyến) là thiết bị mạng có chức năng chuyển tiếp dữ liệu giữa các mạng máy tính. Nói một cách dễ hiểu: router thực hiện điều phối dữ liệu trên Internet, các dữ liệu này sẽ được gửi theo dạng gói từ router này sang router khác thông qua các mạng nhỏ được kết nối với nhau thành một hệ thống mạng liên kết. Gói dữ liệu sẽ được truyền tiếp qua các router cho đến khi chúng tới được điểm đích. Router là một thiết bị mạng thuộc lớp 3 của mô hình OSI (Network Layer).
+
 **Chức năng**
 Router có chức năng chính là định tuyến, truyền tải và phân phối dữ liệu giữa các mạng hoặc các thiết bị trong cùng một mạng nội bộ (LAN). Nói cách khác, router giúp dữ liệu di chuyển đúng hướng, đảm bảo mỗi gói tin đến được đích chính xác, đồng thời chia sẻ kết nối Internet cho nhiều thiết bị cùng sử dụng.
+
 **Cấu tạo**
 Cấu tạo của router thông thường gồm:
 + Cổng WAN: Trên tất cả các router đều có cổng này, nó cung cấp lớp mạng riêng và dải IP mặc định cho thiết bị (cổng này sẽ có màu xanh hoặc vàng để dễ phân biệt).
 + Cổng LAN: Mỗi router sẽ được trang bị từ 2 cổng LAN trở lên. Đây là cổng mà người dùng có thể kết nối trực tiếp từ router tới máy tính PC, tivi, laptop,... thông qua dây cáp mạng Ethernet. Tùy từng loại router mà tốc độ tối đa truyền tải dữ liệu của cổng LAN sẽ khác nhau.
 + Ăng-ten: Một router wifi sẽ có 2 loại anten là anten trong và anten ngoài. Số lượng râu anten càng nhiều thì tốc độ phát sóng wifi càng cao.
+
 **Ưu điểm**
 Kết nối mạng đa dạng: Router cho phép kết nối các mạng khác nhau, bao gồm mạng nội bộ (LAN), mạng diện rộng (WAN), và mạng Internet. Nó giúp các thiết bị trong mạng có thể giao tiếp và chia sẻ dữ liệu một cách hiệu quả.
 + Quản lý và phân phối băng thông: Router có khả năng quản lý và phân phối băng thông hiệu quả, giúp tối ưu hóa việc sử dụng mạng và đảm bảo hiệu suất tốt cho các ứng dụng và dịch vụ quan trọng.
 + Bảo mật mạng: Thiết bị này thường đi kèm với các tính năng bảo mật như tường lửa, mã hóa dữ liệu, và khả năng tạo các mạng riêng ảo giúp bảo vệ mạng khỏi các mối đe dọa từ bên ngoài.
 + Định tuyến động: Router có thể tự động cập nhật và điều chỉnh các đường dẫn mạng dựa trên trạng thái hiện tại của mạng, giúp tối ưu hóa việc truyền tải dữ liệu và giảm thiểu độ trễ.
 + Khả năng mở rộng: Cho phép mở rộng mạng một cách linh hoạt, giúp dễ dàng thêm mới các thiết bị hoặc phân đoạn mạng mà không cần thay đổi cấu trúc mạng hiện có.
+
 **Nhược điểm**
 + Chi phí cao: Các router cao cấp, đặc biệt là các router dành cho doanh nghiệp, có giá thành khá cao. Chi phí đầu tư ban đầu và bảo trì có thể là một yếu tố hạn chế đối với các tổ chức hoặc cá nhân có ngân sách hạn chế.
 + Cấu hình phức tạp: Để tận dụng hết các tính năng của router, người dùng cần có kiến thức và kỹ năng kỹ thuật. Việc cấu hình sai có thể dẫn đến các vấn đề về mạng và bảo mật.
@@ -44,11 +48,13 @@ Kết nối mạng đa dạng: Router cho phép kết nối các mạng khác nh
 ![Switch](./images/switch.png)
 **Khái niệm**
 Switch là bộ phận quan trọng trong hệ thống mạng. Bộ phận này được sử dụng để kết nối các đoạn mạng lại với nhau theo mô hình mạng sao. Ngoài ra, thiết bị này còn làm việc như một Bridge nhiều cổng. Switch chính là thiết bị trung tâm và các máy tính trong hệ thống đều được nối về đây. Từ đó tạo thành một hệ thống mạng hoàn chỉnh.
+
 **Switch Layer 2**
 Đây là loại Switch truyền thống và phổ biến nhất.
 Hoạt động tại: Tầng 2 (Data Link Layer).
 Chức năng: Chỉ quan tâm đến địa chỉ MAC. Nó tạo ra một bảng địa chỉ MAC (MAC Address Table) để ghi nhớ thiết bị nào đang cắm vào cổng nào.
 Phạm vi: Nó chỉ có thể chuyển dữ liệu giữa các thiết bị trong cùng một mạng nội bộ (cùng VLAN hoặc cùng Subnet). Nó không thể hiểu được địa chỉ IP.
+
 **Switch Layer 3**
 Đây là một thiết bị lai, kết hợp sức mạnh của Switch và một phần khả năng của Router.
 Hoạt động tại: Tầng 3 (Network Layer) – tầng của giao thức IP.
@@ -69,6 +75,7 @@ Phạm vi: Nó có thể chuyển dữ liệu giữa các VLAN khác nhau hoặc
 ![Firewall](./images/firewall.png)
 **Khái niệm**
 Firewall (tường lửa) là một hệ thống an ninh mạng, nó hoạt động dựa trên phần cứng hoặc phần mềm được tích hợp sẵn trong thiết bị, sử dụng các quy tắc để kiểm soát lưu lượng ra/vào trong hệ thống. Tường lửa hoạt động như một rào chắn, ngăn chặn các cuộc tấn công mạng từ bên ngoài vào hệ thống mạng gia đình.
+
 **Vai trò**
 Firewall giúp ngăn chặn các nguồn truy cập trái phép từ bên ngoài vào hệ thống mạng, không cho các nguồn truy cập từ bên ngoài đăng nhập vào khi chưa được phép.
 
@@ -76,15 +83,18 @@ Firewall giúp ngăn chặn các nguồn truy cập trái phép từ bên ngoài
 ![Hub](./images/hub.png)
 **Khái niệm**
 Hub (hay còn gọi là bộ chia mạng) được coi là trung tâm kết nối của các thiết bị trong hệ thống mạng dùng. Hub dùng để kết nối mạng LAN bởi chúng có khá nhiều cổng kết nối. Thông thường, mỗi Hub sẽ có từ 4 - 24 cổng nên việc kết nối trở nên dễ dàng hơn.
+
 **Vai trò**
 - Hub đóng vai trò trung tâm và mỗi thiết bị có chức năng riêng là kết nối giữa hub với các thiết bị mạng và dữ liệu xử lý được gọi chung là “khung”. Sau đó, trung tâm nhận được khung, và trung tâm ngay lập tức được khuếch đại và truyền đến các cổng. từ máy tính chủ.
 - Khi thực hiện trung tâm, một khung được truyền và có thể được truyền tới các cổng. Đặc biệt, trung tâm không quan tâm đến việc khung được kết nối với một cổng duy nhất vì nó không phân biệt cổng. Bất kỳ ai làm nhiệm vụ đầu vào. Kết quả là, trung tâm đi đến tất cả các cổng và mang theo nhiều lưu lượng mạng, dẫn đến thời gian phản hồi mạng kém.
+
 **Ưu điểm**
 Ưu điểm của hub bao gồm: 
 + Hỗ trợ các loại phương tiện mạng khác nhau. 
 + Hub không tốn quá nhiều chi phí và phù hợp với mọi đối tượng sử dụng.
 + Sử dụng một trung tâm không ảnh hưởng đến hiệu suất của mạng.
 + Hub giúp mở rộng khoảng cách của mạng.
+
 **Nhược điểm**
 Bên cạnh những ưu điểm nổi trội, thiết bị hub cũng có những nhược điểm như sau:
 + Các thiết bị hub không thể chọn đường dẫn tốt nhất trên mạng. 
@@ -97,6 +107,7 @@ Bên cạnh những ưu điểm nổi trội, thiết bị hub cũng có những
 **Khái niệm**
 + Gateway có thể là một phần cứng (như Router, Firewall) hoặc một phần mềm được cài đặt trên máy chủ. Điểm khác biệt lớn nhất giữa Gateway và các thiết bị khác là khả năng chuyển đổi giao thức. Nó cho phép một mạng chạy giao thức này (ví dụ: mạng nội bộ doanh nghiệp) có thể giao tiếp với một mạng chạy giao thức khác (ví dụ: Internet công cộng).
 + Trong cấu hình máy tính cá nhân thường thấy, thông số này được gọi là Default Gateway (Cổng mặc định).
+
 **Chức năng**
 + Kết nối các mạng không đồng nhất: Gateway có khả năng chuyển đổi dữ liệu từ định dạng của mạng này sang mạng khác ở tầng Ứng dụng (Application Layer), giúp các hệ thống khác biệt hoàn toàn về kiến trúc vẫn có thể hiểu nhau.
 + Định tuyến dữ liệu (Routing): Khi bạn gửi một gói tin đến một địa chỉ nằm ngoài mạng cục bộ, Gateway sẽ kiểm tra địa chỉ IP đích và quyết định hướng đi tốt nhất để gói tin rời khỏi mạng nội bộ và đi vào mạng diện rộng.
@@ -113,6 +124,7 @@ Bên cạnh những ưu điểm nổi trội, thiết bị hub cũng có những
 ![Network Interface Card](./images/network_card.png)
 **Khái niệm**
 Card mạng (network card), hay card giao tiếp mạng (Network Interface Card) là loại bảng mạch giúp máy tính có thể giao tiếp với nhau thông qua internet. Nhờ vào các cổng kết nối trong bo mạch chính của máy tính để bàn nên các máy tính có thể kết nối với nhau qua môi trường mạng. Việc kết nối này được gọi là LAN adapter.
+
 **Chức năng**
 Chức năng của card mạng giúp:
 + Truyền tải dữ liệu qua lại giữa các máy tính, đồng thời kiểm soát và thống kê thông tin dữ liệu tới máy tính (có nghĩa là: khi bạn muốn đưa dữ liệu lên mạng Internet hoặc các tìm kiếm các thông tin khác nhau, thì các dữ liệu đó sẽ được chuyển từ dạng byte và bit sang tín hiệu điện. Tín hiệu này sẽ đi qua dây cáp và truyền tới máy tính của bạn.)
@@ -123,6 +135,7 @@ Chức năng của card mạng giúp:
 + Bridge, hoặc còn được biết đến với tên gọi "cầu nối", là một thiết bị mạng có chức năng kết nối nhiều mạng LAN (mạng cục bộ) lại với nhau để tạo thành một mạng LAN lớn hơn. Việc này được gọi là quá trình kết nối mạng.
 + Cầu nối hoạt động ở tầng liên kết dữ liệu của mô hình OSI, thường được gọi là bộ chuyển mạch Layer 2. Chức năng của nó giống như việc xây dựng một liên kết để các thành phần khác nhau trở thành một phần của cùng một mạng. Sơ đồ minh họa một cầu nối hai mạng LAN như sau:
 ![Bridge](./images/bridge.png)
+
 **Chức năng**
 - Phân đoạn mạng (Segmentation): Bridge chia một mạng lớn thành các phân đoạn nhỏ hơn để giảm lưu lượng quảng bá (broadcast) không cần thiết.
 
@@ -132,9 +145,11 @@ Nếu thiết bị gửi và nhận nằm trong cùng một phân đoạn, Bridg
 - Mở rộng khoảng cách mạng: Tương tự như Repeater, Bridge giúp kéo dài khoảng cách kết nối giữa các thiết bị mà không làm suy giảm tín hiệu.
 
 - Kết nối các môi trường truyền dẫn khác nhau: Bridge có thể kết nối các đoạn mạng sử dụng các loại cáp khác nhau (ví dụ: nối một đoạn dùng cáp đồng với một đoạn dùng cáp quang).
+
 ## BỘ PHÁT WIFI (ACCESS POINT)
 **Khái niệm**
 Access Point là một thiết bị mạng có khả năng tạo ra WLAN, hay còn gọi là mạng không dây cục bộ. Access Point thường được dùng tại môi trường công sở, nhà hàng, tiệc cưới hay các tòa nhà lớn nhằm tạo ra không gian sử dụng mạng rộng rãi mà không làm suy giảm tốc độ của mạng.
+
 **Chức năng**
 - Chuyển đổi tín hiệu Có dây sang Không dây
 Đây là chức năng cốt lõi nhất. AP nhận dữ liệu từ dây cáp mạng (Ethernet) và chuyển đổi chúng thành sóng vô tuyến (Wi-Fi) để các thiết bị như điện thoại, laptop có thể kết nối mà không cần cắm dây.
