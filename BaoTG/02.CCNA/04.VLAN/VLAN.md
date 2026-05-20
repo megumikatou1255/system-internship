@@ -114,6 +114,7 @@ Có, một cổng trên bộ chuyển mạch có thể được cấu hình đ�
 + Yêu cầu sự hiện diện của một router bổ sung để kiểm soát công việc trong các mạng lớn.
 + Khả năng tương tác có thể gặp vấn đề.
 + Một VLAN không thể chuyển tiếp lưu lượng mạng sang các VLAN khác.
+
 ## VII. Cách chia mạng VLAN cụ thể trên cấu hình Cisco hoặc SecureCRT.
 - **Đăng nhập vào giao diện quản trị của Switch:** Sử dụng trình duyệt web hoặc giao diện dòng lệnh (CLI) để truy cập vào switch.
 

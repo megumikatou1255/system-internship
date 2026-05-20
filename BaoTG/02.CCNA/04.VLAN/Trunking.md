@@ -85,6 +85,7 @@ Cách hoạt động: Để phân biệt các VLAN trên cùng một đường t
 | Thiết bị kết nối      | PC, Laptop, Máy in, Server.                | Switch, Router, Firewall.                                  |
 | Mục đích sử dụng      | Kết nối thiết bị người dùng cuối vào mạng. | Kết nối các thiết bị hạ tầng mạng với nhau.                |
 | Khái niệm Native VLAN | Không áp dụng.                             | Có áp dụng (VLAN duy nhất không gắn thẻ trên đường Trunk). |
+
 ## V. VTP, STP
 ### 1. VTP (VLAN TRUNKING PROTOCOL)
 **Khái niệm**

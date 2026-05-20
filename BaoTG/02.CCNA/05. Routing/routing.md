@@ -100,6 +100,25 @@ Trong định tuyến động, các bộ định tuyến tạo và cập nhật 
 + Tiêu tốn tài nguyên phần cứng: Router phải vận hành các thuật toán phức tạp theo thời gian thực để duy trì bản đồ mạng, đòi hỏi CPU và RAM phải đủ mạnh.
 + Hao phí băng thông: Các Router phải định kỳ hoặc liên tục gửi các gói tin cập nhật (Hello packet, Link State Advertisement...) cho nhau, chiếm dụng một phần băng thông của đường truyền.
 + Rủi ro bảo mật: Nếu không cấu hình xác thực (Authentication) cẩn thận, kẻ tấn công có thể giả mạo một Router để gửi thông tin định tuyến sai lệch vào hệ thống nhằm đánh cắp hoặc chặn đứng dữ liệu.
+
+### 3. Default Routing
+- Default Routing (Định tuyến mặc định) là một kỹ thuật định tuyến trong đó Router được cấu hình để gửi tất cả các gói tin có địa chỉ đích không nằm trong bảng định tuyến đến một cổng ra hoặc một Router chặng kế tiếp (Next-hop) cụ thể.
+
+**Cách thức hoạt động**
+- Trong bảng định tuyến (Routing Table), một Tuyến đường mặc định (Default Route) được đại diện bằng một địa chỉ IP và Subnet Mask vô cùng đặc biệt: 0.0.0.0 0.0.0.0 (hoặc viết gọn theo dạng CIDR là 0.0.0.0/0).
+
+- Địa chỉ 0.0.0.0/0 mang ý nghĩa là "mọi điểm đến". Quy trình xử lý gói tin của Router sẽ diễn ra như sau:
+    * Khi nhận được một gói tin, Router sẽ kiểm tra địa chỉ IP đích của gói tin đó.
+    * Nó sẽ tra cứu trong bảng định tuyến xem có đường đi cụ thể nào khớp với IP đích này không (ví dụ: đường đi riêng tới mạng 192.168.10.0/24).
+    * Nếu không tìm thấy bất kỳ đường đi cụ thể nào, Router sẽ sử dụng đến phương án cuối cùng là Default Route để đẩy gói tin đi ra ngoài.
+    * Nếu bảng định tuyến không có cả đường đi cụ thể lẫn Default Route, gói tin sẽ bị hủy ngay lập tức (Drop) và gửi lại thông báo lỗi Destination host unreachable.
+- **Ưu điểm**
++ Bảng định tuyến cực kỳ gọn nhẹ, giúp Router tiết kiệm tối đa bộ nhớ RAM và CPU khi tra cứu thông tin.
++ Cấu hình siêu đơn giản (chỉ cần đúng 1 dòng lệnh).
+
+- **Nhược điểm**
++ Nếu cấu hình không cẩn thận giữa các Router, rất dễ gây ra hiện tượng Lặp vòng định tuyến (Routing Loop) (Router A ném gói tin lạ cho Router B, Router B không biết lại ném ngược về Router A, khiến gói tin chạy vòng quanh đến khi hết chỉ số TTL).
+
 ### 3. So sánh Static routing và Dynamic routing
 |       Đặc điểm       |    Static Routing (Định tuyến tĩnh)    |       Dynamic Routing (Định tuyến động)      |
 |:--------------------:|:--------------------------------------:|:--------------------------------------------:|
