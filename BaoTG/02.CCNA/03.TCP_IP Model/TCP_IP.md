@@ -67,7 +67,7 @@ Router là thiết bị hoạt động chính tại Tầng 3.
 ### 3. Transport Layer (Tầng giao vận)
 - **Khái niệm**
 Tầng này chịu trách nhiệm quản lý luồng dữ liệu giữa thiết bị đầu - cuối. Nó chia nhỏ dữ liệu thành các đoạn, đánh số thứ tự và đảm bảo dữ liệu đến đúng ứng dụng thông qua các số Cổng (Port).
-- **Đơn vị dữ liệu (PDU)**
+- **Đơn vị dữ liệu (PDU - Protocol Data Unit)**
 Tại tầng này, thông điệp từ tầng Ứng dụng sẽ được chia nhỏ thành các đơn vị dữ liệu nhỏ hơn:
 + Nếu sử dụng giao thức TCP, đơn vị này gọi là Segment (Phân đoạn).
 + Nếu sử dụng giao thức UDP, đơn vị này gọi là Datagram.

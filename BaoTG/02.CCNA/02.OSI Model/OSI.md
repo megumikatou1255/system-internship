@@ -185,7 +185,6 @@ Tầng Liên kết dữ liệu là tầng "thực dụng" nhất, vì nó phải
 + Trailer (FCS): đây là tầng duy nhất thêm "đuôi". Phần đuôi này chứa mã kiểm tra lỗi (Cyclic Redundancy Check - CRC). Nếu máy nhận tính toán lại mà thấy sai số, nó biết Frame này đã bị nhiễu điện làm hỏng và sẽ yêu cầu gửi lại.
 
 - **Kiểm soát lưu lượng nội bộ (Intra-network Flow Control)**
-Hình ảnh của Cloudflare nhấn mạnh sự khác biệt:
 + Tầng 4: Kiểm soát lưu lượng giữa hai máy tính ở cách xa nhau (Internet).
 + Tầng 2: Kiểm soát lưu lượng giữa hai máy tính cắm trực tiếp vào nhau hoặc qua một Switch. Nó đảm bảo một máy tính cũ, chậm không bị "ngộp" bởi dữ liệu từ một máy tính đời mới chạy quá nhanh trong cùng mạng LAN.
 

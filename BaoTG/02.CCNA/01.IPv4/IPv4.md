@@ -77,7 +77,7 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 
 `Ví dụ`
 -	Ip 192.168.1.0/24, chia thành 6 mạng con và mỗi mạng có 60 máy tính
--	2^h - 2 > 60 -> n = 6 (mượn 2 bit từ phần host), subnet mask 24 + 2 -> /26 (32 – 6 = 26 bit cho mạng và 6 bit cho host) subnet mask -> 255.255.255.192
+-	2^h - 2 > 60 -> h = 6 (mượn 2 bit từ phần host), subnet mask 24 + 2 -> /26 (32 – 6 = 26 bit cho mạng và 6 bit cho host) subnet mask -> 255.255.255.192
 -	Bước nhảy 256 – 192 = 64
 
 | STT | Địa chỉ mạng     | Dải IP host                  | Địa chỉ Broadcast |
