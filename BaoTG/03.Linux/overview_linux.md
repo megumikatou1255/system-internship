@@ -6,6 +6,7 @@
 
 ### 2. Kiến trúc thành phần Linux.
 Linux có kiến trúc phân lớp rõ ràng giữa không gian nhân (kernel space) và không gian người dùng (user space). Mỗi thành phần đảm nhiệm một vai trò riêng nhưng phối hợp chặt chẽ để tạo ra hệ điều hành hoàn chỉnh.
+![Linux](./images/overview_1.png)
 
 - **Nhân Linux (Linux Kernel)**:
   + Là lõi của hệ điều hành, quản lý phần cứng, tài nguyên và bảo mật.
@@ -56,13 +57,27 @@ Linux có kiến trúc phân lớp rõ ràng giữa không gian nhân (kernel sp
 - Kernel nhận yêu cầu này, thực hiện công việc và trả kết quả về user space.
 - Mô hình này bảo vệ hệ thống khỏi lỗi và hành vi độc hại của ứng dụng.
 
-**Một vài thành phần hỗ trợ quan trọng**
-- **VFS (Virtual File System)**: cung cấp giao diện chung cho nhiều hệ thống tập tin khác nhau.
-- **Loadable Kernel Modules (LKM)**: cho phép nạp tính năng và driver vào kernel khi hệ thống đang chạy.
-- **Cgroups**: nhóm tiến trình để kiểm soát tài nguyên CPU, bộ nhớ, I/O.
-- **Namespaces**: cách ly tiến trình, cho phép tạo container như Docker.
+### 3. Các service cơ bản trong Linux.
+#### Nhóm Dịch vụ Hệ thống cốt lõi (System Core Services)
+Đây là những service mặc định phải chạy để giữ cho hệ điều hành hoạt động ổn định:
++ systemd / init: Đây là service tổ tiên (tiến trình đầu tiên có PID = 1). Nó chịu trách nhiệm khởi động, quản lý, bật/tắt tất cả các service khác trong hệ thống.
++ rsyslog / syslog: Trình quản lý nhật ký hệ thống. Nó tự động gom tất cả các thông tin hoạt động, cảnh báo lỗi của phần cứng và phần mềm rồi ghi vào các file log (như /var/log/syslog hoặc /var/log/messages) để bạn dùng lệnh tail -f tra cứu khi có bug.
++ cron / crond: Dịch vụ lên lịch tự động (Task Scheduler). Nó giúp hệ thống tự động chạy một câu lệnh hoặc một đoạn script vào một mốc thời gian cố định (Ví dụ: Tự động sao lưu dữ liệu vào 2 giờ sáng mỗi ngày).
+
+#### Nhóm Dịch vụ Mạng & Kết nối từ xa (Network & Remote Services)
+Nhóm này giúp máy ảo của bạn giao tiếp được với thế giới bên ngoài:
++ sshd (Secure Shell Daemon): Service quan trọng nhất đối với dân CNTT. Nó mở cổng số 22 trên máy ảo để cho phép bạn kết nối từ xa bằng các công cụ như SecureCRT hoặc PuTTY từ máy thật vào gõ lệnh.
++ NetworkManager / network: Dịch vụ quản lý card mạng. Nó chịu trách nhiệm cấp phát địa chỉ IP (DHCP), cấu hình DNS, cấu hình các vùng mạng tĩnh để máy ảo có thể truy cập được Internet.
++ firewalld (trên CentOS) / ufw (trên Ubuntu): Dịch vụ tường lửa. Nó đóng vai trò như một người gác cổng, quyết định xem luồng mạng nào được phép đi vào hoặc đi ra khỏi máy chủ để đảm bảo an toàn bảo mật.
+
+#### Nhóm Dịch vụ Ứng dụng & Máy chủ (Application Server Services)
+Khi bạn biến máy ảo Linux thành một máy chủ chạy phần mềm hoặc làm môi trường kiểm thử (Staging/Production), bạn sẽ thường xuyên làm việc với nhóm này:
++ nginx / httpd (Apache): Dịch vụ máy chủ Web. Chúng chịu trách nhiệm tiếp nhận các yêu cầu truy cập web từ trình duyệt của người dùng (cổng 80/443) để trả về giao diện trang web hoặc API.
++ docker: Dịch vụ quản lý các container. Giúp cô lập và chạy các ứng dụng siêu nhanh mà không bị xung đột môi trường.
++ mysqld / postgresql: Dịch vụ cơ sở dữ liệu (Database), chịu trách nhiệm lưu trữ thông tin tài khoản, dữ liệu của hệ thống dưới ngầm.
 
 ## II. CẤU TRÚC FILE, FOLDER TRONG LINUX.
+![Linux](./images/overview_2.png)
 ### 1. Root - thư mục gốc (`/`).
 - Root filesystem (`/`) là thư mục gốc của toàn bộ hệ thống tập tin Linux. Tất cả các thư mục và tập tin khác đều nằm dưới `/` theo cấu trúc phân cấp.
 
@@ -279,7 +294,7 @@ Linux có kiến trúc phân lớp rõ ràng giữa không gian nhân (kernel sp
 - **Hỗ trợ phần mềm thương mại hạn chế**:
   - Nhiều phần mềm thương mại được thiết kế chỉ cho Windows hoặc macOS.
   - Phần mềm Office, Photoshop, 3DS Max không có phiên bản native cho Linux.
-  - Mặc dù có các công cụ thay thế (LibreOffice, GIMP, Blender) nhưng không luôn tương thích 100%.
+  - Mặc dù có các công cụ thay thế (LibreOffice, GIMP, Blender) nhưng không tương thích 100%.
 
 - **Hỗ trợ game hạn chế**:
   - Phần lớn game AAA được phát triển cho Windows.

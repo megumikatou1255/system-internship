@@ -39,3 +39,40 @@ Kể từ khi systemd (hoặc init cũ) giành quyền điều khiển với tư
     + Giao diện đăng nhập hiện ra: Hệ thống kích hoạt chương trình mingetty hoặc gdm để hiển thị dòng chữ login: trên màn hình Terminal (hoặc giao diện nhập mật khẩu đồ họa).
     + Khi bạn nhập đúng Username và Password, Linux sẽ mở ra một tiến trình Shell (ví dụ /bin/bash) cho phép bạn chính thức gõ lệnh làm việc.
 
+# TÓM TẮT QUÁ TRÌNH BOOTING
+## Giai đoạn 1: Tiếp nhận nguồn điện (Power-On)
+Khi bạn nhấn nút nguồn trên thùng máy:
++ Bộ nguồn (PSU) sẽ chuyển đổi dòng điện xoay chiều thành điện một chiều và cấp phát cho bo mạch chủ (Motherboard), CPU, RAM, ổ cứng...
++ Khi dòng điện ổn định, bộ nguồn sẽ gửi một tín hiệu có tên là Power Good đến bo mạch chủ để báo rằng: "Điện đã an toàn, hệ thống có thể chạy".
++ Ngay khi nhận được tín hiệu này, chip hẹn giờ trên bo mạch chủ sẽ ngừng gửi tín hiệu Reset đến CPU, cho phép CPU chính thức "tỉnh giấc".
+
+## Giai đoạn 2: CPU tìm đến BIOS/UEFI
++ Khi vừa thức dậy, CPU hoàn toàn "mất trí nhớ" và không biết hệ điều hành nằm ở đâu. Nó được lập trình cứng để luôn tìm đến một địa chỉ ô nhớ duy nhất tại thời điểm khởi đầu: 0xFFFFFFF0h (nằm ở cuối thanh RAM ảo).
++ Địa chỉ này thực chất là một đường tắt (jump) dẫn thẳng đến con chip ROM BIOS/UEFI trên bo mạch chủ.
++ CPU bắt đầu đọc và thực thi các lệnh điều khiển được lưu trong BIOS/UEFI.
+
+## Giai đoạn 3: Kiểm tra phần cứng (POST - Power-On Self-Test)
++ Đây là giai đoạn "khám sức khỏe tổng quát" của máy tính do BIOS/UEFI đảm nhận.
++ BIOS sẽ kiểm tra các linh kiện cốt lõi: CPU, bộ đếm thời gian, chip đồ họa (VGA), các thanh RAM, bàn phím, ổ cứng...
++ Kiểm tra kiểu boot: Ở giai đoạn này, BIOS sẽ ngó qua ô nhớ 0000:0472h (như chúng ta đã thảo luận trước đó). Nếu là Cold Boot, nó kiểm tra kỹ toàn bộ RAM; nếu là Warm Boot, nó sẽ lướt nhanh qua để tiết kiệm thời gian.
++ Nếu phát hiện lỗi nặng (ví dụ: lỏng RAM, hỏng card màn hình), máy sẽ dừng lại và phát ra các tiếng Bíp (Beep codes) hoặc nháy đèn LED để báo hiệu. Nếu mọi thứ ổn thỏa, máy sẽ phát 1 tiếng bíp ngắn (ở các dòng máy cũ) và chuyển sang bước tiếp theo.
+
+## Giai đoạn 4: Tìm kiếm thiết bị khởi động (Boot Loader Phase)
++ Sau khi phần cứng ổn định, BIOS/UEFI sẽ tìm nơi lưu trữ hệ điều hành dựa trên danh sách ưu tiên cấu hình trong cài đặt (Boot Priority - ví dụ: Ưu tiên USB trước, rồi đến Ổ cứng SSD).
++ Lúc này, quy trình sẽ rẽ làm 2 nhánh tùy thuộc vào bo mạch chủ của bạn dùng chuẩn cũ hay mới:
+
+### Nhánh 1: Nếu dùng chuẩn cũ (BIOS/MBR)
++ BIOS tìm đến phân vùng đầu tiên (Sector 0) của ổ cứng, tức là MBR (Master Boot Record).
++ BIOS tải 512 bytes dữ liệu của MBR này vào RAM tại địa chỉ huyền thoại 0000:7C00h.
++ CPU thực thi đoạn mã tại 7C00h. Đoạn mã MBR này rất nhỏ, nhiệm vụ duy nhất của nó là quét bảng phân vùng (Partition Table) để tìm phân vùng nào đang được đánh dấu là "Active" (chứa hệ điều hành) rồi kích hoạt trình khởi động nâng cao hơn (như bootmgr của Windows hoặc GRUB của Linux).
+
+### Nhánh 2: Nếu dùng chuẩn mới (UEFI/GPT)
++ UEFI không tìm MBR và không dùng địa chỉ 7C00h.
++ Nó có khả năng đọc trực tiếp các định dạng phân vùng (thường là FAT32). Nó sẽ tìm một phân vùng đặc biệt gọi là EFI System Partition (ESP).
++ Tại đây, UEFI sẽ chạy thẳng các file khởi động có đuôi .efi (ví dụ: bootmgfw.efi của Windows) được lưu trong ổ cứng. Cách này nhanh và an toàn hơn MBR rất nhiều.
+
+## Giai đoạn 5: Tải Core Hệ điều hành (Kernel Loading)
++ Lúc này, các trình khởi động (bootmgr hoặc GRUB) sẽ tiến hành thu thập thông tin phần cứng mà BIOS/UEFI bàn giao lại.
++ Nó bắt đầu tải các file cốt lõi của Hệ điều hành (Kernel - Nhân hệ điều hành) và các driver phần cứng cơ bản vào RAM.
++ Trình khởi động chính thức nhường toàn quyền kiểm soát máy tính cho Kernel.
++ Kernel khởi chạy các tiến trình chạy ngầm (Services), trình quản lý hiển thị (Display Manager), và cuối cùng là đẩy bạn ra màn hình đăng nhập (Login Screen) hoặc Màn hình Desktop.
