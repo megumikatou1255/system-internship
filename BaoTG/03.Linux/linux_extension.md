@@ -1,0 +1,6 @@
+# TÌM HIỂU THÊM VỀ LINUX
+## APT PACKAGE MANAGER
+
+## NTP
+
+## SYSTEMD
