@@ -21,6 +21,8 @@
 Ta có thể thấy 2 group đã được thêm vào trong hệ thống thành công, bên cạnh tên sẽ là group id
 - Bây giờ ta sẽ tiến hành thêm user admin1 vào trong group KeToan, để làm được điều này thì ta sẽ sử dụng câu lệnh
 `sudo usermod -aG ketoan admin1`
+- Để xóa một user ra khỏi 1 group, ta sẽ sử dụng câu lệnh
+`sudo gpasswd -d admin1 ketoan`
 ## CẤU HÌNH QUYỀN CHO FILE
 **Cách 1**
 - Trong hệ thống sẽ có 2 user là admin1 (nằm trong group KeToan) và admin2 nằm trong group Marketing
