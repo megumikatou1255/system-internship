@@ -46,6 +46,8 @@ Như trên hình ta có thể thấy khi user admin1 dùng nano để xem file h
 + u:tranbao:--r : xác định đối tượng user là tranbao chỉ có quyền được thực thi file
 + /usr/local/bin/hello.sh: đường dẫn tuyệt đối dẫn đến file hoặc dir mà ta muốn áp dụng quy tắc phân quyền trên
 
+- Để biết được một file hoặc dir được phân quyền như nào thì ta sẽ sử dụng câu lệnh 
+`getfacl /duong/dan/den/file`
 ![](../images/user_4.png)
 Nhìn vào hình thì ta có thể thấy ở phần user thì có hiển thị rằng user tranbao chỉ có quyền thực thi file hello.sh
 - Nếu cần cấu hình phân quyền cụ thể cho từng user đối với một file hoặc dir, ta có thể sử dụng ACL để dễ dàng quản lý

@@ -22,10 +22,10 @@ Nhờ cơ chế này, NGINX dễ dàng phục vụ hàng ngàn truy vấn cùng 
 
 ## MÔ HÌNH TIẾN TRÌNH CỦA NGINX (MASTER-WORKER)
 Khi Nginx khởi động dưới quyền của systemd, nó không chạy dưới dạng một tiến trình đơn lẻ mà chia thành hai loại tiến trình có tính phân cấp cao:
-- **Tiến trình Master Process (Cha)**
+- **Tiến trình Master Process (Vua)**
 + Số lượng: Luôn luôn chỉ có 1 tiến trình duy nhất chạy dưới quyền root.
 + Nhiệm vụ: Không trực tiếp xử lý các yêu cầu (Request) từ người dùng. Nhiệm vụ của nó là làm "tổng chỉ huy": đọc và kiểm tra các file cấu hình, quản lý vòng đời của các tiến trình con (Worker), và thực hiện các tác vụ đặc quyền như mở cổng mạng (80, 443).
-- **Các tiến trình Worker Processes (Con)**
+- **Các tiến trình Worker Processes (Nô lệ)**
 + Số lượng: Thường được cấu hình bằng chính xác số lượng nhân (Core) CPU của máy tính (cấu hình worker_processes auto;).
 + Nhiệm vụ: Đây là những "công nhân" thực sự làm việc. Các Worker chạy dưới quyền của một user thường (như www-data) để đảm bảo an toàn bảo mật. Chúng trực tiếp chấp nhận các kết nối mạng từ Client, đọc file trên đĩa cứng, và gửi dữ liệu về cho trình duyệt của user.
 + Nhờ kiến trúc Event-driven, mỗi Worker có thể xử lý hàng chục ngàn kết nối đồng thời mà không gặp áp lực về bộ nhớ.

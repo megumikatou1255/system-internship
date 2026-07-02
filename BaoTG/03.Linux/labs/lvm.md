@@ -44,8 +44,8 @@ Mở rộng ổ đĩa thêm 4GB và gán 4GB đó vào thư mục /home để l�
 ![LVM](../images/lvm_10.png)
 
 - Bây giờ ta sẽ cần tạo một phân vùng /home ảo và định dạng phân vùng đó theo định dạng ext4 (một kiểu định dạng thường thấy cũng như là ổn định nhất)
-`sudo lvcreate -L 4G -n home-lv ubuntu-vg` _option -L là dung lượng ta _
-`sudo mkfs.ext4 /dev/ubuntu-vg/home-lv` _option_
+`sudo lvcreate -L 4G -n home-lv ubuntu-vg` _option -L là dung lượng của phân vùng, -n là tên phân vùng_
+`sudo mkfs.ext4 /dev/ubuntu-vg/home-lv` 
 ![LVM](../images/lvm_11.png)
 
 - Tại thư mục /home của người dùng có thể sẽ chứa các file cấu hình của người dùng, nên điều đầu tiên ta cần làm là back-up lại dữ liệu của thư mục /home sang phân vùng mới trước khi mount đè lên
