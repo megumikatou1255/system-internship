@@ -8,3 +8,5 @@
 - Hệ thống auditd được chia làm hai không gian làm việc rõ rệt:
 + Tầng Nhân (Kernel Space): Nơi đây chứa các bộ lọc (như audit_filter). Khi có bất kỳ một hành động nào xảy ra (ví dụ: mở file, đổi IP, gọi lệnh sudo), Kernel sẽ kiểm tra xem hành động đó có nằm trong danh sách cần theo dõi hay không. Nếu có, nó sẽ đẩy dữ liệu qua một hàng đợi (Netlink socket) để gửi lên tầng trên.
 + Tầng Người dùng (User Space): auditd daemon sẽ túc trực để hứng dữ liệu từ Kernel gửi lên, sau đó ghi trực tiếp vào file log tại đường dẫn `/var/log/audit/audit.log`.
+
+

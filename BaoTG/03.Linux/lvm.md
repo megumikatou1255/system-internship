@@ -20,6 +20,7 @@ Bản chất: Là các phân vùng ảo được cắt ra từ "bể chứa" Vol
 - _Chia nhỏ ổ cứng:_ Dữ liệu trong LVM không bị ghi trực tiếp lên ổ cứng mà được chia thành các khối nhỏ đồng nhất gọi là PE (Physical Extent) ở cấp độ PV và LE (Logical Extent) ở cấp độ LV.
 - _Ánh xạ linh hoạt:_ LVM hoạt động như một tầng trung gian. Khi bạn ghi dữ liệu vào Logical Volume, LVM sẽ tự động ánh xạ các LE tới các PE tương ứng nằm rải rác trên các ổ cứng vật lý.
 - _Thay đổi kích thước:_ Khi cần mở rộng dung lượng, hệ thống chỉ cần cấp phát thêm các PE trống từ Volume Group vào Logical Volume. Việc này diễn ra trong tích tắc mà không cần phân vùng lại ổ cứng vật lý.
+
 ## 3. CÁC ĐƠN VỊ ĐO LƯỜNG TRONG LVM: PE VÀ LE
 Để phân chia và di chuyển dữ liệu một cách mượt mà, LVM chia nhỏ dung lượng bên trong đĩa thành các khối có kích thước bằng nhau:
 + PE (Physical Extent): Khi một ổ đĩa biến thành PV, toàn bộ không gian của nó được chia nhỏ thành hàng triệu khối PE bằng nhau (Mặc định kích thước mỗi khối PE là 4MB). PE là đơn vị nhỏ nhất mà một Volume Group sở hữu.
