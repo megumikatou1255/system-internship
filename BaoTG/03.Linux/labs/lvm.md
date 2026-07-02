@@ -28,9 +28,9 @@
 - Vậy là ta đã thành công mở rộng ổ đĩa từ 20GB -> 22GB trên Ubuntu sử dụng cơ chế quản lý lưu trữ Standard Partitioning
 
 ## LVM
-## Mô tả
+### Mô tả
 Mở rộng ổ đĩa thêm 4GB và gán 4GB đó vào thư mục /home để lưu trữ dữ liệu
-## Các bước thực hiện
+### Các bước thực hiện
 - Đầu tiên ta cần mở rộng ổ đĩa ở trên VMware, click chuột phải vào máy ảo Ubuntu Server, chọn mục Hard Disk, click vào Expand và chọn dung lượng muốn mở rộng
 - Ở đây, ta sẽ mở rộng thêm 4GB cho máy ảo
 ![LVM](../images/lvm_8.png)
