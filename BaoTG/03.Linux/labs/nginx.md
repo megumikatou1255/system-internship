@@ -64,3 +64,12 @@ Ta có thể thấy cổng 80 của dịch vụ nginx đã được mở. Ta s�
 - Sau đó, ta sẽ sử dụng máy thật (ở đây là Windows 11) và mở một trình duyệt web, ta sẽ gõ đường dẫn http://<IP_MÁY_ẢO_UBUNTU>/home vào thanh địa chỉ
 - Ta có thể thấy như hình dưới đây thì màn hình trình duyệt đã hiển thị nội dung như ta đã ghi trong file home.html, vậy là ta đã thành công
 ![nginx](../images/nginx_5.png)
+
+
++ tiến trình chạy nginx chạy dưới user nào, chạy quyền tối thiểu (user cần gì thì cấp quyền đó - tất cả hệ thống đều thế)
++ systemd, chạy dưới user gì
++ cáu hình port 433
++ ntp server, dns, back-end server, db
++ log lưu ở đâu
++ metrix nginx
++ firewall

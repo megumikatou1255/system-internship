@@ -95,3 +95,6 @@ Mở rộng ổ đĩa thêm 4GB và gán 4GB đó vào thư mục /home để l�
 + Số 0: Không bao giờ kiểm tra lỗi (Dành cho ổ đĩa mạng hoặc phân vùng Swap).
 + Số 1: Thứ tự ưu tiên cao nhất (Chỉ dành riêng cho phân vùng gốc / để nó được quét đầu tiên).
 + Số 2: Thứ tự ưu tiên tiếp theo (Dành cho tất cả các phân vùng còn lại như /home, /data của bạn). Phân vùng này sẽ được quét sau khi phân vùng gốc / đã khởi động an toàn.
+
+
++ thêm phần extend block, resize
