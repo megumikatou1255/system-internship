@@ -5,6 +5,9 @@
 ![Khái niệm DHCP](./images/khai_niem.png)
 
 ### 2. CHỨC NĂNG CỦA DHCP
+- *Cấp IP tự động*: Tự động gán địa chỉ IP duy nhất cho từng thiết bị, tránh lỗi trùng lặp IP trong mạng.
+- *Phân phối thông số mạng*: Cung cấp thông tin về Subnet Mask (mạng con), Gateway (cổng mặc định) và máy chủ DNS để thiết bị hiểu và giao tiếp được với internet.
+- *Tiết kiệm thời gian*: Quản trị viên không cần phải cấu hình IP bằng tay cho từng máy, giúp việc thêm/bớt thiết bị cực kỳ dễ dàng
 
 ### 3. DHCP GỒM NHỮNG THÀNH PHẦN NÀO
 ![Thành phần](./images/thanh_phan.png)
@@ -47,11 +50,21 @@ DHCP Decline là thông điệp từ Client gửi đến Server để từ chố
 DHCP Release là thông điệp từ Client gửi đến Server để thông báo rằng địa chỉ IP không còn được sử dụng. Thông điệp này giúp giải phóng địa chỉ IP, cho phép DHCP Server tái sử dụng nó cho các thiết bị khác. Thông điệp này thường được gửi khi Client ngắt kết nối khỏi mạng hoặc tắt thiết bị.
 
 ### 5. SƠ ĐỒ HOẠT ĐỘNG DHCP
+- Đối với cách thức hoạt động của DHCP thì khá dễ hiểu, khi một thiết bị truy cập mạng yêu cầu địa chỉ IP từ một router thì ngay sau đó router sẽ gán cho một địa chỉ IP khả dụng cho phép thiết bị có thể giao tiếp trên mạng dễ dàng. Trong đó, router hoạt động như một máy chủ DHCP đối với các mô hình nhỏ hay hộ gia đình. Còn đối với các mạng lớn hơn thì router không thể quản lý được nên đóng vai trò là một máy chủ chuyên dụng để cấp địa chỉ IP.
+- Cách thức hoạt động còn có thể hiểu theo một khía cạnh khác, khi một thiết bị muốn kết nối mạng thì nó sẽ gửi một yêu cầu đến máy chủ (gọi là DHCP DISCOVER). Sau khi có yêu cầu đến máy chủ thì ngay tại đó máy chủ sẽ tìm một địa chỉ IP khả dụng với thiết bị đó và cung cấp địa chỉ IP và gói DHCP OFFER.
+- Ngay sau khi nhận được địa chỉ IP, thiết bị đó sẽ phản hồi lại máy chủ với gói tin DHCP REQUEST. Và đây là lúc chấp nhận yêu cầu thì máy chủ sẽ gửi tin báo nhận (ACK) để xác nhận rằng thiết bị đó đã có điạ chỉ IP và xác định được thời gian sử dụng địa chỉ IP vừa đucợ cấp đến khi có địa chỉ IP mới.
 
 ## II. ĐẶC ĐIỂM DHCP
-
 ### 1. ƯU ĐIỂM
++ _Cấu hình đáng tin cậy_: Cấu hình địa chỉ IP theo cách thủ công có thể dẫn đến sai sót. Ví dụ: nếu bạn nhập sai số hoặc gán cùng một số cho hai thiết bị, cả hai thiết bị sẽ không thể kết nối với mạng. Tự động hoá quy trình gán IP của DHCP sẽ giúp giảm những lỗi đó.
++ _Ít công việc hơn cho quản trị viên mạng_: Quản trị viên mạng sẽ mất rất nhiều thời gian và tài nguyên để định cấu hình địa chỉ IP theo cách thủ công trong những mạng lớn. DHCP sẽ giúp mọi thứ hoạt động hiệu quả hơn.
++ _Sửa đổi trong thời gian thực_: Quản trị viên có thể thực hiện những thay đổi đối với tùy chọn DHCP trong mạng ngay cả khi máy chủ DHCP đang chạy và cấp phát địa chỉ IP.
++ _Miễn phí_: Đối với hầu hết hệ thống mạng, việc triển khai DHCP là hoàn toàn miễn phí.
++ _Hỗ trợ nhiều thiết bị trên một mạng_: DHCP cho phép bạn kết nối và lướt web trên bất kỳ thiết bị nào bạn chọn mà vẫn có trải nghiệm liền mạch.
 
 ### 2. NHƯỢC ĐIỂM
-
-### 3. LỖI CẤU HÌNH DHCP THƯỜNG GẶP
++ _Bảo mật_: Máy chủ DHCP không có cách nào để xác thực những máy khách yêu cầu địa chỉ IP. Vì vậy, khách hàng có thể truy cập vào những địa chỉ IP trái phép bằng cách giả vờ là một khách hàng khác.
++ _Ảnh hưởng đến máy khách khi gặp lỗi_: Nếu một mạng chỉ có một máy chủ DHCP và nó bị lỗi, máy khách sẽ không thể truy cập vào web cho đến khi lỗi DHCP được khắc phục.
++ _Cần tác nhân chuyển tiếp cần thiết_: Máy chủ DHCP phải có tác nhân chuyển tiếp để có thể giao tiếp với mạng vì dữ liệu DHCP không thể truyền qua bộ định tuyến.
++ _Không có IP tĩnh_: Không thể sử dụng những máy tính được kết nối với mạng có triển khai DHCP làm máy chủ vì địa chỉ IP của chúng luôn thay đổi.
++ _Theo dõi hoạt động trên Internet_: Việc theo dõi hoạt động trên Internet sẽ trở nên khó khăn hơn với DHCP vì cùng một thiết bị có thể có hai địa chỉ IP trở lên trong một khoảng thời gian nhất định.
