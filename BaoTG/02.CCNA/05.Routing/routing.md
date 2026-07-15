@@ -1,5 +1,4 @@
 # ROUTING
-
 ## I. KHÁI NIỆM ROUTING
 ### 1.Khái niệm Routing
 - Định tuyến là phương thức mà Router (Bộ định tuyến) hay PC (thiết bị mạng) dùng để chuyển các gói tin đến địa chỉ đích một cách tối ưu nhất, nghĩa là chỉ ra hướng và đường đi tốt nhất cho gói tin. 

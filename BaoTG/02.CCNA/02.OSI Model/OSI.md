@@ -5,33 +5,27 @@
 
 - Mô hình OSI là gì? Mô hình OSI (Open Systems Interconnection) là một khung làm việc cơ bản giúp hiểu và mô tả cách một hệ thống mạng hoạt động. Được phát triển bởi Tổ chức Tiêu chuẩn Hóa Quốc tế (ISO), mô hình OSI đã trở thành một nguồn kiến thức cơ bản quan trọng trong lĩnh vực mạng và truyền thông.
 - Mô hình OSI chia nhỏ quá trình truyền thông mạng thành 7 tầng (layer). Mỗi tầng đảm nhiệm một chức năng cụ thể. Các chức năng này tương tác theo thứ tự từ trên xuống dưới. Các tầng trong mô hình OSI gồm: Physical, Data Link, Network, Transport, Session, Presentation và Application. Mô hình OSI đưa ra các giao thức, tiêu chuẩn cho mỗi tầng để đảm bảo các thiết bị mạng khác nhau có thể giao tiếp, kết nối với nhau.
+
 ### 2. Vai trò của mô hình OSI
 >Mô hình OSI không phải là một thiết bị hay phần mềm cụ thể, mà là một khung tham chiếu với các vai trò chính:
 + **Chuẩn hóa**: Giúp các nhà sản xuất phần cứng và phần mềm tạo ra các sản phẩm có thể làm việc cùng nhau (tính tương thích).
-
 + **Chia nhỏ quy trình phức tạp**: Chia việc truyền tin khổng lồ thành 7 tầng nhỏ hơn, giúp việc học tập, thiết kế và quản trị mạng trở nên dễ dàng hơn.
-
 + **Giao diện rõ ràng**: Xác định rõ ràng các dịch vụ mà một tầng cung cấp cho tầng trên nó và cách các tầng tương tác.
-
 + **Hỗ trợ khắc phục sự cố (Troubleshooting)**: Giúp kỹ thuật viên khoanh vùng lỗi. (Ví dụ: Nếu dây cáp đứt, họ biết lỗi ở Tầng 1; nếu sai địa chỉ IP, họ biết lỗi ở Tầng 3).
+
 ### Ưu/ nhược điểm của mô hình OSI
 > Ưu điểm
 - **Tính linh hoạt**: Bạn có thể thay đổi công nghệ ở một tầng mà không ảnh hưởng đến các tầng khác. Ví dụ: Bạn thay thế cáp đồng (Tầng 1) bằng cáp quang, nhưng ứng dụng web (Tầng 7) của bạn vẫn hoạt động bình thường.
-
 - **Dễ dàng phát triển sản phẩm**: Các nhà phát triển chỉ cần tập trung vào tầng mà sản phẩm của họ hoạt động thay vì phải thiết kế lại toàn bộ hệ thống từ đầu đến cuối.
-
 - **Tính giảng dạy cao**: Đây là công cụ tốt nhất để đào tạo về mạng, giúp người mới bắt đầu hình dung được dòng chảy dữ liệu một cách logic.
-
 - **Giảm thiểu sự phức tạp**: Bằng cách chia nhỏ các chức năng mạng, mô hình này giúp giảm bớt sự chồng chéo và nhầm lẫn trong thiết kế hệ thống.
 
 > Nhược điểm
 - **Tính lý thuyết thuần túy**: OSI là mô hình tham chiếu, không phải mô hình thực thi. Trong thực tế, các tầng thường bị gộp lại (như mô hình TCP/IP chỉ có 4 hoặc 5 tầng).
-
 - **Sự trùng lặp chức năng**: Một số chức năng xuất hiện ở nhiều tầng gây lãng phí tài nguyên. Ví dụ: Việc kiểm soát lỗi (Error Control) xuất hiện ở cả Tầng 2 (Data Link) và Tầng 4 (Transport).
-
 - **Độ trễ hệ thống**: Vì dữ liệu phải đi qua tất cả 7 tầng (thêm Header ở máy gửi và gỡ Header ở máy nhận), quá trình này đôi khi gây tốn tài nguyên CPU và làm chậm tốc độ truyền tin.
-
 - **Phân tầng không đồng đều**: Một số tầng rất "bận rộn" và quan trọng (như Tầng 2, 3, 4), trong khi một số tầng khác lại khá ít việc (như Tầng 5 - Session và Tầng 6 - Presentation).
+
 ## II. Các lớp trong mô hình OSI
 - Mô hình bao gồm 7 tầng riêng biệt nhưng chúng liên kết chặt chẽ với nhau, mỗi tầng đều có nhiệm vụ gửi/nhận dữ liệu từ tầng kề trên hoặc kề dưới nó. Tại thiết bị gửi, dữ liệu xuất phát từ tầng ứng dụng (Application layer), lần lượt được chuyển tiếp và xử lý qua mỗi tầng, cho tới tầng vật lý (Physical layer); bên nhận thu được dữ liệu từ tầng vật lý, chuyển tiếp và xử lý lần lượt qua các tầng, cho tới tầng ứng dụng, thiết bị nhận đón tiếp dữ liệu tại đây.
 ![OSI Layer](./images/osi_layer.png)
@@ -40,7 +34,6 @@
 ![OSI Data](./images/osi_data.png)
 
 ### 1. Application Layer (Tầng ứng dụng)
-
 ![Application Layer](./images/layer_7.png)
 > Khái niệm
 - Đây là tầng duy nhất tương tác trực tiếp với dữ liệu từ người dùng. Các ứng dụng phần mềm như trình duyệt web và ứng dụng gửi email dựa vào tầng ứng dụng để bắt đầu quá trình giao tiếp. Tuy nhiên, cần làm rõ rằng: bản thân các ứng dụng phần mềm (như Chrome hay Outlook) không nằm trong tầng ứng dụng; thay vào đó, tầng ứng dụng chịu trách nhiệm về các giao thức và thao tác dữ liệu mà phần mềm sử dụng để hiển thị thông tin có ý nghĩa cho người dùng.
@@ -105,6 +98,7 @@ Song công toàn phần (Full-duplex): Hai bên có thể nói và nghe cùng l�
 
 - **Mối liên hệ với Socket**
 + Tầng Phiên sử dụng các Socket để định danh duy nhất một kết nối. Một máy tính có thể có hàng trăm "phiên" làm việc cùng lúc (vừa lướt web, vừa nghe nhạc, vừa chat). Tầng 5 đảm bảo dữ liệu của phiên chat không bị nhảy nhầm sang cửa sổ trình duyệt web.
+
 ### 4. Transport Layer (Tầng vận chuyển)
 ![Transport Layer](./images/layer_4.png)
 > Khái niệm
@@ -132,7 +126,6 @@ Song công toàn phần (Full-duplex): Hai bên có thể nói và nghe cùng l�
 + Ví dụ: Khi dữ liệu đến máy bạn, tầng 4 nhìn vào số Port:
         Port 80/443: Chuyển lên trình duyệt Web.
         Port 25: Chuyển lên ứng dụng Email.
-
 - Đơn vị dữ liệu: Segment (TCP) hoặc Datagram (UDP).
 
 ### 5. Network Layer (Tầng mạng)

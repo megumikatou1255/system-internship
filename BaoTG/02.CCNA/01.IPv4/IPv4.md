@@ -20,7 +20,6 @@
 - Nếu đặt tất cả các bit ở phần host là 1 thì số cuối cùng của địa chỉ IP là 255. Khi đó địa chỉ này sẽ là một địa chỉ broadcast của mạng đó. Ví dụ: 192.168.10.255 là một địa chỉ broadcast.
 
 ## 4. Các thành phần của IPv4
-
 Gồm 2 phần chính: 
 ![Network ID](./images/network_id.png)
 
@@ -86,6 +85,7 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 | 2   | 192.168.1.64/26  | 192.168.1.65->192.168.1.12   | 192.168.1.127     |
 | 3   | 192.168.1.128/26 | 192.168.1.129->192.168.1.190 | 192.168.1.191     |
 | 4   | 192.168.1.192/26 | 192.168.1.193->192.168.1.254 | 192.168.1.255     |
+
 ## 8. Phân biệt multicast và broadcast
 > Khái niệm
 - Broadcast (Quảng bá): Gói tin được gửi đến tất cả các thiết bị trong cùng một phân đoạn mạng (Local Network). Ngay cả khi thiết bị không cần thông tin đó, nó vẫn phải nhận và xử lý gói tin (ở mức độ nhất định) trước khi quyết định hủy bỏ.
@@ -100,8 +100,8 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 |---|---|---|
 | Băng thông | Gây lãng phí dữ liệu nếu có nhiều thiết bị không cần dữ liệu | Tiết kiệm băng thông vì chỉ gửi cho người cần |
 | Xử lý tại host | Mọi thiết bị đều phải xử lý | Chỉ các máy trong nhóm mới tốn tài nguyên xử lý |
-## 9. tìm hiểu các khái niệm: subnet, subnet mask, prefx
 
+## 9. tìm hiểu các khái niệm: subnet, subnet mask, prefx
 ### Subnet
 - Subnet là từ viết tắt của "Subnetwork". Đây là việc chia một mạng lớn (như mạng của một nhà mạng ISP) thành các mạng nhỏ hơn (như mạng gia đình hoặc mạng từng phòng ban trong công ty).
 

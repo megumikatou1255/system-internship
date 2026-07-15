@@ -1,9 +1,9 @@
 # TÌM HIỂU DHCP
-
 ## I. DHCP LÀ GÌ ?
 ### 1. KHÁI NIỆM DHCP
 - DHCP được viết tắt từ cụm từ Dynamic Host Configuration Protocol (có nghĩa là Giao thức cấu hình máy chủ). DHCP có nhiệm vụ giúp quản lý nhanh, tự động và tập trung việc phân phối địa chỉ IP bên trong một mạng. Ngoài ra DHCP còn giúp đưa thông tin đến các thiết bị hợp lý hơn cũng như việc cấu hình subnet mask hay cổng mặc định.
 ![Khái niệm DHCP](./images/khai_niem.png)
+
 ### 2. CHỨC NĂNG CỦA DHCP
 
 ### 3. DHCP GỒM NHỮNG THÀNH PHẦN NÀO

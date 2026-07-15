@@ -51,7 +51,6 @@ Khi dữ liệu đi qua cổng trunk, thông tin về VLAN ID thường được
 Mỗi VLAN tạo ra một broadcast domain độc lập, giảm thiểu lưu lượng broadcast trên mạng và cải thiện hiệu suất.
 
 Nhìn chung, mạng VLAN giúp tạo ra các mạng con ảo, cải thiện an ninh và tăng linh hoạt trong việc sử dụng tài nguyên mạng.
-
 ![VLAN](./images/cach_vlan_hoat_dong.png)
 
 - **Chi tiết cách VLAN hoạt động**

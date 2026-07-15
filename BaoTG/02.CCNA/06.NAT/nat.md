@@ -70,6 +70,7 @@ _Router (config) # ip nat inside source list <ACL-number> interface <interface> 
 _Router (config-if) # ip nat inside_
 - Xác định các cổng kết nối với mạng bên ngoài:
 _Router (config-if) # ip nat outside_
+
 ## III. CƠ CHẾ HOẠT ĐỘNG CỦA NAT
 Để hiểu cách NAT vận hành, hãy xem dòng chảy của một gói tin đi từ PC0 (trong nhà) ra Web Server (Internet) và quay trở lại:
 
@@ -100,6 +101,7 @@ _Router (config-if) # ip nat outside_
 Khó khăn trong việc xác định kết nối: NAT khiến cho việc xác định kết nối trở nên khó khăn, đặc biệt là khi kết nối được thiết lập thông qua nhiều tường lửa và router. Điều này có thể gây ra những vấn đề khi gỡ lỗi mạng hay khi cấu hình những thiết bị mạng.
 - **Vấn đề liên quan đến bảo mật**: Một số cuộc tấn công từ bên trong mạng có thể vượt qua NAT và gây ra những vấn đề bảo mật cho nhiều thiết bị trong mạng.
 - **Vấn đề tương thích**: NAT có thể gây ra những vấn đề về tương thích khi kết nối những thiết bị trong mạng cục bộ đến những dịch vụ trực tuyến hoặc khi sử dụng những ứng dụng đòi hỏi địa chỉ IP duy nhất như VoIP hay game trực tuyến. Khi NAT được sử dụng, nhiều thiết bị trong mạng cục bộ sẽ sử dụng cùng một địa chỉ IP công cộng. Điều này có thể gây ra sự cố khi những thiết bị này đang cố gắng truy cập cùng một dịch vụ trực tuyến đòi hỏi địa chỉ IP riêng.
+s
 ## V. SO SÁNH SOURCE NAT VÀ DESTINATION NAT
 |            Tiêu chí so sánh           |                                                   Source NAT (SNAT)                                                  |                                                      Destination NAT (DNAT)                                                      |
 |:-------------------------------------:|:--------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------:|
