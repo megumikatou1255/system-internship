@@ -1,8 +1,7 @@
 # TÌM HIỂU CHI TIẾT VỀ VXLAN
 ## KHÁI NIỆM
-VXLAN (Virtual Extensible LAN) là một công nghệ mạng ảo hóa (Network Virtualization) thuộc nhóm Overlay Network.
-
-Nhiệm vụ cốt lõi của VXLAN là: Giả lập một mạng Layer 2 (Switch ảo) chạy đè lên trên hạ tầng mạng Layer 3 (Router/Internet) sẵn có.
+- VXLAN (Virtual Extensible LAN) là một công nghệ mạng ảo hóa (Network Virtualization) thuộc nhóm Overlay Network.
+- Nhiệm vụ cốt lõi của VXLAN là: Giả lập một mạng Layer 2 (Switch ảo) chạy đè lên trên hạ tầng mạng Layer 3 (Router/Internet) sẵn có.
 
 ## TẠI SAO PHẢI CẦN VXLAN
 VLAN đã làm rất tốt nhiệm vụ của nó trong hàng chục năm qua, nhưng khi kỷ nguyên Cloud và Data Center bùng nổ, VLAN lộ rõ 2 điểm yếu chí mạng:
