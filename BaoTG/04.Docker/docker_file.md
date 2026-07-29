@@ -73,7 +73,6 @@ CMD ["python", "app.py"]
 ```bash
 ENTRYPOINT ["python", "app.py"]
 ```
-
 ## CÁC QUY TẮC KHI VIẾT DOCKERFILE
 - Giữ Image nhỏ gọn nhất có thể:
     + Dùng base image nhẹ như alpine hoặc slim.
@@ -84,3 +83,84 @@ ENTRYPOINT ["python", "app.py"]
     + Đặt các lệnh ít thay đổi (như cài OS, cài thư viện npm install / pip install) lên trên.
     + Đặt các lệnh hay thay đổi (như COPY . . mã nguồn) xuống cuối. Nhờ đó, mỗi khi bạn sửa code, Docker chỉ phải build lại bước copy code chứ không phải tải và cài lại toàn bộ thư viện từ đầu!
 - Không lưu trữ bí mật (Secrets): Không bao giờ ghi mật khẩu Database, API Keys trực tiếp vào Dockerfile. Hãy dùng biến môi trường truyền vào lúc chạy Container.
+
+## MULTI-STAGE BUILD
+### Khái niệm
+- Multi-stage build (Build nhiều giai đoạn) là một tính năng của Docker cho phép bạn sử dụng nhiều câu lệnh FROM trong cùng một tệp Dockerfile.
+- Mỗi câu lệnh FROM sẽ bắt đầu một giai đoạn (stage) build mới với một Base Image riêng biệt. Bạn có thể chọn lọc và chép (copy) các tệp kết quả (như tệp thực thi, các gói tĩnh) từ giai đoạn này sang giai đoạn khác.
+
+### Tại sao cần dùng Multi-Stage Build
+Giai đoạn Biên dịch (Build Stage)              Giai đoạn Vận hành (Production Stage)
+┌──────────────────────────────────────────────┐     ┌──────────────────────────────────────────────┐
+│  Cần: SDK, Compiler, Source Code, Tools...   │  ►  │  Chỉ cần: Tệp chạy (Binary), Runtime nhẹ... │
+│  👉 Dẫn đến: Image cực kỳ NẶNG (vài GB)     │     │  👉 Mong muốn: Image siêu NHẸ (vài MB)       │
+└──────────────────────────────────────────────┘     └──────────────────────────────────────────────┘
+
+- Nếu không dùng Multi-stage build, bạn sẽ gặp các vấn đề lớn sau:
++ Dung lượng Image quá lớn: Bạn bắt buộc phải giữ lại toàn bộ trình biên dịch (như gcc, go, npm, Node.js SDK...) trong Image cuối cùng dù ứng dụng khi chạy thực tế không hề cần đến chúng.
++ Rủi ro bảo mật (Security Risks): Việc chứa mã nguồn gốc, công cụ build hay các thư viện thừa trong Production Image sẽ tạo ra bề mặt tấn công rộng cho hacker khai thác lỗ hổng.
++ Giải pháp cũ rất phức tạp: Trước khi có Multi-stage build, lập trình viên phải viết 2 Dockerfile riêng biệt (một cái để build, một cái để chạy) và dùng các kịch bản Shell Script để copy file qua lại giữa các Container — việc này rất cồng kềnh và dễ lỗi.
+
+### Multi-Stage Build hoạt động như thế nào
+Multi-stage build hoạt động theo cơ chế "Lọc bỏ phế thải, chỉ lấy thành phẩm":
+![](./images/docker_9.png)
+
+┌────────────────────────────────────────────────────────────────────────┐
+ │ STAGE 1: "builder" (FROM golang:1.22)                                  │
+ │                                                                        │
+ │   • Tải mã nguồn (.go)                                                │
+ │   • Biên dịch code thành file thực thi: /app/main                      │
+ │   • Tổng dung lượng Stage 1: ~800 MB (gồm cả Go SDK)                  │
+ └───────────────────────────────────┬────────────────────────────────────┘
+                                     │
+                        COPY --from=builder /app/main .
+                                     │ (Chỉ bốc duy nhất file /app/main)
+                                     ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │ STAGE 2: "Production" (FROM alpine:3.20)                               │
+ │                                                                        │
+ │   • Hệ điều hành Alpine siêu nhẹ (~5 MB)                               │
+ │   • Tiếp nhận duy nhất file /app/main                                  │
+ └────────────────────────────────────────────────────────────────────────┘
+                   👉 IMAGE CUỐI CÙNG CHỈ NẶNG ~15 MB!
+
+Docker sẽ lần lượt thực thi từng giai đoạn từ trên xuống dưới. Tuy nhiên, chỉ có giai đoạn cuối cùng (Stage cuối) mới được lưu lại thành Image chính thức. Toàn bộ tài nguyên, bộ công cụ build ở các Stage phía trước sẽ bị loại bỏ hoàn toàn.
+
+### Cách sử dụng Multi-Stage Build
+Cú pháp cốt lõi dựa trên 2 quy tắc:
++ Đặt tên gợi nhớ cho Stage bằng từ khóa AS <tên_stage>.
++ Dùng cú pháp COPY --from=<tên_stage> để chép dữ liệu từ Stage trước sang Stage sau.
+
+Ví dụ:
+```bash
+# ----------------------------------------------------
+# GIAI ĐOẠN 1: Build (Tạo file thực thi)
+# ----------------------------------------------------
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+# Coppy file dependency và tải về
+COPY go.mod go.sum ./
+RUN go mod download
+# Copy mã nguồn và biên dịch
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o myapp .
+
+# ----------------------------------------------------
+# GIAI ĐOẠN 2: Production (Image gọn nhẹ để chạy)
+# ----------------------------------------------------
+FROM alpine:3.20
+WORKDIR /app
+# Lấy tệp /app/myapp từ giai đoạn "builder" đưa sang thư mục /app hiện tại
+COPY --from=builder /app/myapp .
+# Khai báo cổng và lệnh chạy
+EXPOSE 8080
+CMD ["./myapp"]
+```
+### Các câu lệnh 
+|             Cú pháp            |                               Ý nghĩa                               |
+|:------------------------------:|:-------------------------------------------------------------------:|
+| FROM image AS stage_name       | Khai báo một giai đoạn build mới và đặt tên cho nó.                 |
+| COPY --from=stage_name src dst | Copy file/folder từ giai đoạn stage_name sang giai đoạn hiện tại.   |
+| COPY --from=0 src dst          | Copy từ Stage đầu tiên (nếu không đặt tên AS, Docker đánh số từ 0). |
+
+## LAYER CACHING
