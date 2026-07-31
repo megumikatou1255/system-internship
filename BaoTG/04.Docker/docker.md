@@ -1,6 +1,6 @@
 # TÌM HIỂU VỀ DOCKER
 ## KHÁI NIỆM
-- Docker là một công cụ giúp tạo, triển khai và quản lý các container. Container là một đơn vị đóng gói nhẹ, chứa tất cả các thành phần cần thiết để chạy ứng dụng, bao gồm code, thư viện, và các dependencies.
+- Docker là một công cụ giúp tạo, triển khai và quản lý các container. Container là một instance môi trường thực thi (runtime environment) cô lập, khởi chạy từ Image - chứa tất cả các thành phần cần thiết để chạy ứng dụng, bao gồm code, thư viện, và các dependencies.
 - Khác với các công nghệ ảo hóa truyền thống như VMware hay VirtualBox (sử dụng Hypervisor để tạo ra một hệ điều hành ảo hoàn chỉnh gồm cả Kernel riêng), Docker không ảo hóa phần cứng.
 Docker chạy trực tiếp trên Kernel của máy host Linux và tận dụng 3 tính năng cốt lõi của Linux Kernel để tạo ra Container:
 - **Namespaces** (Tính năng phân vùng/cách ly):
