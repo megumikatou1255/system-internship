@@ -14,6 +14,7 @@
 * Vì đơn giản nó chỉ nó chỉ là một tiến trình nên ta có thể dừng container này lại bằng cách kill tiến trình này đi thay vì dùng lệnh `docker stop`
 ![](./images/docker_21.png)
 -> Như vậy ta có thể thấy container đã dừng lại và báo EXIT CODE LÀ 137
+
 ### NAMESPACES
 - Namespaces chia hệ điều hành thành các "vùng không gian" riêng biệt. Tiến trình nằm trong một Namespace sẽ không nhìn thấy các tài nguyên thuộc Namespace khác.
 - Docker sử dụng 6 loại Namespaces cốt lõi:

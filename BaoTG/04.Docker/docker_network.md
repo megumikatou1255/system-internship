@@ -14,8 +14,18 @@
 ### Container network model (CNM)
 
 ### Libnetwork
+- libnetwork là một bản implementation của CNM, nó là một open-source viết bằng Go, cross-platform và được sử dụng bởi Docker.
+- Từ thời kì đầu của Docker, tất cả phần implement của CNM được nằm trong docker daemon, nhưng cho tới khi nó trở nên quá to và không tuân theo quy tắc thiết kế module theo chuẩn Unix, nó đã được tách ra thành một thư viện riêng biệt và dó là cách mà libnetwork được hình thành.
+- Ngoài việc implement các thành phần có trong CNM, nó còn có các chức năng khác như service discovery, ingress-base container load balancing (cơ chế load balancing trong docker swarm), network control plane, management plane (giúp quản lý network trên docker host).
 
 ### Drivers
+- libnetwork có thể coi như là một lớp trừu tượng định nghĩa các thành phần trong CNM, chức năng quản lý networking cho docker host, còn các driver chính là các bản implement cụ thể cho từng mục đích sử dụng khác nhau. Hay nói các khác chính driver mang đến khả năng kết nối thực sự và tách biệt các mạng với nhau. Mối tương quan giữa driver và libnetwork được thể hiện trong hình dưới đây.
+- Trong Docker đã có tích hợp sẵn một số driver, được gọi là các native drivers hay local drivers:
+    + Trên Linux bao gồm: bridge, overlay, macvlan.
+    + Trên Window bao gồm: nat, overlay, transparent, 12bridge.
+- Một số driver của bên thứ ba phát trên cũng có thế được sử dụng trong docker, chúng được gọi là remote drivers. Một số cái tên tiêu biểu có thể kể đến như: calico, contiv, kuryv...
+- Mỗi một driver kể trên chịu trách nhiệm cho việc tạo, quản lý, xóa bỏ các resource trên các network thuộc loại của nó. Ví dụ overlay driver sẽ chịu trách nhiệm tạo, thêm, xóa bỏ các resource trong các overlay network.
+- Các driver định nghĩa ở trên cũng có thể hoạt động đồng thời cùng lúc để có thể build nên những mô hình cấu trúc phức tạp phục vụ nhu cầu của người dùng. Trong phần tiếp theo của bài viết này, chúng ta sẽ đi vào tìm hiểu một số loại driver phổ biến thường được sử dụng trong docker.
 
 ## CÁC LOẠI NETWORK DRIVER PHỔ BIẾN
 - Mỗi Docker Network được vận hành thông qua một network driver – thành phần đóng vai trò quyết định cách các container giao tiếp với nhau và với bên ngoài. Mỗi loại driver mang lại một kiểu cấu trúc mạng khác nhau, phù hợp với từng mục đích sử dụng trong phát triển và triển khai hệ thống. 
