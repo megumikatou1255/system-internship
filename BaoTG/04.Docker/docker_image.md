@@ -3,6 +3,36 @@
 - Docker Image là một tệp tập hợp chỉ đọc (read-only template) đóng gói toàn bộ những gì cần thiết để một ứng dụng có thể chạy độc lập: từ mã nguồn, thư viện, file cấu hình, biến môi trường cho đến các thành phần của hệ điều hành nền (Base OS).
 - Nếu Container là một "thực thể sống" đang chạy thì Docker Image chính là "khuôn đúc" hay "file cài đặt tĩnh" tạo ra thực thể đó.
 
+## KIẾN TRÚC CÁC LỚP CỦA IMAGE
+- Một Docker Image không phải là một file đơn lẻ mà là một tập hợp gồm nhiều lớp tập tin (Layers) chồng lên nhau.
+    + Tất cả các lớp của Image đều ở trạng thái Chỉ đọc (Read-Only).
+    + Mỗi khi bạn ghi một dòng lệnh trong Dockerfile (RUN, COPY, ADD), Docker sẽ tạo ra một Layer mới nằm đè lên Layer cũ.
+
+**Cơ chế Copy-on-Write (CoW):**
+- Khi một Container được chạy từ Image, Docker không copy toàn bộ Image đó. Nó chỉ tạo duy nhất một lớp mỏng có thể ghi (Thin Writable Layer) lên trên cùng.
+    + Nếu Container muốn đọc một file: Nó đọc trực tiếp từ các lớp Read-Only phía dưới.
+    + Nếu Container muốn sửa một file từ Image: Cơ chế CoW sẽ tự động nhân bản (copy) file đó lên Writable Layer trên cùng và sửa trên bản copy đó. File gốc ở lớp Read-Only bên dưới hoàn toàn giữ nguyên.
+
+=> Lợi ích: 100 Container chạy từ cùng 1 Image 1GB sẽ dùng chung 1GB Read-Only đó trên ổ cứng chứ không tốn 100GB không gian lưu trữ!
+
+## CƠ CHẾ TÁI SỬ DỤNG LAYER VÀ CACHING
+Nhờ cấu trúc Layer, Docker mang lại khả năng tối ưu thời gian build và dung lượng lưu trữ cực kỳ thông minh.
+- Bản chất:
+    + Dung lượng: Nếu Image A và Image B có chung lớp nền ubuntu:22.04, hệ thống máy Host chỉ tải và lưu trữ lớp ubuntu:22.04 này đúng 1 lần duy nhất.
+    + Thời gian Build (Build Cache): Khi bạn build lại Image, Docker sẽ kiểm tra xem từ dòng lệnh nào trong Dockerfile có sự thay đổi. Tất cả các lệnh trước đó chưa bị thay đổi sẽ được dùng lại ngay lập tức từ Cache (xuất hiện chữ CACHED khi build) mà không cần chạy lại.
+
+## Cơ chế "Tạo hình ảnh đại diện" qua Image Manifest & Content-Addressable Storage
+Docker không chỉ định danh Image hay Layer bằng tên gọi/tag đơn thuần (như v1.0), mà dùng mã băm SHA-256 của chính nội dung dữ liệu bên trong tệp đó.
+- Bản chất:
+    + Mỗi Layer và mỗi Image đều có một chuỗi Hash riêng (ví dụ: sha256:a3ed95ca...).
+    + Nếu nội dung của Layer không đổi, mã Hash giữ nguyên. Nếu có bất kỳ sự thay đổi dù chỉ 1 byte dữ liệu, mã Hash sẽ thay đổi hoàn toàn.
+=> Lợi ích: Tính năng này ngăn chặn việc dữ liệu bị hư hỏng (data corruption) hoặc bị can thiệp trái phép (tampering) trong quá trình tải qua mạng. Đồng thời giúp Docker phát hiện các Layer trùng lặp tuyệt đối để không tải lại.
+
+## Cơ chế Ephemeral Nature (Tính chất ngắn hạn / Bất biến)
+- Image mang tính chất Immutable (Bất biến):
+    + Một khi một Image đã được build xong, bạn không thể sửa đổi trực tiếp các layer bên trong nó. Muốn thay đổi, bạn bắt buộc phải tạo/build một Image mới.
+    + Mọi dữ liệu phát sinh trong quá trình Container chạy sẽ nằm ở Writable Layer và sẽ biến mất hoàn toàn khi Container bị xóa (nếu không dùng Docker Volume). Tính chất này buộc các nhà phát triển phải thiết kế ứng dụng theo chuẩn Stateless (không phụ thuộc vào trạng thái lưu trữ cục bộ).
+
 ## QUÁ TRÌNH BUILD IMAGE DIỄN RA
 ![Build Process](./images/docker_6.png)
 
@@ -88,3 +118,4 @@ COPY my-go-binary /
 ENTRYPOINT ["/my-go-binary"]
 ```
 Kết quả: Ta thu được một Docker Image siêu an toàn và siêu nhẹ chỉ đúng vài Megabytes (bằng đúng dung lượng file code Go của bạn), hoàn toàn loại bỏ được rủi ro bảo mật từ các lỗ hổng hệ điều hành!
+

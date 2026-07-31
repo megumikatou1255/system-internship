@@ -3,7 +3,17 @@
 - Docker Container là một đơn vị triển khai phần mềm nhẹ, có khả năng đóng gói mã nguồn ứng dụng cùng với tất cả thư viện, tệp cấu hình và các phụ thuộc cần thiết để chạy ứng dụng đó. Điều này giúp đảm bảo ứng dụng hoạt động nhất quán trong mọi môi trường – từ máy phát triển, máy chủ kiểm thử đến môi trường production.
 - Khác với máy ảo, Docker Container không cần cài đặt hệ điều hành riêng mà chia sẻ kernel với hệ điều hành máy chủ, nhờ đó khởi động nhanh và sử dụng ít tài nguyên hơn. Nhờ vào tính linh hoạt và hiệu quả này, Docker Container đã trở thành một phần không thể thiếu trong quy trình CI/CD, DevOps và phát triển phần mềm hiện đại.
 - Có thể hiểu Container chính là một tiến trình bình thường chạy trên hệ điều hành máy chủ (Host OS) nhưng được cô lập bởi 3 tính năng chính là: namespaces (cách ly không gian), cgroups (giới hạn tài nguyên), chroot (cách ly ổ đĩa)
-
+- Để chứng minh điều này thì ta sẽ thực hiện một ví dụ đơn giản
+* Đầu tiên ta sẽ kiểm tra tiến trình Nginx trên máy
+![](./images/docker_19.png)
+* Bây giờ ta sẽ tiến hành khởi chạy một container Nginx trên máy
+`docker run -itd --name my-nginx -p 8000:80 nginx:1.31.3-alpine`
+* Lúc này trên hệ điều hành sẽ xuất hiện thêm một tiến trình mới như sau
+![](./images/docker_20.png)
+* Để kiểm tra container đã chạy hay chưa thì ta có thể dùng câu lệnh `docker ps` và mở trình duyệt -> truy cập vào địa chỉ [ip_máy_host]:8000
+* Vì đơn giản nó chỉ nó chỉ là một tiến trình nên ta có thể dừng container này lại bằng cách kill tiến trình này đi thay vì dùng lệnh `docker stop`
+![](./images/docker_21.png)
+-> Như vậy ta có thể thấy container đã dừng lại và báo EXIT CODE LÀ 137
 ### NAMESPACES
 - Namespaces chia hệ điều hành thành các "vùng không gian" riêng biệt. Tiến trình nằm trong một Namespace sẽ không nhìn thấy các tài nguyên thuộc Namespace khác.
 - Docker sử dụng 6 loại Namespaces cốt lõi:
@@ -150,3 +160,19 @@ docker rm <container>: Xóa một Container đã dừng (Exited).
 docker rm -f <container>: Ép buộc xóa Container (cho dù nó đang chạy).
 docker container prune : Xóa TẤT CẢ Container đã bị Dừng (Exited):
 ```
+
+## EXIT CODE CONTAINER
+| Exit Code | Tên lỗi / Trạng thái | Yếu tố kích hoạt | Nguyên nhân & Cách khắc phục |
+| :---: | :--- | :--- | :--- |
+| **0** | **Success / Clean Exit** | Tiến trình kết thúc thành công | Container hoàn thành nhiệm vụ và tự thoát bình thường (ví dụ: chạy xong script/cronjob). |
+| **1** | **Application Error** | Lỗi nội bộ ứng dụng | Code bên trong gặp lỗi unhandled exception, syntax error, thiếu file cấu hình hoặc thư viện. *Cần kiểm tra `docker logs`.* |
+| **2** | **Misuse of Shell Builtins** | Lỗi cú pháp câu lệnh | Sai cú pháp khi truyền lệnh vào Shell (`CMD`/`ENTRYPOINT`) hoặc cấp sai quyền thi hành file script. |
+| **125** | **Docker Daemon Error** | Lỗi từ Docker Engine | Lệnh `docker run` không thể khởi chạy do Docker Daemon gặp sự cố (cgroups không hỗ trợ, hết tài nguyên host...). |
+| **126** | **Command Cannot Execute** | Lỗi phân quyền / Định dạng file | Lệnh trong `CMD`/`ENTRYPOINT` tồn tại nhưng **không thể thực thi** (thiếu quyền `chmod +x` hoặc sai kiến trúc binary OS). |
+| **127** | **Command Not Found** | Không tìm thấy lệnh/file | Lệnh hoặc file script trong `CMD`/`ENTRYPOINT` **không tồn tại** bên trong Image (vd: gọi `bash` trong Image `alpine`). |
+| **128 + N** | **Fatal Signal Status** | Tín hiệu ngắt Linux (Signal) | Container bị dừng đột ngột bởi tín hiệu `N` từ OS. Mã trả về = $128 + \text{Mã Tín Hiệu (Signal Code)}$. |
+| **130** | **Script Terminated (SIGINT)** | Nhấn `Ctrl + C` | Tiến trình bị hủy bởi người dùng từ bàn phím (Signal 2 $\rightarrow 128 + 2 = 130$). |
+| **137** | **Out of Memory / Killed (SIGKILL)** | `SIGKILL` hoặc **OOM Killer** | **Rất phổ biến!** Container vượt quá giới hạn RAM cho phép nên bị Linux OOM Killer hạ sát, hoặc bị `docker kill` (Signal 9 $\rightarrow 128 + 9 = 137$). |
+| **139** | **Segmentation Fault (SIGSEGV)** | Lỗi bộ nhớ C/C++ | Ứng dụng truy cập vào vùng nhớ không hợp lệ hoặc chưa được cấp phát (Signal 11 $\rightarrow 128 + 11 = 139$). |
+| **143** | **Graceful Termination (SIGTERM)** | Lệnh `docker stop` | **Bình thường khi tắt.** Container nhận lệnh dừng êm đẹp từ Docker Daemon (Signal 15 $\rightarrow 128 + 15 = 143$). |
+| **255** | **Exit Status Out of Range** | Lỗi tùy biến / Đứt kết nối | Ứng dụng trả về mã exit vượt ngoài dải 0-255, hoặc container bị ngắt kết nối đột ngột không rõ lý do. |

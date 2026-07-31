@@ -164,3 +164,35 @@ CMD ["./myapp"]
 | COPY --from=0 src dst          | Copy từ Stage đầu tiên (nếu không đặt tên AS, Docker đánh số từ 0). |
 
 ## LAYER CACHING
+- Layer Caching (Bộ nhớ đệm theo lớp) là một trong những tính năng thông minh và mạnh mẽ nhất của Docker. Nó giúp quá trình đóng gói (docker build) diễn ra nhanh hơn gấp hàng chục lần và tiết kiệm tối đa tài nguyên băng thông lẫn dung lượng ổ đĩa.
+### Layered Architecture của Docker Image
+- Một Docker Image không phải là một khối tập tin đơn lẻ (Monolithic), mà được tạo thành từ nhiều lớp (Layers) chồng lên nhau.
+- Mỗi câu lệnh trong Dockerfile (như FROM, RUN, COPY, ADD) sẽ tạo ra một Layer chỉ đọc (Read-Only Layer).
+
+### Cơ chế hoạt động của Layer Caching
+- Khi bạn chạy lệnh docker build, Docker Daemon sẽ đọc từng dòng lệnh trong Dockerfile từ trên xuống dưới:
+- Kiểm tra vết cũ (Cache Lookup): Ở mỗi bước (mỗi dòng lệnh), Docker sẽ kiểm tra xem trong bộ nhớ đệm (Cache) trên máy local đã từng có Layer nào được tạo ra từ đúng câu lệnh đó và với đúng dữ liệu đầu vào đó hay chưa.
+- Nếu khớp (Cache Hit): Docker sẽ bỏ qua việc thực thi lại lệnh đó (không tốn thời gian tải lại, không tốn CPU biên dịch lại) và gắn nhãn ---> Using cache trên terminal.
+- Nếu khác biệt (Cache Miss / Cache Invalidation): Docker sẽ thực thi lại câu lệnh đó để tạo ra một Layer mới.
+
+**Lưu ý** : Nếu tại một dòng lệnh bất kỳ mà Cache bị vô hiệu hóa (Cache Miss), thì TẤT CẢ các dòng lệnh phía sau nó bắt buộc phải chạy lại từ đầu, bất kể mã nguồn hay câu lệnh ở các dòng sau có thay đổi hay không.
+- Có 2 nguyên nhân chính làm đứt chuỗi Cache:
+    + Thay đổi chuỗi câu lệnh: Bạn chỉnh sửa chữ nghĩa trong dòng lệnh (ví dụ đổi RUN apt update thành RUN apt update && apt upgrade).
+    + Thay đổi nội dung File/Thư mục (Đối với lệnh COPY và ADD):
+        * Docker không chỉ nhìn vào tên file hay thời gian sửa file. Nó tính toán mã Checksum (Hash) nội dung của các file được copy.
+        * Nếu bạn sửa dù chỉ một dấu chấm phẩy ; trong code, mã Hash sẽ đổi $\rightarrow$ Lệnh COPY bị hỏng Cache $\rightarrow$ Mọi dòng phía sau COPY đều phải build lại. 
+
+### Cách viết tối ưu Layer Caching nâng cao
+- Sắp xếp thứ tự từ Ít thay đổi $\rightarrow$ Nhiều thay đổi:
+    + Dưới cùng: Cài đặt OS Package (apt install, apk add).
+    + Giữa: Tải Dependency/Thư viện (npm install, pip install, go mod download).
+    + Trên cùng: Copy mã nguồn (COPY . .).Gộp các câu lệnh RUN lại với nhau:Thay vì viết 3 dòng RUN apt update, RUN apt install curl, RUN apt install git (tạo ra 3 Layer rác), hãy gộp thành:
+```bash
+    RUN apt update && apt install -y \
+        curl \
+        git \
+    && rm -rf /var/lib/apt/lists/*
+```
+- Luôn sử dụng file .dockerignore: Loại bỏ các file tạm, log, .git, node_modules ra khỏi quá trình COPY để tránh việc các file rác vô tình làm đổi mã Checksum gây hỏng Cache.
+- Xóa Cache khi cần thiết (--no-cache): Đôi khi bạn muốn ép Docker phải tải lại toàn bộ bản cập nhật mới nhất từ Internet mà không dùng Cache cũ, hãy thêm flag:
+docker build --no-cache -t my-app:v2 .
