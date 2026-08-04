@@ -63,6 +63,31 @@ Cơ chế: Daemon sẽ mở một cổng TCP (thường là cổng 2375 cho kế
 Bối cảnh: Dành riêng cho môi trường hệ điều hành Windows.
 Cơ chế: Hoạt động tương tự Unix Socket nhưng sử dụng cơ chế IPC (Inter-Process Communication) đặc thù của Windows.
 
+**Sự khác biệt giữa TCP Socket và Unix Socker**
+|       Đặc tính      |                        TCP/IP Socket                        |                     Unix Domain Socket (UDS)                    |
+|:-------------------:|:-----------------------------------------------------------:|:---------------------------------------------------------------:|
+| Phạm vi             | Giữa các máy qua mạng (hoặc Local via Loopback)             | Chỉ trong nội bộ một máy (Inter-Process Communication - IPC)    |
+| Địa chỉ định danh   | IP Address + Port (VD: 127.0.0.1:8080)                      | File path trên filesystem (VD: /run/containerd/containerd.sock) |
+| Tầng Network Stack  | Đi qua toàn bộ TCP/IP stack (Checksum, Routing, Framing...) | Bỏ qua hoàn toàn Network Stack                                  |
+| Hiệu năng & Latency | Thấp hơn (Tốn CPU checksum, đóng gói packet)                | Cực cao (Gần như chỉ truyền/chép bộ nhớ trong Kernel)           |
+| Bảo mật             | Dựa vào Firewall, Bind IP, Authentication                   | Dựa vào File Permissions (chmod, chown) của file .sock          |
+
+*Hiệu năng và luồng dữ liệu*
+- *TCP Socket* (127.0.0.1 / Loopback):
+    + Dù bạn gửi dữ liệu tới chính máy mình via 127.0.0.1, hệ điều hành vẫn phải giả lập như đang truyền qua mạng:
+    $$Data \rightarrow TCP\ Segment \rightarrow IP\ Packet \rightarrow Loopback\ Interface \rightarrow Unpack \rightarrow Process$$
+    + Quá trình này tốn CPU cho việc tính toán checksum, phân đoạn packet (segmentation), quản lý window size và ACK.Unix
+- *Domain Socket*:Unix Socket truyền dữ liệu trực tiếp bằng cách copy dữ liệu từ buffer của tiến trình A sang buffer của tiến trình B trong RAM thông qua Kernel:
+    $$Data \rightarrow Kernel\ Buffer \rightarrow Process$$
+    + Bỏ qua mọi overhead của giao thức mạng, giúp giảm latency và tăng throughput gấp 1.5 - 2 lần so với TCP Loopback.
+*Mô hình bảo mật*
+- TCP Socket:
+    + Bất kỳ tiến trình nào (hoặc máy khác trong mạng) biết IP:Port đều có thể gửi request đến.
+    + Việc phân quyền phụ thuộc vào ứng dụng tự xử lý (TLS/SSL, Token, Auth).
+- Unix Socket:
+    + Socket xuất hiện dưới dạng một file đặc biệt (socket file) trên ổ đĩa.
+    + Áp dụng trực tiếp cơ chế phân quyền tập tin chuẩn của POSIX (rwxrwxrwx). Bạn có thể giới hạn user/group nào được phép kết nối vào socket đó bằng chown và chmod.
+    
 ## QUY TRÌNH HOẠT ĐỘNG CỦA DOCKER
 - Tạo Docker Image: Đóng gói ứng dụng và các dependencies vào một Docker Image.
 - Lưu trữ Image: Đẩy Image lên Docker Registry (như Docker Hub).
