@@ -1,4 +1,2 @@
 # TÌM HIỂU VỀ OPENSTACK
 ## OPENSTACK LÀ GÌ ?
-
-
