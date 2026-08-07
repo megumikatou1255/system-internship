@@ -1,7 +1,7 @@
 # TÌM HIỂU VỀ ẢO HÓA (VIRTUALIATION)
 ## KHÁI NIỆM
 - Ảo hóa là một công nghệ cho phép tạo ra các phiên bản ảo của các tài nguyên vật lý như máy chủ, hệ thống lưu trữ hoặc mạng máy tính. Thay vì truy cập trực tiếp vào phần cứng, người dùng làm việc thông qua các tài nguyên “ảo” được tạo ra bằng phần mềm. Điều này giúp tối ưu hóa việc sử dụng phần cứng, cải thiện hiệu suất và nâng cao khả năng quản lý hệ thống.
-
+![](./images/virtualization_1.png)
 ## TẠI SAO PHẢI DÙNG ẢO HÓA
 - Ảo hóa đang ngày càng trở thành yếu tố then chốt trong quản lý hạ tầng công nghệ nhờ vào những lợi ích vượt trội mà nó mang lại cho doanh nghiệp. Khi áp dụng công nghệ này, doanh nghiệp có thể tối ưu hóa việc sử dụng tài nguyên hệ thống, giảm chi phí đầu tư và vận hành, đồng thời nâng cao tính linh hoạt trong quản lý cơ sở hạ tầng CNTT.
 
