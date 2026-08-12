@@ -59,6 +59,56 @@
     + VLAN: chia switch (do Linux Bridge tạo ra) thành các mạng LAN ảo, cô lập traffic giữa các VM trên các VLAN khác nhau của cùng 1 switch
     + FDB (forwarding database): chuyển tiếp các gói tin theo database để nâng cao hiệu năng switch. Database lưu các địa chỉ MAC mà nó học được. Khi gói tin Ethernet đến, bridge sẽ tìm kiếm trong database có chứa MAC address không. Nếu không, nó sẽ gửi gói tin đến tất cả các cổng (broadcast)
 
+
+## CÁC THÀNH PHẦN TRONG KVM
+Hệ thống KVM (Kernel-based Virtual Machine) được cấu thành từ 4 nhóm thành phần chính, hoạt động phối hợp giữa tầng Kernel Space (nhân Linux), tầng User Space (ứng dụng người dùng) và tầng Phân quyền/Quản trị:
+
+### Nhóm Module trong Nhân (Kernel Space Modules)
+Đây là các thành phần lõi nằm trực tiếp bên trong Linux Kernel, chịu trách nhiệm gia tốc phần cứng cho CPU và bộ nhớ RAM:
+- Module KVM chính (kvm.ko):
+    + Nằm trực tiếp trong Kernel Linux.
+    + Cung cấp cơ sở hạ tầng ảo hóa cốt lõi, quản lý bộ nhớ ảo, lập lịch vCPU.
+    + Tạo ra file thiết bị /dev/kvm làm cổng giao tiếp API cho các ứng dụng tầng User Space.
+- Module phần cứng CPU (kvm_intel.ko / kvm_amd.ko):
+    + Module phụ thuộc trực tiếp vào dòng CPU vật lý của máy chủ.
+    + Thao tác trực tiếp với các tập lệnh ảo hóa phần cứng (Intel VT-x hoặc AMD-V / SVM) để đưa vCPU của máy ảo chạy ở chế độ VMX Non-Root Mode, giúp câu lệnh máy ảo thực thi thẳng trên CPU thật.
+
+### Trình giả lập thiết bị (User Space Emulator)
+KVM không tự giả lập thiết bị ngoại vi, mà giao việc này cho QEMU:
+
+- QEMU (qemu-kvm):
+    + Chạy như một tiến trình (Linux Process) thông thường ở tầng User Space.
+    + Giả lập toàn bộ các thiết bị phần cứng phụ trợ mà CPU không tự xử lý được: BIOS/UEFI, cạc màn hình VGA, controller đĩa (SATA/IDE/NVMe), bàn phím, chuột, và chipset bus PCI.
+    + Giao tiếp với Kernel qua file /dev/kvm (bằng hàm ioctl()) để chuyển giao việc tính toán CPU/RAM cho KVM Kernel module xử lý.
+
+### Bộ trình điều khiển bán ảo hóa (Virtio Drivers)
+Bộ driver tối ưu hóa giao tiếp I/O giữa Máy ảo (Guest OS) và Máy chủ (Host OS):
+- virtio:
+    + Gồm các driver chạy trên cả Guest OS lẫn Host OS như virtio-net (mạng), virtio-blk / virtio-scsi (ổ đĩa), virtio-balloon (quản lý RAM động).
+    + Cho phép máy ảo bỏ qua bước giả lập phần cứng cũ kỹ của QEMU, trao đổi dữ liệu I/O qua một vùng nhớ chia sẻ (Shared Memory) trực tiếp với Host, giúp tốc độ mạng và đọc/ghi đĩa tiệm cận máy thật.
+
+### Tầng Thư viện và Công cụ Quản lý (Management Tools)
+Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng thay vì gõ các dòng lệnh QEMU phức tạp:
+
+- libvirt (libvirtd):
+    + Cung cấp bộ API C chuẩn hóa và một dịch vụ daemon chạy ngầm (libvirtd) để quản lý vòng đời máy ảo (tạo, bật, tắt, snapshot, cấu hình mạng/ổ đĩa).
+
+- Công cụ dòng lệnh (CLI):
+    + virsh: Trình quản lý máy ảo qua dòng lệnh chính (giao tiếp trực tiếp với libvirt).
+    + virt-install: Công cụ khởi tạo và định cấu hình máy ảo mới bằng lệnh.
+
+- Giao diện quản trị (GUI / Web Console):
+    + Proxmox VE / OpenStack: Các hệ điều hành/nền tảng quản trị Cloud doanh nghiệp lấy KVM làm lõi.
+    + Cockpit / virt-manager: Giao diện đồ họa/web giúp quản trị KVM trực quan.
+
+|       Thành phần       |      Vị trí      |                     Nhiệm vụ chính                    |
+|:----------------------:|:----------------:|:-----------------------------------------------------:|
+| kvm.ko & kvm_intel/amd | Kernel Space     | Điều phối vCPU, quản lý RAM ảo, gia tốc phần cứng     |
+| /dev/kvm               | System Device    | File cổng giao tiếp giữa User Space (QEMU) và Kernel  |
+| QEMU                   | User Space       | Giả lập phần cứng ngoại vi (Mạng, Đĩa, Graphics, Bus) |
+| Virtio                 | Guest & Host     | Tối ưu hóa tốc độ I/O qua cơ chế Paravirtualization   |
+| libvirt / virsh        | Management Layer | Thư viện API & Công cụ quản lý máy ảo                 |
+
 ## ƯU NHƯỢC ĐIỂM CỦA KVM
 ### ƯU ĐIỂM
 - *Khả năng linh hoạt*: Mặc dù máy chủ gốc được cài đặt Linux, KVM hỗ trợ tạo máy chủ ảo có thể chạy cả Linux và Windows. Bằng việc kết hợp với QEMU, KVM cũng có khả năng chạy Mac OS X. Hơn nữa, KVM cũng hỗ trợ cả hệ thống x86 và x86-64.
