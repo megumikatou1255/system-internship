@@ -78,5 +78,37 @@ Open vSwitch (OVS) là một phần mềm chuyển mạch ảo (virtual switch) 
 | Giao tiếp VM <-> Host? | Có                           | Có                         | Có                   | Không (trừ khi chỉnh sửa)  |
 | Hiệu năng I/O Mạng     | Trung bình                   | Tốt                        | Tốt                  | Cao nhất                   |
 
+## MÁY ẢO GIAO TIẾP VỚI MÁY HOST NHƯ THẾ NÀO
+- Khi ta kiểm tra lệnh `ip a` trên máy Host KVM và thấy xuất hiện virbr0 và vnet4, điều này có nghĩa là KVM/Libvirt đã tự động thiết lập một mạng ảo nội bộ (Virtual Bridge Network) và cắm card mạng ảo của máy ảo ubt24 vào mạng này.
+![network](./images/hypervisor_10.png)
 
+### virbr0 — Switch ảo (Virtual Bridge) của KVM
+`virbr0` (Virtual Bridge 0) đóng vai trò như một con Switch ảo kết hợp với Router/DHCP Server do KVM tự động tạo ra.
+- Dải mạng 192.168.122.1/24: Đây là IP gateway của máy Host đóng vai trò làm đầu nối cho các máy ảo kết nối ra ngoài. Mọi máy ảo cắm vào bridge này sẽ được dịch vụ dnsmasq cấp IP tự động trong dải 192.168.122.x.
+- Trạng thái state DOWN / NO-CARRIER:
+    + Dòng chữ này xuất hiện vì hiện tại chưa có máy ảo nào đang cắm vào virbr0 mà đang active truyền dữ liệu thực sự (hoặc giao diện mạng này đang ở trạng thái nhàn rỗi). Khi máy ảo ubt24 gửi/nhận dữ liệu mạng thực tế, trạng thái sẽ chuyển sang UP.
+
+### vnet4 — Dây mạng ảo (TAP Interface) của máy ảo ubt24
+`vnet4` (Virtual Network Interface #4) chính là đầu dây mạng ảo đại diện cho card mạng của máy ảo ubt24 ở phía máy Host.
+- Chỉ số vnet4: Số 4 chỉ đơn giản là định danh (ID) do Linux Kernel cấp tự động khi tạo giao diện mạng TAP cho máy ảo này.
+- Cụm từ master virbr0 (Cực kỳ quan trọng):
+    + Điều này có nghĩa là interface vnet4 đã được cắm trực tiếp vào switch ảo virbr0.
+    + Hãy tưởng tượng virbr0 là một ổ cắm điện/switch 8 cổng, thì vnet4 chính là một đầu dây LAN cắm từ máy ảo ubt24 vào một cổng trên ổ cắm virbr0 đó.
+- Trạng thái <LOWER_UP>:
+    + Báo hiệu cổng mạng này đang có kết nối vật lý/kỹ thuật số hoạt động (máy ảo ubt24 đang bật và giữ kết nối card mạng này).
+
+**Mô hình luồng dữ liệu**
+[ Máy ảo ubt24 ]
+       │ (Card eth0 bên trong VM)
+       ▼
+  [ vnet4 ]  <─── (Dây cáp mạng ảo phía Host)
+       │
+       ▼
+ [ virbr0 ]  <─── (Switch ảo / Gateway 192.168.122.1)
+       │
+       ▼  (Dùng NAT - Network Address Translation)
+ [ Card thật máy Host ] (eth0 / wlan0)
+       │
+       ▼
+ [ Internet / Router nhà mạng ]
 

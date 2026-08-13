@@ -45,6 +45,7 @@
     + Cung cấp chế độ quản lý từ xa an toàn
 
 # KVM HOẠT ĐỘNG NHƯ THẾ NÀO
+![kvm](./images/hypervisor_9.png)
 - Để các máy ảo giao tiếp được với nhau, KVM sử dụng Linux Bridge và OpenVSwitch, đây là 2 phần mềm cung cấp các giải pháp ảo hóa network
 - Linux Bridge là 1 phần mềm được tích hợp vào trong nhân của Linux để giải quyết các vấn đề ảo hóa phần network trong máy vật lý. Về mặt logic Linux bridge sẽ tạo ra 1 con switch ảo để cho các VM kết nối được vào và có thể nói chuyện được với nhau cũng như sử dụng để kết nối ra bên ngoài
 - Cấu trúc của Linux Bridge khi kết hợp với KVM-QEMU:
@@ -58,7 +59,6 @@
     + STP: Spanning Tree Protocol – giao thức chống lặp gói tin trong mạng
     + VLAN: chia switch (do Linux Bridge tạo ra) thành các mạng LAN ảo, cô lập traffic giữa các VM trên các VLAN khác nhau của cùng 1 switch
     + FDB (forwarding database): chuyển tiếp các gói tin theo database để nâng cao hiệu năng switch. Database lưu các địa chỉ MAC mà nó học được. Khi gói tin Ethernet đến, bridge sẽ tìm kiếm trong database có chứa MAC address không. Nếu không, nó sẽ gửi gói tin đến tất cả các cổng (broadcast)
-
 
 ## CÁC THÀNH PHẦN TRONG KVM
 Hệ thống KVM (Kernel-based Virtual Machine) được cấu thành từ 4 nhóm thành phần chính, hoạt động phối hợp giữa tầng Kernel Space (nhân Linux), tầng User Space (ứng dụng người dùng) và tầng Phân quyền/Quản trị:
@@ -122,4 +122,3 @@ Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng 
 - Yêu cầu máy chủ phải được trang bị phần cứng mạnh mẽ.
 - Để triển khai KVM, việc tìm hiểu và học hỏi có thể mất một khoảng thời gian đáng kể.
 - Do tập trung hóa phần cứng, rủi ro về sự cố tăng cao trong trường hợp hệ thống gặp lỗi.
-

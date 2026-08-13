@@ -2,6 +2,7 @@
 ## MÔ TẢ
 - Thực hiện live migration một máy ảo Ubuntu Server 24.04 từ VM1 -> VM2
 - Mô hình sẽ bao gồm 1 NFS Server chạy trên Ubuntu Server 24.04 (192.168.100.10) - dùng để lưu trữ các disk, VM1 (192.168.100.50), VM2 (192.168.100.60). Thực hiện chuyển 1 máy ảo ubt24 từ VM1 sang VM2
+
 ## THỰC HÀNH
 **Trên máy ảo NFS Server**
 - Cài đặt dịch vụ NFS Server 
@@ -12,7 +13,7 @@
 sudo mkdir -p /var/lib/libvirt/nfs-images
 sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/nfs-images
 ```
-
+**Lưu ý**
 Trong trường hợp chạy đến câu lệnh thứ 2 bị lỗi thì chạy 2 câu lệnh sau đây sau đó thì chạy lại câu lệnh `sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/nfs-images`
 ```bash
 sudo groupadd -f kvm
@@ -50,6 +51,8 @@ sudo ufw allow 2049/udp
 sudo ufw reload
 sudo systemctl daemon-reload
 ```
+![lab](./images/10.png)
+
 - Sau đó dùng lệnh `df -h` để kiểm tra, nếu báo như ảnh thì là thành công
 ![](./images/8.png)
 *Cấu hình SSH không cần mật khẩu từ VM1 sang VM2*
@@ -69,6 +72,8 @@ listen_tls = 0
 listen_tcp = 1
 auth_tcp = "none"
 ```
+![lab](./images/11.png)
+
 - Mở file cấu hình service để thêm cờ lắng nghe mạng
 `sudo systemctl edit libvirtd`
 
@@ -88,6 +93,26 @@ sudo systemctl restart libvirtd
 - Đầu tiên ta sẽ khởi chạy máy ảo cần live migration bằng câu lệnh `virsh start tên_máy_ảo`
 - Từ VM1 sử dụng câu lệnh để thực hiện live migration từ VM1 sang VM2
 `virsh migrate --live --persistent --undefinesource --verbose ubt24 qemu+ssh://tranbao@192.168.100.60/system`
+![lab](./images/12.png)
+
+**Giải thích về câu lệnh**
+`virsh migrate`: Câu lệnh cốt lõi của công cụ virsh dùng để yêu cầu hệ thống chuyển một máy ảo từ máy chủ hiện tại sang một máy chủ đích khác.
+
+`--live`: Yêu cầu thực hiện di chuyển trực tiếp (Live Migration). Máy ảo vẫn đang chạy, các ứng dụng bên trong vẫn hoạt động bình thường trong suốt quá trình chuyển đổi sang máy chủ mới mà không bị ngắt quãng hay mất dịch vụ.
+
+`--persistent`: Đảm bảo rằng sau khi chuyển sang máy chủ đích, cấu hình của máy ảo sẽ được lưu lại vĩnh viễn (persistent) trên máy đó. Nếu máy chủ đích khởi động lại, máy ảo vẫn nằm trong danh sách quản lý.
+
+`--undefinesource`: Sau khi quá trình di chuyển sang máy chủ mới diễn ra thành công toàn bộ, cấu hình và trạng thái của máy ảo sẽ tự động bị xóa bỏ (undefine) khỏi máy chủ nguồn cũ để tránh việc một máy ảo bị trùng lặp quản lý ở cả hai nơi.
+
+`--verbose`: Hiển thị thanh tiến trình trực quan (thông báo phần trăm hoàn thành) ngay trên màn hình Terminal để bạn dễ dàng theo dõi quá trình truyền tải dữ liệu giữa hai máy chủ.
+
+`ubt24`: Tên của máy ảo mà bạn muốn di chuyển (trong trường hợp này là máy ảo ubt24).
+
+`qemu+ssh://tranbao@192.168.100.50/system`:
+- Đây là URI kết nối cho biết máy ảo sẽ được chuyển đi đâu và kết nối bằng phương thức gì:
+    + qemu+ssh://: Sử dụng giao thức SSH để truyền tải dữ liệu điều khiển một cách bảo mật giữa hai máy chủ.
+    + tranbao@192.168.100.50: Tên tài khoản đăng nhập và địa chỉ IP của máy chủ đích nhận máy ảo.
+    + /system: Kết nối vào tiến trình quản lý hệ thống ảo hóa của libvirt trên máy chủ đích đó.
 
 **Lưu ý**
 - Trong trường hợp máy ảo đã được tạo trước khi mount thư mục chứa disk image của VM1 2 vào thư mục trên NFS Server thì ta thực hiện theo thứ tự sau
