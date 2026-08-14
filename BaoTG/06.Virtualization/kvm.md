@@ -75,7 +75,6 @@ Hệ thống KVM (Kernel-based Virtual Machine) được cấu thành từ 4 nh�
 
 ### Trình giả lập thiết bị (User Space Emulator)
 KVM không tự giả lập thiết bị ngoại vi, mà giao việc này cho QEMU:
-
 - QEMU (qemu-kvm):
     + Chạy như một tiến trình (Linux Process) thông thường ở tầng User Space.
     + Giả lập toàn bộ các thiết bị phần cứng phụ trợ mà CPU không tự xử lý được: BIOS/UEFI, cạc màn hình VGA, controller đĩa (SATA/IDE/NVMe), bàn phím, chuột, và chipset bus PCI.
@@ -89,7 +88,6 @@ Bộ driver tối ưu hóa giao tiếp I/O giữa Máy ảo (Guest OS) và Máy 
 
 ### Tầng Thư viện và Công cụ Quản lý (Management Tools)
 Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng thay vì gõ các dòng lệnh QEMU phức tạp:
-
 - libvirt (libvirtd):
     + Cung cấp bộ API C chuẩn hóa và một dịch vụ daemon chạy ngầm (libvirtd) để quản lý vòng đời máy ảo (tạo, bật, tắt, snapshot, cấu hình mạng/ổ đĩa).
 
@@ -122,3 +120,30 @@ Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng 
 - Yêu cầu máy chủ phải được trang bị phần cứng mạnh mẽ.
 - Để triển khai KVM, việc tìm hiểu và học hỏi có thể mất một khoảng thời gian đáng kể.
 - Do tập trung hóa phần cứng, rủi ro về sự cố tăng cao trong trường hợp hệ thống gặp lỗi.
+
+## CÁC THÀNH PHẦN QUAN TRỌNG TRONG KVM VÀ CHỨC NĂNG CỦA CHÚNG
+### KVM
+- Nó là gì: KVM là một mô-đun mã nguồn mở được tích hợp trực tiếp vào bên trong Linux Kernel (nhân hệ điều hành). Khi bật KVM, nó biến nhân Linux trở thành một Type-1 Hypervisor (Hypervisor chạy trực tiếp trên phần cứng).
+- Tác dụng & Vai trò:
+
+    + Chịu trách nhiệm ảo hóa phần cứng cốt lõi của máy chủ (CPU và RAM).
+    + Tận dụng các công nghệ phần cứng chuyên dụng (Intel VT-x hoặc AMD-V) để phân tách rõ ràng giữa phân vùng của Host (máy chủ vật lý) và Guest (máy ảo).
+    + Thông qua tệp thiết bị /dev/kvm, nó trực tiếp quản lý việc lập lịch và cấp phát chu kỳ CPU cho các máy ảo chạy với tốc độ gần như phần cứng thật (Bare-metal).
+
+### QEMU
+- Nó là gì: Một phần mềm giả lập và ảo hóa phần cứng mã nguồn mở chạy ở không gian người dùng (userspace).
+- Tác dụng & Vai trò:
+    + KVM chỉ lo phần CPU và RAM, còn QEMU đảm nhận phần việc còn lại: giả lập toàn bộ các thiết bị ngoại vi mà máy ảo nhìn thấy (như ổ đĩa cứng, card mạng, bàn phím, chuột, card màn hình, bo mạch chủ, v.v.).
+    + Mỗi máy ảo khi khởi động thực chất là một tiến trình Linux tiêu chuẩn được vận hành thông qua sự kết hợp nhịp nhàng giữa KVM (xử lý CPU/RAM) và QEMU (xử lý thiết bị).
+
+### LIBVIRT
+- Nó là gì: Là một bộ công cụ lập trình (C/C++ API, Python bindings, v.v.) và các công cụ dòng lệnh (như virsh, virt-install) dùng để quản lý các công nghệ ảo hóa (chủ yếu là KVM/QEMU).
+- Tác dụng & Vai trò:
+    + Đóng vai trò là lớp trung gian (Abstraction Layer) giúp đơn giản hóa việc quản lý. Thay vì bắt buộc người dùng phải gõ những câu lệnh tham số QEMU thô cực kỳ phức tạp và dài dòng, Libvirt chuẩn hóa mọi thứ thông qua các tệp cấu hình XML và các câu lệnh trực quan (virsh start, virsh define, virsh migrate).
+    + Cung cấp các API mạnh mẽ để các nền tảng đám mây lớn (như OpenStack) hoặc các công cụ tự động hóa tự động điều phối hàng loạt máy ảo.
+
+### LIBVIRTD
+- Nó là gì: Là một tiến trình dịch vụ ngầm (system service) chạy xuyên suốt trên hệ điều hành Host (ví dụ: libvirtd.service).
+- Tác dụng & Vai trò:
+    + Lắng nghe liên tục các yêu cầu từ người quản trị (thông qua lệnh virsh hoặc các giao diện quản lý như Virt-Manager).
+    + Nhận lệnh, biên dịch các tệp cấu hình XML, sau đó trực tiếp ra lệnh và điều khiển các tiến trình QEMU/KVM ở bên dưới tầng hệ thống để thực hiện các thao tác như tạo, tắt, bật, cấu hình hoặc di chuyển máy ảo.
