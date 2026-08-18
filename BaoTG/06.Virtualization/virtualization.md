@@ -2,11 +2,10 @@
 ## KHÁI NIỆM
 - Ảo hóa là một công nghệ cho phép tạo ra các phiên bản ảo của các tài nguyên vật lý như máy chủ, hệ thống lưu trữ hoặc mạng máy tính. Thay vì truy cập trực tiếp vào phần cứng, người dùng làm việc thông qua các tài nguyên “ảo” được tạo ra bằng phần mềm. Điều này giúp tối ưu hóa việc sử dụng phần cứng, cải thiện hiệu suất và nâng cao khả năng quản lý hệ thống.
 ![](./images/virtualization_1.png)
+
 ## TẠI SAO PHẢI DÙNG ẢO HÓA
 - Ảo hóa đang ngày càng trở thành yếu tố then chốt trong quản lý hạ tầng công nghệ nhờ vào những lợi ích vượt trội mà nó mang lại cho doanh nghiệp. Khi áp dụng công nghệ này, doanh nghiệp có thể tối ưu hóa việc sử dụng tài nguyên hệ thống, giảm chi phí đầu tư và vận hành, đồng thời nâng cao tính linh hoạt trong quản lý cơ sở hạ tầng CNTT.
-
 - Thông qua ảo hóa, các máy chủ vật lý được khai thác hiệu quả hơn, giúp giảm nhu cầu đầu tư phần cứng mới mà vẫn đảm bảo hiệu suất hoạt động. Ngoài ra, khả năng mở rộng hệ thống trở nên đơn giản và nhanh chóng, đáp ứng tốt các yêu cầu thay đổi trong môi trường kinh doanh hiện đại, nơi mà sự linh hoạt và tốc độ là yếu tố sống còn.
-
 - Một điểm nổi bật khác của ảo hóa là khả năng hỗ trợ doanh nghiệp chuyển đổi sang mô hình hạ tầng như một dịch vụ (IaaS - Infrastructure as a Service). Nhờ đó, doanh nghiệp, đặc biệt là các startup, có thể triển khai hệ thống hạ tầng mà không cần đầu tư lớn vào máy chủ vật lý hay phần cứng. Họ chỉ cần thuê tài nguyên máy chủ ảo từ nhà cung cấp dịch vụ đám mây và chỉ trả chi phí cho những gì đã sử dụng, giúp tiết kiệm tối đa ngân sách.
 
 ## LỢI ÍCH CỦA ẢO HÓA
@@ -142,3 +141,6 @@ Phần cứng CPU x86 được thiết kế với 4 mức đặc quyền, đánh
     + Ảo hóa máy chủ: Tạo ra nhiều máy ảo (VM) trên một máy chủ vật lý duy nhất, giúp tối ưu hóa hiệu suất và linh hoạt trong việc phân bổ tài nguyên trong môi trường đám mây.
     + Ảo hóa lưu trữ: Kết hợp nhiều thiết bị lưu trữ thành không gian lưu trữ ảo thống nhất, giúp mở rộng dung lượng, tăng tính bảo mật và đơn giản hóa quản lý dữ liệu.
 - Nhờ sự hỗ trợ từ công nghệ ảo hóa, các dịch vụ đám mây có thể cung cấp tài nguyên tính toán, lưu trữ và mạng theo mô hình "trả theo nhu cầu", cho phép doanh nghiệp truy cập và sử dụng mọi lúc, mọi nơi mà không cần đầu tư vào hạ tầng vật lý đắt đỏ.
+
+## Hypervisor và container (Docker) khác nhau như thế nào?
+- Hypervisor ảo hóa ở cấp phần cứng — mỗi VM có kernel OS riêng, tách biệt hoàn toàn. Container (Docker, LXC) ảo hóa ở cấp OS — các container dùng chung kernel với host. Isolation của hypervisor mạnh hơn: VM A bị compromise không ảnh hưởng VM B vì chúng không dùng chung kernel. Container ngược lại: nhẹ hơn, khởi động trong vài giây thay vì vài phút, nhưng ít cô lập hơn.

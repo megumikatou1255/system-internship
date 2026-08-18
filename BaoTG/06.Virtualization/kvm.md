@@ -146,3 +146,4 @@ Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng 
 - Tác dụng & Vai trò:
     + Lắng nghe liên tục các yêu cầu từ người quản trị (thông qua lệnh virsh hoặc các giao diện quản lý như Virt-Manager).
     + Nhận lệnh, biên dịch các tệp cấu hình XML, sau đó trực tiếp ra lệnh và điều khiển các tiến trình QEMU/KVM ở bên dưới tầng hệ thống để thực hiện các thao tác như tạo, tắt, bật, cấu hình hoặc di chuyển máy ảo.
+

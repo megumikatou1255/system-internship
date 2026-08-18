@@ -125,3 +125,31 @@ virsh snapshot-info --domain tên_máy_ảo --snapshotname tên_snapshot
 **Virt-Manager**
 - Ngoài ra ta có thể sử dụng `virt-manager` để tạo một máy ảo bằng GUI
 ![](./images/7.png)
+
+## 1 VM CÓ NHỮNG TIẾN TRÌNH NÀO
+- Khi ta khởi động 1 máy ảo, ta sẽ dùng lệnh `ps aux | grep qemu`, màn hình sẽ trả về tiến trình liên quan đến máy ảo
+![lab](./images/15.png)
+- Đây chính là tiến trình chính, ngoài ra sẽ còn có các tiến trình dịch vụ phụ trợ
+- Để có thể xem được các tiến trình con thì ta sẽ sử dụng câu lệnh `ps -T -p <PID_máy_ảo>`
+![lab](./images/16.png)
++ 5046 - CPU 0/KVM & 5047 - CPU 1/KVM (vCPU Threads):
+    * Đây là 2 vCPU ảo của máy ảo ubt24.
+    * Mỗi vCPU là một luồng chạy trực tiếp thông qua module kernel /dev/kvm để xử lý các phép tính/chương trình bên trong hệ điều hành máy ảo.
+
++ 5034 & 5042 - qemu-system-x86 (Main Event Loop & Emulator Threads):
+    * Luồng chính điều khiển toàn bộ tiến trình, chịu trách nhiệm quản lý vòng lặp sự kiện (event loop), ngắt phần cứng giả lập và nhận lệnh điều khiển từ libvirtd.
+
++ 5044 - vhost-5034 (Kernel-level Virtio Network):
+    * Luồng tăng tốc mạng ở tầng Kernel (vhost-net). Nó giúp gói tin mạng từ máy ảo truyền thẳng qua bridge br0 mà không cần phải chuyển ngữ qua lại tốn tài nguyên giữa Kernel space và User space.
+
++ 5045 - IO mon_iothread (I/O Monitor Thread):
+    * Luồng giám sát và xử lý I/O bất đồng bộ, đảm bảo các giao tiếp điều khiển (monitor console, socket) không bị nghẽn.
+
++ 5049 - vnc_worker (Remote Display Thread):
+    * Luồng chịu trách nhiệm render và truyền tải hình ảnh đồ họa/màn hình console của máy ảo qua giao thức VNC tới Virt-Manager hoặc remote viewer.
+
++ 5050 - kvm-nx-lpage-re (KVM NX Large Page Recovery):
+    * Luồng bảo mật và quản lý bộ nhớ của KVM Kernel, chuyên xử lý/tái cấu trúc lại các trang nhớ lớn (Huge Pages) để vá các lỗ hổng phần cứng liên quan đến CPU (như iTLB multihit / NX page).
+
++ 5137 - worker (Disk/Task I/O Worker):
+    * Luồng luân phiên đọc/ghi dữ liệu thực tế xuống file đĩa ảo .qcow2 của máy ảo.
