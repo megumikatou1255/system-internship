@@ -125,7 +125,6 @@ Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng 
 ### KVM
 - Nó là gì: KVM là một mô-đun mã nguồn mở được tích hợp trực tiếp vào bên trong Linux Kernel (nhân hệ điều hành). Khi bật KVM, nó biến nhân Linux trở thành một Type-1 Hypervisor (Hypervisor chạy trực tiếp trên phần cứng).
 - Tác dụng & Vai trò:
-
     + Chịu trách nhiệm ảo hóa phần cứng cốt lõi của máy chủ (CPU và RAM).
     + Tận dụng các công nghệ phần cứng chuyên dụng (Intel VT-x hoặc AMD-V) để phân tách rõ ràng giữa phân vùng của Host (máy chủ vật lý) và Guest (máy ảo).
     + Thông qua tệp thiết bị /dev/kvm, nó trực tiếp quản lý việc lập lịch và cấp phát chu kỳ CPU cho các máy ảo chạy với tốc độ gần như phần cứng thật (Bare-metal).

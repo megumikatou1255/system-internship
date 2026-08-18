@@ -16,56 +16,46 @@ RAW là định dạng mặc định đơn giản nhất. Nó lưu trữ dữ li
     + Thiếu tính năng nâng cao: Không hỗ trợ tạo Snapshot nội bộ (Internal Snapshot), không hỗ trợ nén (Compression) hay mã hóa (Encryption) trực tiếp trên file đĩa.
 
 ### QCOW2 (QEMU COPY-ON-WRITE v2)
-QCOW2 là định dạng thế hệ thứ hai được phát triển riêng và tối ưu hóa hoàn toàn cho hệ sinh thái KVM / QEMU.
+- QCOW2 là định dạng thế hệ thứ hai được phát triển riêng và tối ưu hóa hoàn toàn cho hệ sinh thái KVM / QEMU.
+- Đặc điểm:
+    + Cấp phát linh hoạt (Thin Provisioning): Khi bạn tạo đĩa 50GB, file ban đầu chỉ chiếm vài Megabyte và sẽ tự động nới rộng dung lượng khi máy ảo ghi thêm dữ liệu.
+    + Cơ chế Copy-On-Write (CoW): Cho phép tạo ra các đĩa ảo dựa trên một đĩa gốc (Base Image), chỉ lưu lại các dữ liệu thay đổi.
 
-Đặc điểm:
-Cấp phát linh hoạt (Thin Provisioning): Khi bạn tạo đĩa 50GB, file ban đầu chỉ chiếm vài Megabyte và sẽ tự động nới rộng dung lượng khi máy ảo ghi thêm dữ liệu.
+**Ưu điểm**:
+- Tiết kiệm không gian lưu trữ: Giúp tối ưu hóa dung lượng ổ đĩa vật lý của máy chủ.
+- Hỗ trợ Snapshot mạnh mẽ: Tạo, quản lý và khôi phục các điểm sao lưu (Snapshot) của máy ảo cực kỳ nhanh chóng.
+- Tích hợp sẵn Nén & Mã hóa: Hỗ trợ nén dữ liệu (zlib/zstd) và mã hóa cấp đĩa (AES) giúp tăng cường bảo mật.
+- Hỗ trợ Backing File: Dễ dàng nhân bản (Clone) hàng loạt máy ảo từ một file hệ điều hành mẫu chung (Golden Image).
 
-Cơ chế Copy-On-Write (CoW): Cho phép tạo ra các đĩa ảo dựa trên một đĩa gốc (Base Image), chỉ lưu lại các dữ liệu thay đổi.
-
-Ưu điểm:
-Tiết kiệm không gian lưu trữ: Giúp tối ưu hóa dung lượng ổ đĩa vật lý của máy chủ.
-
-Hỗ trợ Snapshot mạnh mẽ: Tạo, quản lý và khôi phục các điểm sao lưu (Snapshot) của máy ảo cực kỳ nhanh chóng.
-
-Tích hợp sẵn Nén & Mã hóa: Hỗ trợ nén dữ liệu (zlib/zstd) và mã hóa cấp đĩa (AES) giúp tăng cường bảo mật.
-
-Hỗ trợ Backing File: Dễ dàng nhân bản (Clone) hàng loạt máy ảo từ một file hệ điều hành mẫu chung (Golden Image).
-
-Nhược điểm:
-Hiệu năng I/O thấp hơn RAW: Do phải xử lý lớp metadata để tra cứu vị trí dữ liệu và tốn tài nguyên cấp phát đĩa động.
-
-Nguy cơ phân mảnh dữ liệu (Fragmentation): Do file liên tục nở rộng và ghi ngắt quãng trên đĩa thật, dẫn đến việc đọc/ghi lâu ngày bị chậm đi.
+**Nhược điểm**:
+- Hiệu năng I/O thấp hơn RAW: Do phải xử lý lớp metadata để tra cứu vị trí dữ liệu và tốn tài nguyên cấp phát đĩa động.
+- Nguy cơ phân mảnh dữ liệu (Fragmentation): Do file liên tục nở rộng và ghi ngắt quãng trên đĩa thật, dẫn đến việc đọc/ghi lâu ngày bị chậm đi.
 
 ## VMDK (VIRTUAL MACHINE DISK)
-VMDK là định dạng chuẩn được phát triển bởi VMware, được KVM/QEMU hỗ trợ đọc/ghi thông qua công cụ qemu-img.
+- VMDK là định dạng chuẩn được phát triển bởi VMware, được KVM/QEMU hỗ trợ đọc/ghi thông qua công cụ qemu-img.
 
-Đặc điểm:
-Được thiết kế để chạy mượt mà trên hệ sinh thái VMware vSphere / ESXi / Workstation.
+- Đặc điểm:
+    + Được thiết kế để chạy mượt mà trên hệ sinh thái VMware vSphere / ESXi / Workstation.
+    + Hỗ trợ cả hai chế độ cấp phát: Cấp phát trước (Thick) hoặc Cấp phát động (Thin), cũng như chia nhỏ file đĩa thành các file 2GB.
 
-Hỗ trợ cả hai chế độ cấp phát: Cấp phát trước (Thick) hoặc Cấp phát động (Thin), cũng như chia nhỏ file đĩa thành các file 2GB.
+**Ưu điểm**:
+- Tính linh hoạt cao: Dễ dàng di chuyển (Migrate) máy ảo qua lại giữa môi trường VMware và KVM.
+- Hỗ trợ đầy đủ các tính năng nâng cao khi chạy trong môi trường VMware gốc.
 
-Ưu điểm:
-Tính linh hoạt cao: Dễ dàng di chuyển (Migrate) máy ảo qua lại giữa môi trường VMware và KVM.
-
-Hỗ trợ đầy đủ các tính năng nâng cao khi chạy trong môi trường VMware gốc.
-
-Nhược điểm:
-Hiệu năng không tối ưu trên KVM: Khi chạy VMDK trên KVM, KVM phải chuyển đổi lệnh qua lớp giả lập của QEMU, làm suy giảm hiệu năng I/O.
-
-Không tận dụng được trọn vẹn các tính năng quản lý snapshot hay clone mượt mà như QCOW2 trên KVM.
+**Nhược điểm**:
+- Hiệu năng không tối ưu trên KVM: Khi chạy VMDK trên KVM, KVM phải chuyển đổi lệnh qua lớp giả lập của QEMU, làm suy giảm hiệu năng I/O.
+- Không tận dụng được trọn vẹn các tính năng quản lý snapshot hay clone mượt mà như QCOW2 trên KVM.
 
 ## VHD/VHDX (VIRTUAL HARD DISK)
-VHD và thế hệ mới VHDX là định dạng đĩa ảo độc quyền do Microsoft phát triển dành cho Hyper-V và Windows Server.
+- VHD và thế hệ mới VHDX là định dạng đĩa ảo độc quyền do Microsoft phát triển dành cho Hyper-V và Windows Server.
+- Đặc điểm:
+    + VHDX hỗ trợ dung lượng ổ đĩa lên tới 64TB và có khả năng chống hỏng dữ liệu khi mất điện ngột ngột nhờ cơ chế ghi Log.
 
-Đặc điểm:
-VHDX hỗ trợ dung lượng ổ đĩa lên tới 64TB và có khả năng chống hỏng dữ liệu khi mất điện ngột ngột nhờ cơ chế ghi Log.
+**Ưu điểm**:
+- Dễ dàng chuyển đổi và di chuyển các máy ảo chạy từ Windows Hyper-V sang hệ thống KVM.
 
-Ưu điểm:
-Dễ dàng chuyển đổi và di chuyển các máy ảo chạy từ Windows Hyper-V sang hệ thống KVM.
-
-Nhược điểm:
-KVM chỉ hỗ trợ VHD/VHDX ở mức cơ bản (phục vụ mục đích convert/migrate). Không nên dùng VHDX làm định dạng chạy chính thức lâu dài trên KVM.
+**Nhược điểm**:
+- KVM chỉ hỗ trợ VHD/VHDX ở mức cơ bản (phục vụ mục đích convert/migrate). Không nên dùng VHDX làm định dạng chạy chính thức lâu dài trên KVM.
 
 ## SO SÁNH RAW VÀ QCOW2
 | Tiêu chí                   | RAW                                                                                                                              | QCOW2                                                                                                                                     |   |   |

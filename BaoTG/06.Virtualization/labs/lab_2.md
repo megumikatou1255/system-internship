@@ -55,29 +55,35 @@ network:
 
 - Sau đó sử dụng câu lệnh `sudo netplan apply` để áp dụng cấu hình mới
 - Tiến hành sửa đổi cấu hình mạng của 2 máy ảo trên 2 Host, sử dụng câu lệnh `virsh edit tên_máy_ảo`
-- Sau đó tìm đến phần `interface` và sửa đổi cấu hình như sau
+- Sau đó tìm đến phần `interface` và sửa đổi cấu hình như sau rồi lưu lại
 ![lab](./images/14.png)
 
+- Tiến hành boot máy ảo và cấu hình IP của từng máy ảo
+- Truy cập vào file cấu hình netplan và cấu hình IP tĩnh cho từng máy
+`sudo nano /etc/netplan/50-cloud-init.yaml`
 
+- Chỉnh sửa nội dung trong file cấu hình như sau:
+```bash
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens33: # thay đổi tên card dựa vào tên card trên máy ảo
+      addresses:
+        - 192.168.100.160/24
+      routes:
+        - to: default
+          via: 192.168.100.2
+      nameservers:
+        addresses:
+          - 8.8.8.8
+```
+- Lưu lại file cấu hình và áp dụng thay đổi
+`sudo netplan apply`
 
+- Sau đó tiến hành ping từ máy VM1 (.150) sang máy VM2 (.160) và ngược lại
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-> Như vậy ta đã cấu hình thành công Bridge Network và nhận ra sự khác biệt giữa mô hình NAT và Bridge
 
 
 
