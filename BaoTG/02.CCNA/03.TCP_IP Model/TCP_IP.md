@@ -100,6 +100,7 @@ Tầng Ứng dụng không phải là bản thân các ứng dụng (như Chrome
 + _Định dạng dữ liệu_: Đảm bảo dữ liệu từ ứng dụng được chuyển đổi sang định dạng mà các tầng bên dưới có thể hiểu và ngược lại (ví dụ: mã hóa văn bản, nén dữ liệu).
 + _Xác thực và cấp phép_: Xử lý việc đăng nhập, kiểm tra quyền truy cập của người dùng đối với các dịch vụ mạng.
 - **Các giao thức tiêu biểu**
+
 | Giao thức  | Tên đầy đủ                                              | Công dụng                                                                                                |
 |------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 | HTTP/HTTPS | Hypertext Transfer Protocol                             | Dùng để truyền tải các trang web (văn bản, hình ảnh, video) giữa Web Server và trình duyệt.              |
