@@ -20,10 +20,12 @@
 - Nếu đặt tất cả các bit ở phần host là 1 thì số cuối cùng của địa chỉ IP là 255. Khi đó địa chỉ này sẽ là một địa chỉ broadcast của mạng đó. Ví dụ: 192.168.10.255 là một địa chỉ broadcast.
 
 ## 4. Các thành phần của IPv4
-Gồm 2 phần chính: 
+Gồm 2 phần chính:
+
 ![Network ID](./images/network_id.png)
 
 - **Network ID** : xác định mạng mà thiết bị đó thuộc về
+
 ![Host ID](./images/host_id.png)
 
 - **Host ID** : xác định cụ thể thiết bị trong mạng đó

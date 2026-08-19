@@ -1,31 +1,6 @@
 # COMMAND LINUX
 **Cấu trúc thư mục của Linux**
-/ (Thư mục Gốc tối cao - Khởi nguồn của mọi file và thư mục)
-├── bin/              # Lệnh thực thi cơ bản cho TẤT CẢ người dùng (ls, cat, ping...)
-├── boot/             # Tệp tin phục vụ khởi động (Kernel, Grub cấu hình...)
-├── dev/              # Quản lý thiết bị phần cứng dạng tệp tin (ổ cứng sda, cdrom...)
-├── etc/              # Đầu não chứa toàn bộ FILE CẤU HÌNH của hệ thống và dịch vụ
-│   ├── init.d/       # Các tập lệnh quản lý bật/tắt dịch vụ (đời cũ)
-│   ├── nginx/        # File cấu hình của máy chủ Web Nginx
-│   └── ssh/          # File cấu hình dịch vụ OpenSSH kết nối từ xa
-├── home/             # Thư mục chứa dữ liệu cá nhân của các người dùng thường
-│   └── user/         # Vùng dữ liệu riêng của người dùng tên là 'user'
-├── lib/              # Các thư viện hệ thống dùng chung (tương tự file .dll của Windows)
-├── media/            # Điểm tự động gắn kết (Mount) thiết bị di động (USB, đĩa DVD...)
-├── mnt/              # Thư mục để người quản trị gắn kết (Mount) ổ đĩa thủ công
-├── opt/              # Nơi cài đặt các phần mềm tùy chọn của bên thứ ba (Chrome, Zoom...)
-├── proc/             # Thư mục ảo chứa thông tin hệ thống và các tiến trình đang chạy
-├── root/             # Thư mục cá nhân riêng biệt của tài khoản tối cao Root User
-├── sbin/             # Lệnh thực thi hệ thống nâng cao dành cho QUẢN TRỊ VIÊN (reboot, fdisk...)
-├── tmp/              # Chứa các file tạm thời (thường bị XÓA SẠCH khi khởi động lại máy)
-├── usr/              # Chứa tài nguyên, chương trình và lệnh của phần mềm cài thêm
-│   ├── bin/          # Các lệnh thực thi của người dùng cài thêm (python, git, curl...)
-│   ├── lib/          # Các thư viện đi kèm của phần mềm cài thêm
-│   └── share/        # Các tệp dữ liệu dùng chung (tài liệu hướng dẫn, giao diện...)
-└── var/              # Chứa dữ liệu biến động liên tục trong quá trình máy chạy
-    ├── log/          # NƠI CHỨA FILE LOG NHẬT KÝ (Quan trọng nhất để Tester check lỗi)
-    ├── cache/        # Dữ liệu bộ nhớ đệm (Cache) của ứng dụng
-    └── tmp/          # Các file tạm thời do ứng dụng tự tạo ra
+![Cấu trúc cây thư mục](./images/overview_3.png)
 
 ## I. LINUX COMMAND LÀ GÌ ?
 - Linux Command (Lệnh Linux) hiểu một cách đơn giản nhất chính là các câu lệnh bằng chữ mà bạn gõ vào màn hình Terminal để ra lệnh cho hệ điều hành Linux thực hiện một yêu cầu nào đó (như tạo thư mục, cấu hình mạng, tắt máy, hay kiểm tra file log)

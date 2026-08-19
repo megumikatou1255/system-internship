@@ -12,7 +12,8 @@ BIOS/UEFI -> BootLoader (GRUB) -> Kernel (Linux) -> systemd (pid = 1)
 - systemd không quản lý hệ thống bằng các đoạn script rời rạc mà đóng gói mọi thực thể thành các Unit (Đơn vị cấu hình) được định nghĩa qua các file text (thường nằm ở `/lib/systemd/system/` hoặc `/etc/systemd/system/`).
 ![systemd](../images/systemd_1.png)
 
-- Trong trường hợp không nhớ đường dẫn của service mà ta muốn xem nội dung trong file cấu hình của service, ta sẽ sử dụng câu lệnh `systemctl cat service_name`
+- Trong trường hợp không nhớ đường dẫn của service mà ta muốn xem nội dung trong file cấu hình của service, ta sẽ sử dụng
+câu lệnh `systemctl cat service_name`
 Ví dụ:
 ![systemd](./images/systemd_5.png)
 

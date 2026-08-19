@@ -14,11 +14,9 @@ VLAN đã làm rất tốt nhiệm vụ của nó trong hàng chục năm qua, n
 
 ## KIẾN TRÚC VÀ THÀNH PHẦN CỦA VXLAN
 1. VTEP (VXLAN Tunnel Endpoint)
-Đây là thiết bị chịu trách nhiệm đóng gói và xé gói dữ liệu. VTEP có thể là một thiết bị cứng (Switch vật lý hỗ trợ VXLAN) hoặc thiết bị mềm (như Switch ảo Open vSwitch, hoặc chính Nhân Kernel Linux của máy chủ ảo hóa).
-
-Khi máy ảo gửi gói tin đi: VTEP nguồn sẽ nhận lấy gói tin L2, bọc thêm tiêu đề (Header) VXLAN, bọc tiếp IP của VTEP đích rồi ném ra mạng L3.
-
-Khi nhận gói tin đến: VTEP đích sẽ gỡ bỏ các lớp vỏ bọc bên ngoài, trả lại gói tin L2 nguyên bản cho máy ảo đích.
++ Đây là thiết bị chịu trách nhiệm đóng gói và xé gói dữ liệu. VTEP có thể là một thiết bị cứng (Switch vật lý hỗ trợ VXLAN) hoặc thiết bị mềm (như Switch ảo Open vSwitch, hoặc chính Nhân Kernel Linux của máy chủ ảo hóa).
++ Khi máy ảo gửi gói tin đi: VTEP nguồn sẽ nhận lấy gói tin L2, bọc thêm tiêu đề (Header) VXLAN, bọc tiếp IP của VTEP đích rồi ném ra mạng L3.
++ Khi nhận gói tin đến: VTEP đích sẽ gỡ bỏ các lớp vỏ bọc bên ngoài, trả lại gói tin L2 nguyên bản cho máy ảo đích.
 
 2. VNI (VXLAN Network Identifier)
 Đây chính là "ID thẻ căn cước" của mạng VXLAN, tương tự như VLAN ID nhưng dài tới 24-bit. Chỉ các máy ảo cấu hình chung một mã VNI mới có thể nói chuyện trực tiếp được với nhau.
@@ -29,23 +27,23 @@ Mặc dù gói tin phải đi qua rất nhiều Router trung gian phức tạp �
 ## CẤU TRÚC CỦA MỘT GÓI TIN VXLAN
 ![VXLAN Header](./images/vxlan_header.jpg)
 
-Inner L2 Frame: Gói tin gốc mà máy ảo của bạn gửi đi (chứa IP nguồn 192.168.100.10 và IP đích 192.168.100.20).
++ Inner L2 Frame: Gói tin gốc mà máy ảo của bạn gửi đi (chứa IP nguồn 192.168.100.10 và IP đích 192.168.100.20).
++ VXLAN Header: Chứa mã định danh VNI để phân biệt mạng của khách hàng nào.
++ UDP Header: VXLAN sử dụng cổng dịch vụ mặc định là UDP Port 4789 để truyền tải dữ liệu.
++ Outer IP Header: Chứa IP vật lý của 2 đầu VTEP (giúp các Router trung gian biết đường định tuyến để gửi gói tin đi).
++ Outer MAC Header: thực chất là một tiêu đề Ethernet chuẩn (gồm MAC nguồn, MAC đích và EtherType), giúp các thiết bị phần cứng dọc đường (như Switch, Router vật lý) biết phải đẩy gói tin VXLAN này ra cổng mạng nào tiếp theo để đến được đích.
 
-VXLAN Header: Chứa mã định danh VNI để phân biệt mạng của khách hàng nào.
+## VXLAN HOẠT ĐỘNG NHƯ THẾ NÀO
+- VxLAN cũng cố gắng thực hiện cùng một công việc như VLAN đã làm. Nghĩa là nó cũng cố gắng phân chia mạng thành các mạng ảo riêng biệt. Đầu tiên VxLAN cũng cần một VxLAN header để chỉ ra chỉ số mạng ảo (Virtual Network Identifier – VNI). Tuy nhiên cách đóng gói của VxLAN hơi khác. Thay vì chèn VxLAN header vào giữa frame nguyên thủy ban đầu, switch sẽ chọn cách bao bọc, đóng gói toàn bộ frame bên trong VxLAN header.
+- Để có thể truyền phần dữ liệu đã đóng gói VxLAN header này trên một hạ tầng mạng IP Layer 3, thiết bị VxLAN gateway (VTEP) sẽ thêm vào một UDP header. Việc dùng UDP header để đóng gói là một chọn lựa xuất sắc vì UDP sẽ giúp gói tin có thể tận dụng được các cơ chế định tuyến cân bằng tải có sẵn trên mạng truyền dẫn IP (mạng underlay).
 
-UDP Header: VXLAN sử dụng cổng dịch vụ mặc định là UDP Port 4789 để truyền tải dữ liệu.
+![vxlan](./images/vxlan.png)
 
-Outer IP Header: Chứa IP vật lý của 2 đầu VTEP (giúp các Router trung gian biết đường định tuyến để gửi gói tin đi).
-Outer MAC Header: thực chất là một tiêu đề Ethernet chuẩn (gồm MAC nguồn, MAC đích và EtherType), giúp các thiết bị phần cứng dọc đường (như Switch, Router vật lý) biết phải đẩy gói tin VXLAN này ra cổng mạng nào tiếp theo để đến được đích.
+- Sau khi đã được đóng gói bởi UDP header, phần địa chỉ IP header ngoài cùng là phần header do mạng truyền dẫn IP thực hiện đóng gói. Trong IP header ngoài cùng này, địa chỉ nguồn là địa chỉ IP của vật lý của router/switch đầu vào, địa chỉ đích là địa chỉ của router/switch/VTEP đầu cuối.
+- Trường quan trọng nhất trong VxLAN header chính là mã định danh mạng ảo Virtual Network ID – VNID. Trong hình nó được mô tả bằng Instance-ID. Trường VNID giúp định nghĩa phân đoạn mạng của bạn, ý nghĩa tương tự như VLAN. VNID có chiều dài 24 bit, tương ứng với con số 16 triệu phân đoạn mạng có thể định danh.
+- Trường VNID có thể dùng để chỉ ra thông tin lớp 2, ví dụ như vlan. Lúc này chúng ta gọi nó là Layer 2 VNID. Virtual Network-ID cũng có thể dùng để mô tả một dịch vụ ở lớp 3, ví dụ như routing, lúc này chúng ta gọi nó là VN-ID ở Layer 3.
+- Các thiết bị thiết lập giữa 2 đầu tunnel gọi là VTEPs hay VXLAN tunnel. Những thiết bị này có thể là máy vật lý, máy ảo, thiết bị mạng như Router và Switch. Đây là nơi tiến trình đóng gói VxLAN và mở gói diễn ra.
+- Một thiết bị VTEP có thể đóng vai trò như một VxLAN L2 gateway hoặc VxLAN L3 gateway. Các VTEP sẽ thực hiện chức năng “Bridge” đối với L2 VNID. Với các frame muốn đi qua các VN-ID khác (giống như chức năng routing giữa các vlan truyền thống), lúc này VTEP sẽ “route” frame đến L3 VN-ID để thực hiện chức năng route.
+- Do VxLAN có thể mang một layer 2 frame từ nơi này đến một nơi khác thông qua một hạ tầng mạng lớp 3, người ta nói VxLAN hỗ trợ L2 tunneling.
 
-┌────────────────────────────────────────────────────────────────────────┐
-│  Lớp 1: Outer MAC Header (Thay đổi qua mỗi Router - Hop-by-Hop)         │
-├────────────────────────────────────────────────────────────────────────┤
-│  Lớp 2: Outer IP Header (IP của 2 đầu VTEP - Giữ nguyên suốt hành trình)│
-├────────────────────────────────────────────────────────────────────────┤
-│  Lớp 3: UDP Header (Luôn dùng Port đích là 4789)                       │
-├────────────────────────────────────────────────────────────────────────┤
-│  Lớp 4: VXLAN Header (Chứa mã số VNI, ví dụ: VNI 100)                  │
-├────────────────────────────────────────────────────────────────────────┤
-│  Lớp 5: Inner L2 Frame (Gói tin gốc nguyên bản của máy ảo bên trong)   │
-└────────────────────────────────────────────────────────────────────────┘
+**Tóm tắt**: VXLAN là công nghệ cho phép bạn mở rộng mạng L2 trên bất kỳ mạng L3 nào. Một VxLAN header được dùng để bao bọc L2 frame, sau đó được đóng gói trong UDP để sau cùng chuyến đến cho mạng truyền dẫn vật lý IP. VXLAN có thể cung cấp hàng triệu Vlan mà vẫn đảm bảo tính riêng tư trên mỗi phân đoạn mạng. Đây là điều tuyệt vời đối với  những doanh nghiệp có nhu cầu cung cấp dịch vụ lớn như Cloud.  Mặt khác, VxLAN hỗ trợ cả môi trường ảo hóa.
