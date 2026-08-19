@@ -147,3 +147,27 @@ Các công cụ giúp người dùng thao tác với KVM một cách dễ dàng 
     + Lắng nghe liên tục các yêu cầu từ người quản trị (thông qua lệnh virsh hoặc các giao diện quản lý như Virt-Manager).
     + Nhận lệnh, biên dịch các tệp cấu hình XML, sau đó trực tiếp ra lệnh và điều khiển các tiến trình QEMU/KVM ở bên dưới tầng hệ thống để thực hiện các thao tác như tạo, tắt, bật, cấu hình hoặc di chuyển máy ảo.
 
+## SỰ KHÁC BIỆT GIỮA VCPU VÀ CPU
+- Sự khác biệt cốt lõi giữa CPU (Central Processing Unit) và vCPU (Virtual CPU) nằm ở chỗ: CPU là linh kiện phần cứng vật lý thực sự, còn vCPU chỉ là một luồng xử lý ảo (Thread) do phần mềm ảo hóa (Hypervisor) tạo ra và phân bổ thời gian thực thi trên CPU thật.
+
+**Bảng so sánh**
+| Tiêu chí         | CPU Vật lý (Physical CPU / Core)                                                            | vCPU (Virtual CPU)                                                                                 |
+|------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| Bản chất         | Con chip vật lý bằng silicon cắm trên mainboard (hoặc một Core/Thread phần cứng trên chip). | Một luồng (Thread) phần mềm chạy trong hệ điều hành Host (ví dụ: CPU 0/KVM).                       |
+| Sự tồn tại       | Hữu hình, tiêu thụ điện năng trực tiếp, tỏa nhiệt.                                          | Vô hình, chỉ là khái niệm logic/ảo hóa.                                                            |
+| Khả năng xử lý   | Thực thi trực tiếp các lệnh nhị phân liên tục không cần chờ cấp phát.                       | Nhận lệnh từ Guest OS rồi xếp hàng chờ Linux Scheduler phân phối lát cắt thời gian trên CPU thật.  |
+| Khả năng co giãn | Cố định; muốn tăng phải mua thêm chip hoặc thay CPU mới.                                    | Linh hoạt; cấu hình tăng/giảm số lượng qua file XML hoặc lệnh (virsh setvcpus) chỉ trong vài giây. |
+| Đơn vị đo lường  | Số Socket, số Core vật lý, số Thread phần cứng (Hyper-Threading).                           | Số lượng vCPU cấp cho máy ảo.                                                                      |
+
+**1 vCPU tương đương cái gì ở máy thật**
+- Trong hầu hết các hệ thống ảo hóa hiện đại (KVM, VMware, Hyper-V):
+    + 1 vCPU 1 Luồng phần cứng (Hardware Thread / Logical Core)
+- Nếu CPU máy Host KHÔNG bật Siêu phân luồng (Hyper-Threading): 1 Core vật lý = 1 Thread = 1 vCPU 
+- Nếu CPU máy Host CÓ bật Siêu phân luồng (Intel Hyper-Threading / AMD SMT):1 Core vật lý = 2 Threads = 2 vCPU.
+*Ví dụ thực tế*: Máy chủ của bạn có CPU 4 Core / 8 Threads. Về mặt lý thuyết, bạn có tối đa 8 vCPU hiệu năng gốc để phân bổ 
+cho các máy ảo
+
+**Cơ chế hoạt động của vCPU**
+- Khi bạn cấp 2 vCPU cho máy ảo `ubt24`, tiến trình QEMU trên Host sinh ra 2 luồng (như bạn thấy mã CPU 0/KVM và CPU 1/KVM).
+- Trình lập lịch của Linux Kernel (CFS - Completely Fair Scheduler) sẽ coi 2 luồng này như các tiến trình bình thường khác và cấp cho chúng các lát cắt thời gian (Time Slices) để chạy trên các Core CPU vật lý.
+- Khi luồng vCPU được chạy trên Core thật, nó kích hoạt chế độ Intel VT-x / AMD-V để CPU thật thực thi trực tiếp các tập lệnh của máy ảo mà không tốn công biên dịch lại.
