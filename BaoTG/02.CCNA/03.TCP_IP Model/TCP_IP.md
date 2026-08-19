@@ -131,6 +131,7 @@ Tại tầng này, dữ liệu được gọi đơn giản là Application Messa
 - Cả 2 đều có chức năng tương tự của các lớp Transport và Network
     Chức năng được thực hiện giữa lớp Presentation và lớp Network tương tự như chức năng được thực hiện ở lớp Transport
 > Khác nhau
+
 |         Nội dung         |                                              Mô hình OSI                                             |                               Mô hình TCP/IP                               |
 |:------------------------:|:----------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------:|
 |  Độ tin cậy và phổ biến  | Nhiều người cho rằng đây là mô hình cũ, chỉ để tham khảo, số người sử dụng hạn chế hơn so với TCP/IP | Được chuẩn hóa, nhiều người tin cậy và sử dụng phổ biến trên toàn cầu      |
@@ -193,6 +194,7 @@ TCP được sử dụng để truyền thông qua các mạng phạm vi rộng,
 **Truyền thông tin trong ứng dụng client-server**
 Trong mô hình client-server, giao thức TCP được sử dụng để thiết lập và duy trì kết nối giữa client và server. Ví dụ, ứng dụng email, trò chuyện trực tuyến, truyền tệp qua FTP (File Transfer Protocol) và nhiều ứng dụng khác sử dụng TCP để truyền thông tin giữa client và server.
 - **Cấu trúc gói tin TCP**
+
 ![Structure TCP](./images/structure.png)
 |           Tên trường           |                                                    Chức năng                                                    |
 |:------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
@@ -208,6 +210,7 @@ Trong mô hình client-server, giao thức TCP được sử dụng để thiế
 | Urgent Pointer (16 bit)        | Con trỏ vùng dữ liệu khẩn; chỉ có hiệu lực khi cờ URG được thiết lập để ưu tiên xử lý dữ liệu.                  |
 | Options (Tối đa 32 bit)        | Các tùy chọn mở rộng giúp thêm vào TCP các tính năng bổ sung khác.                                              |
 - **Three-Way Handsake (Bắt tay ba bước)**
+
 ![Three-Way Handsake](./images/3_way_handsake.png)
 Bắt tay 3 bước (TCP 3-way handshake) là quy trình thiết lập kết nối tin cậy giữa máy khách (Client) và máy chủ (Server) trước khi truyền dữ liệu, bao gồm: SYN (khởi tạo), SYN-ACK (xác nhận-đồng bộ), và ACK (xác nhận cuối cùng). Quá trình này đảm bảo cả hai bên đã sẵn sàng truyền tin.
 
@@ -248,6 +251,7 @@ Cuối cùng, Host P gửi một gói tin xác nhận lại một lần nữa đ
 + UDP cũng được sử dụng trong Domain Name System, Voice over IP và các game trực tuyến.
 
 - **Cấu trúc gói tin UDP**
+
 ![UDP Structure](./images/udp_structure.png)
 | Trường thông tin (Field) |  Độ dài  |                                            Mô tả chi tiết chức năng                                           |
 |:------------------------:|:--------:|:-------------------------------------------------------------------------------------------------------------:|
