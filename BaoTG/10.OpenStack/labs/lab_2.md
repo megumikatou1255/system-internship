@@ -1,0 +1,4 @@
+# TRIỂN KHAI CEPH STORAGE ĐỂ LƯU MÁY ẢO
+## MÔ TẢ
+
+## THỰC HÀNH

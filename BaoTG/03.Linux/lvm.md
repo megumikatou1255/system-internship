@@ -75,11 +75,3 @@ Logical Volume (tên: data_lv nằm trong /dev/mapper/data_vg-data_lv)
    │
    ▼ (Bước 5: Gắn vào cây thư mục bằng lệnh mount)
 Sử dụng thực tế (Ví dụ: Mount vào thư mục /data để chứa file)
-
-tìm hiểu lvm thick thin, so sánh, khác nhau
-
-triển khai
-mở mạng, bind port
-vận hành: logging, monitoring
-backup
-update (bảo mật, an toàn)

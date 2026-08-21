@@ -40,6 +40,7 @@ Mỗi giao thức sẽ dựa vào các thông số vật lý khác nhau để t�
 - Bảng định tuyến (Routing Table) còn được gọi là Routing Information Base (RIB). Đây là bảng thông tin trong router, chứa các tuyến đường đến các điểm đến khác nhau.
 
 - Ví dụ về bảng định tuyến:
+
 | Destination | Subnet Mask   | Next Hop    | Interface | Metric |
 |-------------|---------------|-------------|-----------|--------|
 | 192.168.1.0 | 255.255.255.0 | 192.168.1.1 | eth0      | 1      |
