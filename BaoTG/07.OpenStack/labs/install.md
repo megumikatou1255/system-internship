@@ -50,3 +50,5 @@ sudo systemctl list-units --type=service "devstack@*"
 + devstack@etcd.service: Hệ thống cơ sở dữ liệu khóa-giá trị phân tán (thường được OVN sử dụng để đồng bộ trạng thái).
 + devstack@placement-api.service: Dịch vụ Placement (theo dõi tài nguyên CPU/RAM của Nova để scheduler phân bổ chính xác).
 + devstack@dstat.service: Công cụ giám sát hiệu năng hệ thống (CPU, RAM, Disk) đi kèm của DevStack.
+
+## Thực hành tạo một máy ảo bằng API
