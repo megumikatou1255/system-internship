@@ -7,7 +7,7 @@
 - Mô hình OSI chia nhỏ quá trình truyền thông mạng thành 7 tầng (layer). Mỗi tầng đảm nhiệm một chức năng cụ thể. Các chức năng này tương tác theo thứ tự từ trên xuống dưới. Các tầng trong mô hình OSI gồm: Physical, Data Link, Network, Transport, Session, Presentation và Application. Mô hình OSI đưa ra các giao thức, tiêu chuẩn cho mỗi tầng để đảm bảo các thiết bị mạng khác nhau có thể giao tiếp, kết nối với nhau.
 
 ### 2. Vai trò của mô hình OSI
->Mô hình OSI không phải là một thiết bị hay phần mềm cụ thể, mà là một khung tham chiếu với các vai trò chính:
+> Mô hình OSI không phải là một thiết bị hay phần mềm cụ thể, mà là một khung tham chiếu với các vai trò chính:
 + **Chuẩn hóa**: Giúp các nhà sản xuất phần cứng và phần mềm tạo ra các sản phẩm có thể làm việc cùng nhau (tính tương thích).
 + **Chia nhỏ quy trình phức tạp**: Chia việc truyền tin khổng lồ thành 7 tầng nhỏ hơn, giúp việc học tập, thiết kế và quản trị mạng trở nên dễ dàng hơn.
 + **Giao diện rõ ràng**: Xác định rõ ràng các dịch vụ mà một tầng cung cấp cho tầng trên nó và cách các tầng tương tác.

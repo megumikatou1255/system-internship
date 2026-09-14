@@ -19,6 +19,7 @@ VLAN (Virtual Local Area Network) là một công nghệ ảo hóa cho phép chi
 ![VLAN](./images/vlan.png)
 
 - **So sánh LAN và VLAN**
+
 | Đặc điểm       | LAN (Local Area Network)                                                            | VLAN (Virtual Local Area Network)                                                             |
 |----------------|-------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | Định nghĩa     | Mạng máy tính trong một khu vực hẹp như một tòa nhà, một văn phòng.                 | Phân chia một mạng LAN vật lý thành nhiều mạng LAN ảo dựa trên yêu cầu hoặc chức năng.        |

@@ -108,7 +108,12 @@ Gọi n là số bit mượn và m là số bit host còn lại. Ta có:
 - Subnet là từ viết tắt của "Subnetwork". Đây là việc chia một mạng lớn (như mạng của một nhà mạng ISP) thành các mạng nhỏ hơn (như mạng gia đình hoặc mạng từng phòng ban trong công ty).
 
 ### Subnet mask
-Subnet mask là một dạng số nhị phân 32bit, cho phép người sử dụng phân tách địa chỉ IP thành địa chỉ mạng và địa chỉ host. Các địa chỉ theo dạng số học sẽ không được sử dụng cho máy chủ.
+- Subnet mask là một dạng số nhị phân 32bit, cho phép người sử dụng phân tách địa chỉ IP thành địa chỉ mạng và địa chỉ host. Các địa chỉ theo dạng số học sẽ không được sử dụng cho máy chủ.
 
 ### Prefix
-Prefix là cách viết ngắn gọn của Subnet Mask theo chuẩn CIDR (Classless Inter-Domain Routing). Thay vì viết 255.255.255.0, người ta chỉ cần đếm xem có bao nhiêu bit 1 trong Subnet Mask và viết sau dấu gạch chéo /.
+- Prefix là cách viết ngắn gọn của Subnet Mask theo chuẩn CIDR (Classless Inter-Domain Routing). Thay vì viết 255.255.255.0, người ta chỉ cần đếm xem có bao nhiêu bit 1 trong Subnet Mask và viết sau dấu gạch chéo /.
+
+## 10. Các dải IP Private thường được sử dụng
+- 10.0.0.0 đến 10.255.255.255 (Lớp A): Thường được sử dụng cho các mạng quy mô lớn, doanh nghiệp.
+- 172.16.0.0 đến 172.31.255.255 (Lớp B): Thường được sử dụng cho các mạng có quy mô trung bình hoặc lớn.
+- 192.168.0.0 đến 192.168.255.255 (Lớp C): Thường được sử dụng phổ biến nhất cho các mạng gia đình, văn phòng nhỏ (SOHO).
