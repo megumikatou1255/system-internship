@@ -78,4 +78,3 @@ docker run -d --name bao-app --network my-net -p 5000:5000 my-app:1.0
 ```
 ![lab](../images/docker_16.png)
 Vậy là dữ liệu đã thực sự được lưu lại trong Volum do Docker quản lý
-
