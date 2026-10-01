@@ -38,8 +38,8 @@
 ## 6. Cấu hình Fire wall
 - Đầu tiên ta sẽ gõ câu lệnh `sudo ufw status` để kiểm tra cấu hình của Firewall có mở Port 22 không
 ![Lab](../images/lab_4.png)
-
 - Như hình trên ta có thể thể thấy Port 22 của SSH đã được mở, ta không cần phải cấu hình gì thêm
+- Trong trường hợp ufw báo `inactive` thì hãy sử dụng câu lệnh `sudo ufw enable` để bật ufw
 - Trong trường hợp Port 22 không mở, ta sẽ sử dụng câu lệnh `sudo ufw allow ssh` để mở khóa cổng SSH trên hệ thống Ubuntu
 
 ## 6. Thực hiện SSH từ Windows đến Ubuntu

@@ -4,7 +4,7 @@
 - Tìm hiểu về OVN network: cơ chế network giữa các máy ảo như nào, bắt log như nào, cấu hình policy như nào.
 - Storage: thử triển khai ceph storage để lưu máy ảo
 
-s** LAB:
+**LAB**:
 - làm 1 con ntp server để con talos trỏ vào
 
 ** CHỈNH SỬA, BỔ SUNG
